@@ -8,7 +8,7 @@ No outreach is approved by this document. Human send approval remains required.
 
 Confirmed beta decisions:
 
-- Sender: Jeff Paduto.
+- Sender: Jeff Peduto.
 - No known client/opportunity conflict.
 - Warm relationship path approved.
 - First beta is limited to three prospects.
@@ -230,7 +230,7 @@ Will,
 
 Joe Bouffard suggested I reach out with a quick routing question.
 
-I work with restaurant and middle-market operators on complimentary spend assessments, especially where multi-location groups may have spend across facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating categories.
+I work with ERA Group to help restaurant and middle-market operators reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. For multi-location groups, that can include categories like facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating expenses.
 
 Given your Connecticut Jimmy John's growth, I wanted to see whether this kind of review would be worth a short conversation. I know franchise groups can have purchasing constraints, so the question is really whether any local operating categories are flexible enough to review.
 
@@ -238,7 +238,7 @@ No obligation and no assumption that savings exist. The goal would simply be to 
 
 Thanks,
 
-Jeff Paduto
+Jeff Peduto
 
 ## 10. Compliance / QA Check
 
@@ -256,7 +256,7 @@ Why it passes:
 
 Required before sending:
 
-- Jeff Paduto must review and send manually.
+- Jeff Peduto must review and send manually.
 - If sent by email, verify Will's correct email address.
 - If sent by LinkedIn, keep as a short warm message and avoid attachments.
 
@@ -266,7 +266,7 @@ Recommended tracker values:
 
 - Current status: `Prospect packet complete - ready for final human send approval`.
 - Workflow stage: `Final human send approval pending`.
-- Next action: `Jeff Paduto reviews/sends Will warm-path draft or requests edits.`
+- Next action: `Jeff Peduto reviews/sends Will warm-path draft or requests edits.`
 - Outreach approval: `Human send approval still required`.
 - Relationship approval: `Route approved: Will warm path`.
 - Conflict status: `No known conflict confirmed by Jeff`.
@@ -279,7 +279,7 @@ Choose one:
 2. Request edits.
 3. Hold for more size/spend validation.
 
-Recommended choice for beta rehearsal: Jeff Paduto reviews and sends the Will warm-path draft if comfortable.
+Recommended choice for beta rehearsal: Jeff Peduto reviews and sends the Will warm-path draft if comfortable.
 
 ## Sources
 

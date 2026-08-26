@@ -12,7 +12,7 @@ Purpose: ask Maria to identify the right finance/operations contact for Jeff, wi
 
 Confirmed beta decisions:
 
-- Sender: Jeff Paduto.
+- Sender: Jeff Peduto.
 - No known client/opportunity conflict.
 - Warm relationship path approved.
 - No attachment or external asset for this first message.
@@ -25,7 +25,7 @@ Maria,
 
 Joe Bouffard suggested I reach out to you with a quick routing question.
 
-I work with middle-market operators on complimentary spend assessments, especially for companies with multi-location distribution, fleet, logistics, facilities, purchasing, insurance, and technology spend. New Castle looks like the kind of operation where that kind of review could at least be worth a conversation, but I do not want to assume the right person internally.
+I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. New Castle looks like the kind of multi-location distribution operation where categories like fleet, logistics, facilities, purchasing, insurance, and technology could at least be worth a conversation, but I do not want to assume the right person internally.
 
 Would John Hutt, Philip DeBellis, or someone else on the finance/operations side be the best person for me to speak with?
 
@@ -33,7 +33,7 @@ No obligation and no assumption that savings exist. The goal would simply be to 
 
 Thanks,
 
-Jeff Paduto
+Jeff Peduto
 
 ## QA Result
 
@@ -66,5 +66,5 @@ This section is no longer needed because the main draft now includes the approve
 - Route: Maria warm path.
 - Relationship approval: route approved.
 - Conflict status: no known conflict confirmed by Jeff.
-- Outreach approval: message ready for Jeff Paduto's final review/send decision.
+- Outreach approval: message ready for Jeff Peduto's final review/send decision.
 - Workflow stage: ready for human send approval.

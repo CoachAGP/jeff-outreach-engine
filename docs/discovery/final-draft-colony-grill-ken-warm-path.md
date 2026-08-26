@@ -10,7 +10,7 @@ Known contact: Ken Martin, COO / co-owner signal.
 
 Confirmed beta decisions:
 
-- Sender: Jeff Paduto.
+- Sender: Jeff Peduto.
 - No known client/opportunity conflict.
 - Warm relationship path approved.
 - No attachment or external asset for this first message.
@@ -23,7 +23,7 @@ Ken,
 
 Joe Bouffard suggested I reach out with a quick routing question.
 
-I work with middle-market operators on complimentary spend assessments, especially where multi-location restaurant groups have spend across facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating categories.
+I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. For multi-location restaurant groups, that can include categories like facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating expenses.
 
 Given Colony Grill's continued growth and multi-location footprint, I wanted to see whether this kind of review would be worth a short conversation, or whether someone else on the finance or operations side would be the better person to ask.
 
@@ -31,7 +31,7 @@ No obligation and no assumption that savings exist. The goal would simply be to 
 
 Thanks,
 
-Jeff Paduto
+Jeff Peduto
 
 ## QA Result
 
@@ -49,6 +49,6 @@ Why it passes:
 
 Required before sending:
 
-- Jeff Paduto must review and send manually.
+- Jeff Peduto must review and send manually.
 - If sent by email, verify Ken's correct email address.
 - If sent by LinkedIn, keep the message concise and avoid attachments.

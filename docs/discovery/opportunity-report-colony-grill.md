@@ -2,7 +2,7 @@
 
 Status: beta opportunity report v0.1.
 
-Prepared for: Jeff Paduto.
+Prepared for: Jeff Peduto.
 
 Final email draft: `docs/discovery/final-draft-colony-grill-ken-warm-path.md`
 

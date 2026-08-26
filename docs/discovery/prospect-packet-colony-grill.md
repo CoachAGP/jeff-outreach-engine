@@ -8,7 +8,7 @@ No outreach is approved by this document.
 
 Confirmed beta decisions:
 
-- Sender: Jeff Paduto.
+- Sender: Jeff Peduto.
 - No known client/opportunity conflict.
 - Warm relationship path approved.
 - No attachment or external asset for this first message.
@@ -232,7 +232,7 @@ Ken,
 
 Joe Bouffard suggested I reach out with a quick routing question.
 
-I work with middle-market operators on complimentary spend assessments, especially where multi-location restaurant groups have spend across facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating categories.
+I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. For multi-location restaurant groups, that can include categories like facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating expenses.
 
 Given Colony Grill's continued growth and multi-location footprint, I wanted to see whether this kind of review would be worth a short conversation, or whether someone else on the finance or operations side would be the better person to ask.
 
@@ -240,7 +240,7 @@ No obligation and no assumption that savings exist. The goal would simply be to 
 
 Thanks,
 
-Jeff Paduto
+Jeff Peduto
 
 ## 10. Compliance / QA Check
 
@@ -266,7 +266,7 @@ Recommended tracker values:
 
 - Current status: `Prospect packet complete - ready for final human send approval`.
 - Workflow stage: `Final human send approval pending`.
-- Next action: `Jeff Paduto reviews/sends final Ken warm-path draft or requests edits.`
+- Next action: `Jeff Peduto reviews/sends final Ken warm-path draft or requests edits.`
 - Outreach approval: `Human send approval still required`.
 - Relationship approval: `Route approved: Ken warm path`.
 - Conflict status: `No known conflict confirmed by Jeff`.
@@ -279,7 +279,7 @@ Choose one:
 2. Request edits.
 3. Hold for additional finance/controller verification.
 
-Recommended choice for beta rehearsal: Jeff Paduto reviews and sends the Ken warm-path draft if comfortable.
+Recommended choice for beta rehearsal: Jeff Peduto reviews and sends the Ken warm-path draft if comfortable.
 
 ## Sources
 

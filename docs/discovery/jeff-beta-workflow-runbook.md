@@ -12,6 +12,13 @@ AI helps research, score, draft, and organize. A human decides, approves, sends,
 
 No AI agent may independently contact prospects, request introductions, schedule meetings, or make unsupported claims.
 
+After the August 26 beta review, the preferred working mode is report-first:
+
+- Codex prepares the opportunity report before Jeff commits to the outreach angle.
+- Jeff reviews the report and gives direction.
+- Codex then drafts or revises the email, LinkedIn message, or call script.
+- Jeff approves and sends manually.
+
 ## Workflow Overview
 
 1. Intake company.
@@ -20,11 +27,12 @@ No AI agent may independently contact prospects, request introductions, schedule
 4. Score prospect fit.
 5. Identify decision-maker and relationship path.
 6. Choose route: warm path, direct finance outreach, hold, or reject.
-7. Draft outreach.
-8. Run Compliance / QA Check.
-9. Human approves and sends.
-10. Track outcome.
-11. Follow up or stop according to rules.
+7. Return report and tracker update for Jeff review.
+8. Draft or revise outreach based on Jeff's direction.
+9. Run Compliance / QA Check.
+10. Human approves and sends.
+11. Track outcome.
+12. Follow up or stop according to rules.
 
 ## Roles
 
@@ -66,6 +74,21 @@ Optional input:
 - News trigger.
 - ZoomInfo intent signal.
 - HubSpot/Athena status.
+
+Approved beta lead sources:
+
+- Weekly ZoomInfo intent emails.
+- ZoomInfo target account digest emails.
+- LinkedIn Sales Navigator alert emails.
+- Manual companies Jeff identifies while browsing.
+- Warm referrals and known relationships.
+
+Known alert timing:
+
+- ZoomInfo intent alerts arrive Tuesdays around 10:28 AM.
+- LinkedIn Sales Navigator alerts arrive Mondays.
+
+For beta testing, Jeff will forward sample ZoomInfo and LinkedIn alerts so the intake process can be tested before any scheduled automation is enabled.
 
 ## Step 1: Intake Company
 
@@ -191,6 +214,8 @@ Route decision rules:
 
 Draft only. Do not send.
 
+For the preferred report-first workflow, draft outreach after Jeff has reviewed the report and confirmed the route, unless Jeff explicitly asks for an immediate draft.
+
 Draft should include:
 
 - Relevant company-specific context.
@@ -200,6 +225,9 @@ Draft should include:
 - No AP data request in first-touch outreach.
 - No promise of savings.
 - No claim that the company is overspending.
+- Jeff's name spelled as `Jeff Peduto`.
+- ERA Group context before mentioning any spend assessment.
+- A value statement around reducing indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business.
 
 Use hybrid voice:
 
@@ -268,6 +296,13 @@ After human decision, update beta tracker:
 Until HubSpot is available, the manual tracker is temporary system of record.
 
 Once HubSpot is available, HubSpot becomes system of record and the tracker becomes a beta audit/helper sheet.
+
+Jeff's stated preference is to avoid tracking in two places. The beta should therefore test:
+
+- Which tracker fields belong in HubSpot.
+- Whether HubSpot can hold the report summary, fit score, route decision, QA status, and next action.
+- Whether Codex can prepare HubSpot notes, tasks, draft emails, or field recommendations.
+- Which HubSpot changes require Jeff approval before update.
 
 ## Step 11: Follow-Up Cadence
 
@@ -352,12 +387,13 @@ Before Jeff owns the workflow, provide:
 
 ## Immediate Next Step
 
-Use New Castle Building Products as the first process rehearsal:
+Use Jeff's forwarded ZoomInfo and LinkedIn alert examples as the next process rehearsal:
 
-1. Confirm no known client/opportunity conflict manually.
-2. Decide route: Maria warm path or direct CFO draft.
-3. Create final research brief.
-4. Create final outreach draft.
-5. Run Compliance / QA Check.
-6. Update tracker.
-7. Hold for human approval.
+1. Save the incoming alerts as source examples.
+2. Extract company names, topics, scores, and available contact/signal data.
+3. Normalize the records into the tracker schema.
+4. Select 10-15 companies for the first true beta batch.
+5. Research and score the batch.
+6. Return reports first for Jeff review.
+7. Draft outreach only after Jeff confirms route and message angle.
+8. Hold all outreach for human approval.

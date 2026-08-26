@@ -2,7 +2,7 @@
 
 Status: beta handoff v0.1.
 
-Prepared for: Jeff Paduto.
+Prepared for: Jeff Peduto.
 
 Purpose: summarize the first three beta prospects in one place so Jeff can review the research, understand the recommended contact route, inspect the approved warm-path draft, and decide whether to send.
 
@@ -12,7 +12,7 @@ No outreach has been sent. All messages require Jeff's final review and manual s
 
 - First beta is limited to three prospects.
 - No known conflict has been identified for these three prospects.
-- Jeff Paduto is the sender.
+- Jeff Peduto is the sender.
 - Warm relationship paths are approved.
 - No attachments or external assets will be included in these first warm-introduction messages.
 - All outreach remains human-approved and human-sent.
@@ -197,7 +197,7 @@ The drafts do not:
 
 All three drafts do:
 
-- Use first-person sender language from Jeff Paduto.
+- Use first-person sender language from Jeff Peduto.
 - Mention Joe Bouffard as the reason for reaching out.
 - Ask a quick routing/relevance question.
 - Use approved safe language: complimentary, no obligation, no assumption that savings exist.

@@ -2,7 +2,7 @@
 
 Status: beta handoff v0.1.
 
-Prepared for: Jeff Paduto.
+Prepared for: Jeff Peduto.
 
 Purpose: explain how Jeff will submit companies or prospects into the outreach engine, how the agent workflow will process them, and what Jeff will receive back before deciding whether to send outreach.
 
@@ -26,6 +26,15 @@ The agents will:
 8. Return a report and update the tracker.
 
 Jeff then reviews the result and decides whether to send, revise, hold, or reject.
+
+After the August 26 beta review, the preferred review pattern is:
+
+1. Codex prepares the research report and tracker update first.
+2. Jeff reviews the report and gives direction.
+3. Codex drafts or revises the outreach from that direction.
+4. Jeff manually approves and sends.
+
+The system can still produce a draft immediately, but Jeff is more likely to review the report first and then guide the final message.
 
 ## How Jeff Inputs a Prospect
 
@@ -61,6 +70,22 @@ If Jeff has only a company name, the agents can still begin research, but confid
 The agent workflow begins when a tracker row is marked:
 
 `Ready for Research`
+
+Approved beta trigger sources:
+
+- Manual tracker row.
+- Company or contact sent directly to Codex.
+- Weekly ZoomInfo intent emails.
+- ZoomInfo target account digest emails.
+- LinkedIn Sales Navigator alert emails.
+- A company Jeff finds while browsing LinkedIn, ZoomInfo, HubSpot, or another approved source.
+
+Current trigger plan:
+
+- Jeff forwards at least one ZoomInfo intent email, one ZoomInfo target account digest, and one LinkedIn Sales Navigator alert for testing.
+- If the emails arrive in Outlook, create a dedicated folder so Codex can be directed to review only that folder.
+- If a ZoomInfo email links into ZoomInfo instead of providing a full export, use browser-assisted review or an available export of recommended contacts/signals.
+- Do not rely on fully automated scheduled runs until the trigger source is proven with a manual beta batch.
 
 If required fields are missing, the Intake Agent flags the row as:
 
@@ -176,7 +201,12 @@ Drafts the first outreach message.
 The draft must:
 
 - Be written in Jeff's first-person voice.
+- Spell Jeff's name as `Jeff Peduto`.
 - Mention Joe Bouffard only when approved.
+- Explain that Jeff works with ERA Group.
+- Position the value as helping middle-market organizations reduce indirect supplier spend through deep category expertise.
+- Make clear the work has no upfront cost and no additional cost to the business when contextually appropriate.
+- Treat the spend assessment as a tool used to validate opportunity, not the main thing being sold.
 - Avoid promises.
 - Avoid saying the company is overspending.
 - Avoid requesting AP data in the first message.
@@ -234,6 +264,11 @@ For each company, Jeff receives two outputs:
 
 1. A detailed opportunity report.
 2. A tracker update.
+
+Optional output after Jeff reviews the report:
+
+3. A revised outreach draft based on Jeff's feedback.
+4. A HubSpot draft/task recommendation if HubSpot access is available.
 
 ## Opportunity Report Format
 
@@ -311,8 +346,9 @@ Not recommended for beta v0.1:
 
 Future state:
 
-- HubSpot should become the system of record once access is available.
-- The tracker should remain the intake, research, review, and audit layer until the process is stable enough to automate HubSpot updates.
+- HubSpot should become the system of record once access is available, because Jeff wants to avoid tracking the same opportunity in two places.
+- The tracker should remain the intake, research, review, and audit layer until the process is stable enough to create or update HubSpot fields safely.
+- The beta should test whether Codex can draft HubSpot notes/tasks/email drafts without making meaningful CRM status changes unless Jeff approves.
 
 ## Codex And GitHub Handoff Model
 
@@ -332,6 +368,7 @@ Recommended files to keep in GitHub:
 - `data/beta_tracker.csv`: portable tracker schema and current beta records.
 - `docs/discovery/agent-skill-compliance-qa-check.md`: compliance and QA skill definition.
 - `docs/discovery/agent-skill-prospect-fit-scoring.md`: prospect fit scoring skill definition.
+- Meeting feedback summaries and decision logs.
 
 Recommended files to keep outside GitHub if sensitive:
 
@@ -385,6 +422,14 @@ When HubSpot access is available, the beta-safe path is:
 6. Mark risky or unclear rows as `Human Review`.
 
 The beta workflow should not automatically overwrite HubSpot.
+
+Jeff's preferred future state:
+
+- HubSpot contains the official company/contact/opportunity record.
+- Custom HubSpot fields can tag records as outreach-engine sourced.
+- HubSpot reporting should eventually show the material opportunity data.
+- Codex may prepare HubSpot-ready notes, tasks, draft emails, and field recommendations.
+- Jeff approves any meaningful HubSpot status, lifecycle, or ownership changes.
 
 HubSpot data should be used to identify:
 
@@ -440,6 +485,15 @@ ZoomInfo can help prioritize:
 Important rule:
 
 - ZoomInfo revenue, headcount, and intent data should be treated as indicators, not verified public facts. The opportunity report should label those items as source-provided estimates unless independently verified.
+
+Current ZoomInfo notes from Jeff:
+
+- ZoomInfo intent emails arrive weekly on Tuesdays around 10:28 AM.
+- The intent emails include company name, searched topic, and a score up to 100.
+- Jeff receives multiple intent categories, including manufacturing/agriculture/food, education/nonprofit, healthcare, and general Northeast ICP.
+- ZoomInfo target account digest emails also provide useful signals for companies Jeff has already marked as target accounts.
+- Some ZoomInfo notification views may expose recommended contacts and signals that can be exported.
+- If exports are not available, browser-assisted review may be used with Jeff's permission while he remains in control of his account access.
 
 ## Recommended Import Fields
 

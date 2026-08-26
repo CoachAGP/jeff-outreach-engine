@@ -73,7 +73,7 @@ Ken,
 
 I noticed Colony Grill's continued growth and multi-location footprint. I work with middle-market operators to review indirect operating spend across areas like facilities, waste, insurance, merchant services, technology, uniforms, and related vendor categories.
 
-The starting point is a no-obligation conversation about whether a complimentary spend assessment would be useful. No assumptions that savings exist, just a structured way to see whether there are categories worth validating.
+The starting point is a no-obligation conversation about whether ERA Group's indirect spend expertise may be relevant. No assumptions that savings exist, just a structured way to see whether there are categories worth validating.
 
 Would it be worth a short conversation?
 
@@ -137,7 +137,7 @@ John,
 
 New Castle's distribution footprint looks like the kind of operation where indirect spend can sit across several departments: logistics, fleet, facilities, technology, insurance, purchasing, and branch-level operating categories.
 
-I work with middle-market companies on complimentary spend assessments that help validate whether any categories are worth deeper review. The assessment is no upfront cost and no obligation; it is meant to identify whether an opportunity exists before anyone commits time to a project.
+I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. The spend assessment is one tool we use to validate whether there is a practical opportunity before anyone commits time to a project.
 
 Would a short introductory conversation be reasonable?
 
@@ -201,7 +201,7 @@ Will,
 
 I saw the continued Connecticut expansion for your Jimmy John's group. I work with operators to review indirect spend categories where multi-location restaurants may still have flexibility, such as waste, facilities, janitorial, insurance, merchant services, uniforms, technology, and related operating expenses.
 
-The first step is only to see whether a complimentary spend assessment would be useful. No upfront cost, no obligation, and no assumption that savings exist before the data is reviewed.
+The first step is only to see whether ERA Group's indirect spend expertise may be relevant. No upfront cost, no obligation, and no assumption that savings exist before the data is reviewed.
 
 Would it be worth a short conversation?
 

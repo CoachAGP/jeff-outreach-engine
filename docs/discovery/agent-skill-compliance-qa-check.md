@@ -60,6 +60,25 @@ Use these carefully:
 - `double-digit savings` should refer to historical experience, not a promise to a specific prospect.
 - `10-14% food cost savings` should be used only for restaurant/food-cost context and preferably framed as historical experience.
 - `no upfront cost`, `no obligation`, and `pay for performance` apply to the spend optimization / spend assessment side, not necessarily to operational excellence consulting.
+- `complimentary spend assessment` should be treated as a tool ERA Group uses, not the main opening pitch.
+
+## Approved Core Positioning
+
+First-touch outreach should explain Jeff's value in plain business terms before mentioning any assessment tool.
+
+Preferred framing:
+
+- Jeff works with ERA Group.
+- ERA Group helps middle-market organizations reduce indirect supplier spend.
+- The work is done with no upfront cost and no additional cost to the business.
+- Specialists bring deep category expertise to identify whether there is a practical opportunity.
+- The first ask should be a quick routing question or low-pressure conversation, not a request for data.
+
+Avoid leading with:
+
+- `I work on complimentary spend assessments`
+- `The first step is a complimentary spend assessment`
+- Any phrasing that makes the assessment sound like the product being sold.
 
 ## Banned Language
 
@@ -160,6 +179,7 @@ For every draft, check:
 - Does it include only supported personalization?
 - Does it fit the intended channel?
 - Does it have a clear, low-pressure next step?
+- Does it explain ERA Group / Jeff's value before naming the spend assessment tool?
 
 ## Automatic Fail Conditions
 

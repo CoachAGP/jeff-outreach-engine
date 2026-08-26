@@ -246,7 +246,7 @@ Maria,
 
 I wanted to ask a quick routing question.
 
-I work with middle-market operators on complimentary spend assessments, especially for companies with multi-location distribution, fleet, logistics, facilities, purchasing, insurance, and technology spend. New Castle looks like the kind of operation where that kind of review could at least be worth a conversation, but I do not want to assume the right person internally.
+I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. New Castle looks like the kind of multi-location distribution operation where categories like fleet, logistics, facilities, purchasing, insurance, and technology could at least be worth a conversation, but I do not want to assume the right person internally.
 
 Would John Hutt, Philip DeBellis, or someone else on the finance/operations side be the best person for me to speak with?
 
@@ -268,7 +268,7 @@ John,
 
 New Castle's distribution footprint appears to include 20+ locations, branch operations, fleet, logistics, purchasing, inventory, facilities, and IT.
 
-I work with middle-market companies on complimentary spend assessments that help determine whether indirect operating categories are worth deeper review. The assessment is no upfront cost and no obligation; it is designed to validate whether an opportunity exists before anyone commits time to a project.
+I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. The spend assessment is one tool we use to validate whether there is a practical opportunity before anyone commits time to a project.
 
 Would a short introductory conversation be reasonable?
 
