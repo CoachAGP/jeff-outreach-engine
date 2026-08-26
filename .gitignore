@@ -6,6 +6,8 @@ __pycache__/
 .venv/
 venv/
 work/transcription_deps/
+work/transcription_venv/
+work/transcribe_with_faster_whisper.py
 
 # Reproducible caches and downloaded AI models
 work/clang-cache/
