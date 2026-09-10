@@ -45,20 +45,22 @@ Use the approval-first workflow:
 1. Intake the company or lead.
 2. Normalize the record in the tracker or sheet.
 3. Check for conflict status if HubSpot, Athena, or Jeff guidance is available.
-4. Research company, industry, size, likely spend categories, decision-makers, relationship path, and current triggers.
-5. Score prospect fit from 1 to 5.
-6. Recommend a route: warm path, direct finance, owner/operator route, research more, hold, or reject.
-7. Produce a compact approval-queue item for Jeff review. Put the draft or decision first and link the supporting report below it.
-8. Draft outreach only after Jeff approves the report route, unless he explicitly asks for draft-ready output.
-9. Run Compliance / QA before any draft is used.
-10. Wait for Jeff to approve and send manually.
+4. Run a low-cost triage using the supplied company name, ZoomInfo intent data, known industry, estimated revenue/spend potential, urgency trigger, and existing relationship clues.
+5. Assign a preliminary fit score from 1 to 5, with 5 as the best fit.
+6. Stop deep research for preliminary scores 1 and 2. Mark them hold, reject, or needs clarification with a short reason.
+7. Deep-research scores 3, 4, and 5 in descending score order. Validate company size, likely spend categories, decision-makers, relationship path, and current triggers.
+8. Confirm or revise the fit score after validation and recommend a route: warm path, direct finance, owner/operator route, research more, hold, or reject.
+9. Produce a compact approval-queue item for Jeff review. Put the draft or decision first and link the supporting report below it.
+10. Draft outreach only after Jeff approves the report route, unless he explicitly asks for draft-ready output.
+11. Run Compliance / QA before any draft is used.
+12. Wait for Jeff to approve and send manually.
 
 ## Jeff Review Output Contract
 
 - Default to a dashboard-ready approval queue, not a long chat narrative.
 - Show messages ready for approval first, then decisions needed, QA status, and full research links.
 - Keep research summaries compact unless Jeff requests a deep dive.
-- A Tuesday ZoomInfo intake run should parse and rank first, identify the top five research candidates and top three deep-report candidates, then stop unless Jeff approves deeper work.
+- A Tuesday ZoomInfo intake run should parse and rank first. Only preliminary scores 3, 4, and 5 qualify for deep research; process 5s first, then 4s, then 3s.
 - Do not end a requested workflow without either producing its expected artifact or naming the specific blocker and the next action.
 - Every completed run must account for intake, ranking, recommended route, draft status, QA status, tracker update status, and open questions.
 

@@ -10,7 +10,7 @@ The agent can research, score, and draft, but the chat-first delivery is not acc
 
 ## Required Changes
 
-1. Conserve credits by parsing and ranking before deep research.
+1. Conserve credits by assigning a preliminary fit score before deep research.
 2. Present draft messages as the primary review item.
 3. Keep full research available through links instead of mixing it into the draft.
 4. Require each agent run to complete its checklist or state the exact blocker.
@@ -27,6 +27,13 @@ The Tuesday run should initially produce only:
 - Top three deep-report candidates.
 
 Deep research and drafting begin only for the selected opportunities.
+
+## Credit-Control Research Gate
+
+- Use intake data and lightweight checks to assign a preliminary 1-5 fit score, with 5 as the best fit.
+- Scores 1-2 do not receive deep research. Mark them hold, reject, or needs clarification and provide a short reason.
+- Scores 3-5 qualify for deep research, processed in the order 5, 4, then 3.
+- After deep research, confirm or revise the score before recommending outreach.
 
 ## Dashboard Requirements
 

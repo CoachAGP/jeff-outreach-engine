@@ -16,7 +16,7 @@ The dashboard must be easy for Jeff to review, inexpensive to operate, portable 
 
 ## Beta Data Plan
 
-Version 1 uses the repository's approved sample records and saves review decisions on the current device. Version 2 writes decisions to the shared tracker. Version 3 uses HubSpot as the system of record after access, field mapping, and approval boundaries are confirmed.
+Version 1 uses the repository's approved sample records and saves review decisions on the current device. Every intake receives a low-cost preliminary fit score; only scores 3-5 proceed to deep research. Version 2 writes decisions to the shared tracker. Version 3 uses HubSpot as the system of record after access, field mapping, and approval boundaries are confirmed.
 
 ## Platforms Not Chosen As The Primary Dashboard
 
