@@ -40,7 +40,7 @@ Human approval is required before:
 
 ## Default Workflow
 
-Use the report-first workflow:
+Use the approval-first workflow:
 
 1. Intake the company or lead.
 2. Normalize the record in the tracker or sheet.
@@ -48,10 +48,19 @@ Use the report-first workflow:
 4. Research company, industry, size, likely spend categories, decision-makers, relationship path, and current triggers.
 5. Score prospect fit from 1 to 5.
 6. Recommend a route: warm path, direct finance, owner/operator route, research more, hold, or reject.
-7. Produce an opportunity report for Jeff review.
+7. Produce a compact approval-queue item for Jeff review. Put the draft or decision first and link the supporting report below it.
 8. Draft outreach only after Jeff approves the report route, unless he explicitly asks for draft-ready output.
 9. Run Compliance / QA before any draft is used.
 10. Wait for Jeff to approve and send manually.
+
+## Jeff Review Output Contract
+
+- Default to a dashboard-ready approval queue, not a long chat narrative.
+- Show messages ready for approval first, then decisions needed, QA status, and full research links.
+- Keep research summaries compact unless Jeff requests a deep dive.
+- A Tuesday ZoomInfo intake run should parse and rank first, identify the top five research candidates and top three deep-report candidates, then stop unless Jeff approves deeper work.
+- Do not end a requested workflow without either producing its expected artifact or naming the specific blocker and the next action.
+- Every completed run must account for intake, ranking, recommended route, draft status, QA status, tracker update status, and open questions.
 
 ## Messaging Rules
 
@@ -103,4 +112,3 @@ LinkedIn information may validate identity and role signals, but it does not cre
 - HubSpot should become the system of record once Jeff has access and field mapping is approved.
 - ZoomInfo and LinkedIn plugins should be tested inside Jeff's Codex account before the process is considered production-ready.
 - Current pre-handoff outputs should mark HubSpot, Athena, ZoomInfo plugin, and Jeff-account relationship checks as pending when they cannot be verified locally.
-
