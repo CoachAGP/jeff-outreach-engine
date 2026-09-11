@@ -1,0 +1,581 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jeff Outreach Engine — Training Guide</title><style>body{font:17px/1.65 system-ui,sans-serif;color:#17212b;background:#eef3f6;margin:0}main{max-width:1080px;margin:32px auto;padding:48px;background:white;border-top:8px solid #0f6678}h1{font-size:34px;line-height:1.2;color:#0a4b59}h2{font-size:25px;margin-top:38px;border-bottom:1px solid #cad9e1;padding-bottom:8px}h3{font-size:20px;margin-top:28px}a{color:#0a5f78}table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5;margin:18px 0}th,td{padding:12px;border:1px solid #cbd7df;vertical-align:top;text-align:left}th{background:#e7f2f5}code{overflow-wrap:anywhere}hr{margin:60px 0;border:0;border-top:4px solid #0f6678}@media(max-width:700px){main{margin:0;padding:20px}table{display:block;overflow-x:auto}}@media print{body{background:white;font-size:11pt}main{margin:0;padding:0;border:0;max-width:none}h2,h3{break-after:avoid}tr{break-inside:avoid}a{color:inherit}table{font-size:9pt}}</style></head><body><main><h1>Jeff Outreach Engine — Field Guide</h1>
+<p><strong>For:</strong> Jeff Peduto and authorized research/review support
+<strong>Owner:</strong> Joe Bouffard, AI Growth Plan
+<strong>Updated:</strong> September 11, 2026
+<strong>Applies to:</strong> Published dashboard version 4; field behavior checked against its source implementation. This is a training document, not approval for a company or a message. Review after every dashboard release.</p>
+<h2>Start here</h2>
+<p>The dashboard answers four questions: Who are we considering? What evidence supports the opportunity? What still needs checking? What has Jeff actually approved?</p>
+<p>The current system records research work and review decisions. It does not automatically research a company, call ZoomInfo, verify a website or contact, clear a conflict, run substantive QA, or send outreach. A dropdown records a human&#39;s conclusion; it does not produce that conclusion.</p>
+<p>The normal path is <strong>Queued → Researching → QA Review → Ready for Approval → Approved</strong>. <strong>Hold</strong> is available when something must be resolved. Approved means the research route is approved; every communication still needs separate human approval and manual sending.</p>
+<h3>Choose the correct working mode</h3>
+<table>
+<thead>
+<tr>
+<th>Screen item</th>
+<th>Meaning and action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shared queue not connected</td>
+<td>The displayed repository snapshot is read-only. Do not assume it reflects current shared decisions.</td>
+</tr>
+<tr>
+<td>Try local practice mode</td>
+<td>Enables a separate device-local exercise. Changes stay on this device and never sync into the shared Sheet. Never use practice mode as the live prospect tracker.</td>
+</tr>
+<tr>
+<td>Shared Google Sheet connected</td>
+<td>The configured shared queue was read successfully. Confirm the save message after each change. Live cross-account persistence still needs a pilot test after setup.</td>
+</tr>
+<tr>
+<td>Refresh shared queue</td>
+<td>Retrieves the shared state. Save or copy unfinished notes before refreshing. A successful connection exits practice mode.</td>
+</tr>
+<tr>
+<td>After reloading the page</td>
+<td>The dashboard attempts shared mode again. Choose Try local practice mode to reopen previously saved practice work; a reset mode banner does not mean your practice data was lost.</td>
+</tr>
+<tr>
+<td>Exit practice mode</td>
+<td>Attempts to reconnect to the shared queue. It does not upload practice records.</td>
+</tr>
+</tbody></table>
+<p>At the version 4 handoff, shared Sheet setup, Jeff&#39;s dashboard access and live ZoomInfo research execution were pending. Follow the current connection banner; do not infer a connection from the fact that the website opens.</p>
+<h2>Who supplies and checks the information?</h2>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Responsible</th>
+<th>Accountable / decision owner</th>
+<th>Evidence source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Add company and record provenance</td>
+<td>Jeff or authorized researcher</td>
+<td>Jeff</td>
+<td>Referral, existing tracker, company site or supplied ZoomInfo report</td>
+</tr>
+<tr>
+<td>Preliminary fit assessment</td>
+<td>Researcher; AI may assist with supplied evidence</td>
+<td>Jeff for uncertain/sensitive cases</td>
+<td>Approved scoring rubric and lightweight source checks</td>
+</tr>
+<tr>
+<td>Research company and contact</td>
+<td>Authorized researcher; AI may assist</td>
+<td>Jeff</td>
+<td>Primary company sources, authorized enrichment and dated source notes</td>
+</tr>
+<tr>
+<td>Review accuracy and messaging safety</td>
+<td>Assigned QA reviewer; AI may flag issues</td>
+<td>Jeff</td>
+<td>Research report, source checks and project QA rules</td>
+</tr>
+<tr>
+<td>Clear conflicts and relationship use</td>
+<td>Jeff, or authorized support documenting his explicit confirmation</td>
+<td>Jeff</td>
+<td>Authorized internal records and Jeff&#39;s specific approval</td>
+</tr>
+<tr>
+<td>Approve route / release hold</td>
+<td>Jeff, or authorized reviewer recording his decision</td>
+<td>Jeff</td>
+<td>Completed review and recorded decision scope</td>
+</tr>
+<tr>
+<td>Approve and send a message</td>
+<td>Jeff</td>
+<td>Jeff</td>
+<td>Exact final message and recipient/channel review</td>
+</tr>
+</tbody></table>
+<p>Do not write passwords, integration secrets, confidential AP data or sensitive internal exports into these fields. Record a permitted reference and a concise conclusion instead.</p>
+<h2>1. Add opportunity: five fields</h2>
+<h3>Company name</h3>
+<ul>
+<li><strong>Enter:</strong> the actual company or operating business name. Add a location/parent distinction only when it helps identify the right entity.</li>
+<li><strong>Get it from:</strong> the company&#39;s site, a referral, the existing beta tracker or a ZoomInfo company record.</li>
+<li><strong>Required:</strong> yes; up to 200 characters. Search <strong>Find company</strong> first. The system rejects normalized name duplicates, but it does not resolve every alias, subsidiary or parent-company match.</li>
+<li><strong>Example:</strong> <code>PRACTICE — Sample Manufacturing 2026-09-11</code> for training only.</li>
+<li><strong>If uncertain:</strong> record the uncertainty in the source notes and leave the company unscored. Do not guess which business a short name represents.</li>
+</ul>
+<h3>Company website (optional)</h3>
+<ul>
+<li><strong>Enter:</strong> the company&#39;s complete official HTTPS website address.</li>
+<li><strong>Get it from:</strong> a verified company domain, checked against the company&#39;s identity and location. A ZoomInfo or search result is a lead to check, not proof of identity.</li>
+<li><strong>Required:</strong> optional at intake. If provided, it must pass the HTTPS format check; the entry box allows up to 2,000 characters.</li>
+<li><strong>Example format:</strong> <code>https://example.com</code> — reserved example, not a prospect source.</li>
+<li><strong>Limit:</strong> the dashboard checks URL format, not ownership or whether the site loads. The website is stored at intake but is not editable in the current company review form. Record later corrections in sources/notes and request a supported record correction; do not create a duplicate.</li>
+</ul>
+<h3>Source / ZoomInfo details</h3>
+<ul>
+<li><strong>Enter:</strong> where the opportunity came from, the source date, the exact company link or report reference, relevant intent/revenue/headcount indicators, and any uncertainties.</li>
+<li><strong>Get it from:</strong> Jeff&#39;s referral notes; the existing tracker; a supplied ZoomInfo report or authorized account; company sources.</li>
+<li><strong>Required:</strong> yes; up to 4,000 characters. <code>Manual entry</code> is the default, but replace it with useful provenance.</li>
+<li><strong>Template:</strong> <code>Source: [name/link]. Observed: [date]. Signal: [topic/indicator]. Company/domain match: [checked/pending]. Confidence: [verified fact/indicator/hypothesis]. Missing: [items].</code></li>
+<li><strong>Important:</strong> a ZoomInfo intent score is not the dashboard&#39;s 1–5 fit score. Pasting details does not connect ZoomInfo or verify its estimates. These intake notes become the initial <strong>Sources and confidence</strong> field; preserve them when adding research.</li>
+</ul>
+<h3>Preliminary fit score</h3>
+<ul>
+<li><strong>Enter:</strong> a whole-number 1–5 fit assessment, or <strong>Not scored — preliminary review needed</strong>.</li>
+<li><strong>Get it from:</strong> the approved prospect-fit rubric, applied to information already available or obtained through lightweight triage.</li>
+<li><strong>Required:</strong> optional at intake; a qualifying score is required before deep research activation. No automatic score is calculated from the company name.</li>
+<li><strong>Meaning:</strong> 1 = poor fit; 2 = weak fit; 3 = possible fit; 4 = strong fit; 5 = excellent fit.</li>
+<li><strong>Gate:</strong> unscored and 1–2 go to Hold. Scores 3–5 enter Queued. Activate 5s before 4s before 3s. Do not assign 3 simply to get past the gate.</li>
+</ul>
+<h3>Score reason</h3>
+<ul>
+<li><strong>Enter:</strong> two or three evidence-based reasons for the preliminary score, plus the main uncertainty or caution.</li>
+<li><strong>Get it from:</strong> the same sources used to score the company: revenue/spend indicators, current triggers, industry fit, operating footprint and relevant category signals.</li>
+<li><strong>Required:</strong> whenever a 1–5 score is selected; up to 4,000 characters. Optional if unscored.</li>
+<li><strong>Example structure:</strong> <code>Strong manufacturing fit; supplied revenue indicator is within the target range; possible freight/facilities exposure. Revenue and buyer authority remain unverified.</code></li>
+<li><strong>Avoid:</strong> unsupported spend numbers, assumed savings, or treating a warm connection as authorized.</li>
+</ul>
+<p><strong>Add to queue / Add practice opportunity</strong> saves intake. Adding a scored company does not activate research; activation is a separate step.</p>
+<h2>2. Preliminary scoring: two review fields</h2>
+<p>The <strong>Preliminary scoring</strong> panel appears only for Queued or Hold records.</p>
+<table>
+<thead>
+<tr>
+<th>Field / control</th>
+<th>What it needs</th>
+<th>Source and requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Score</td>
+<td>A revised whole-number 1–5 preliminary fit score</td>
+<td>Researcher applies the approved rubric. Required when saving a score.</td>
+</tr>
+<tr>
+<td>Evidence and reason</td>
+<td>Why the score is changing, supporting source/date and remaining cautions</td>
+<td>Required; up to 4,000 characters. Use lightweight triage evidence.</td>
+</tr>
+<tr>
+<td>Save preliminary score</td>
+<td>Saves these two scoring fields and an activity event</td>
+<td>This is separate from the main save. It closes the review; other unsaved research-form edits are not included. Save scoring separately, then reopen to work on research fields.</td>
+</tr>
+</tbody></table>
+<p>A revised 3–5 score does <strong>not</strong> release an existing Hold. To release it, reopen the review, choose Queued, record why the hold is resolved, confirm Jeff&#39;s review and use the main save. A low score cannot be released into deep research. A record shown as unscored may display <code>0/5</code> in the review header; this means no preliminary score, not a sixth scoring category.</p>
+<h3>Scoring reference</h3>
+<p>Revenue/spend size, urgency and industry fit have the highest weight. The repository rubric prefers $20M+ annual revenue, allows $15M–$20M with stronger signals, and includes a restaurant exception where meaningful spend supports it. $750M is a prioritization guide, not a hard ceiling. Revenue is a proxy; do not invent category spend.</p>
+<p>Check disqualifiers such as existing client, active opportunity, opt-out/do-not-contact, unresolved ownership conflict, outside-U.S. scope, or insufficient relevant spend. Public-company, nonprofit, government and parent-authority situations may require human judgment. High fit alone never resolves a sensitivity hold.</p>
+<p>Use the full linked rubric for scoring details. Some older rubric action language discusses drafts or overrides; the current operating rule controls: no deep research for 1–2, and no outreach drafting before route approval unless Jeff explicitly requests draft-ready output. The dashboard does not calculate, round or automatically verify a score.</p>
+<h2>3. Company review: thirteen fields</h2>
+<h3>Recommended route</h3>
+<ul>
+<li><strong>Enter:</strong> the proposed approach and intended role: direct finance, owner/operator, an explicitly approved warm path, research more, or hold pending authority clarification.</li>
+<li><strong>Get it from:</strong> company structure, contact research, purchasing authority and Jeff&#39;s relationship guidance.</li>
+<li><strong>Required by dashboard:</strong> nonblank before QA Review, Ready for Approval and Approved; up to 4,000 characters.</li>
+<li><strong>Example:</strong> <code>Direct finance route; confirm who controls indirect supplier decisions before proposing a conversation.</code></li>
+<li>A route recommendation is not permission to contact anyone. Mention no mutual connection as approved unless Jeff explicitly authorized its use.</li>
+</ul>
+<h3>Contact / authority findings</h3>
+<ul>
+<li><strong>Enter:</strong> name, current role, company match, supporting source/date, confidence, and whether buying authority is verified or still unknown.</li>
+<li><strong>Get it from:</strong> official leadership pages or announcements; authorized ZoomInfo/LinkedIn checks; Jeff&#39;s confirmed internal knowledge.</li>
+<li><strong>Required by dashboard:</strong> nonblank before QA Review and later stages; up to 4,000 characters.</li>
+<li><strong>Template:</strong> <code>[Name] — [role]. Role source: [URL/date]. Identity confidence: [level]. Buying authority: [verified/indicator/unknown].</code></li>
+<li>A CFO title does not by itself prove authority over this purchase. The dashboard can accept text describing uncertainty, but QA should not pass a material identity/authority gap merely because the field is filled.</li>
+</ul>
+<h3>GitHub report URL</h3>
+<ul>
+<li><strong>Enter:</strong> the full link to the supporting report committed in the private <code>CoachAGP/jeff-outreach-engine</code> repository.</li>
+<li><strong>Get it from:</strong> the researcher or maintainer who saves the reviewed report in GitHub; use that file&#39;s actual browser URL.</li>
+<li><strong>Required by dashboard:</strong> before QA Review and later stages. It must start with <code>https://github.com/CoachAGP/jeff-outreach-engine/blob/</code> and include the branch and file path.</li>
+<li>The dashboard checks the link pattern. It does <strong>not</strong> upload the report, verify the file exists, or check its contents. Open the link and confirm it is the right company&#39;s current report. GitHub access may be required.</li>
+</ul>
+<h3>Research summary</h3>
+<ul>
+<li><strong>Enter:</strong> a compact account of company identity/footprint, fit, likely spend categories, current trigger, contact route and unresolved risks.</li>
+<li><strong>Get it from:</strong> the research report and its cited evidence; AI may help summarize, with human review.</li>
+<li><strong>Required by dashboard:</strong> before QA Review and later stages; up to 4,000 characters.</li>
+<li><strong>Structure:</strong> <code>Verified facts: … / Reasonable indicators: … / Hypotheses: … / Unresolved questions: …</code></li>
+<li>Keep it useful for a fast decision. Do not claim savings exist or that the company is overspending.</li>
+</ul>
+<h3>Sources and confidence</h3>
+<ul>
+<li><strong>Enter:</strong> each material claim, its URL or permitted internal reference, when it was checked, and its evidence label. Preserve original intake provenance.</li>
+<li><strong>Get it from:</strong> company pages/announcements, public filings where relevant, authorized enrichment records and Jeff&#39;s documented confirmations.</li>
+<li><strong>Required by dashboard:</strong> before QA Review and later stages; up to 4,000 characters. The software checks that text exists, not whether its sources support the claims.</li>
+<li><strong>Template:</strong> <code>Claim | Source/reference | Checked date | Verified fact / Reasonable indicator / Hypothesis | Limitation</code></li>
+<li><strong>Verified fact:</strong> supported by a cited source or known internal record. <strong>Reasonable indicator:</strong> evidence supports it but does not fully confirm it. <strong>Hypothesis:</strong> internal reasoning to investigate, not a fact for outreach.</li>
+<li>ZoomInfo revenue, headcount, intent and contact data remain source-provided indicators until independently validated or confirmed by Jeff.</li>
+</ul>
+<h3>Conflict checks</h3>
+<ul>
+<li><strong>Select:</strong> pending (the blank default), <strong>Cleared by Jeff</strong>, or <strong>Conflict found</strong>.</li>
+<li><strong>Get the answer from:</strong> Jeff&#39;s authorized HubSpot/Athena/internal checks for current client, active opportunity, duplicate/ownership conflict, opt-out and do-not-contact status as applicable.</li>
+<li><strong>Required by dashboard:</strong> <strong>Cleared by Jeff</strong> before Ready for Approval or Approved.</li>
+<li><strong>Record evidence:</strong> in Sources and confidence or Next action / open questions, note who checked, when, which permitted system/reference was used, and Jeff&#39;s conclusion.</li>
+<li>Public web searches and absence of a visible record do not clear a conflict. If access is missing, leave pending. If a conflict exists, put the company on Hold and state the issue.</li>
+</ul>
+<h3>Relationship permission</h3>
+<ul>
+<li><strong>Select:</strong> pending (the blank default), <strong>Approved by Jeff</strong>, or <strong>Not applicable</strong>.</li>
+<li><strong>Get the answer from:</strong> Jeff&#39;s explicit, company/contact-specific approval of a relationship path. A LinkedIn connection does not provide permission.</li>
+<li><strong>Required by dashboard:</strong> Approved by Jeff or Not applicable before Ready for Approval or Approved.</li>
+<li>Use Not applicable only when the proposed route does not depend on a relationship lead or mutual-contact mention. It is not a shortcut around missing approval.</li>
+<li>Record the scope/date of approval in the report or source notes. Route permission does not authorize an introduction request or sending a message.</li>
+</ul>
+<h3>QA result</h3>
+<ul>
+<li><strong>Select:</strong> <strong>Not reviewed</strong>, <strong>Pass</strong>, or <strong>Needs edits</strong>.</li>
+<li><strong>Get the answer from:</strong> review of the report, sources, company/contact identity, route, cautions and project compliance rules. Review any associated draft separately before use.</li>
+<li><strong>Required by dashboard:</strong> Pass before Ready for Approval or Approved.</li>
+<li><strong>Before Pass:</strong> check source support, evidence labels, material identity/authority gaps, conflict/relationship handling, unsupported claims and safe next steps. Record reviewer/date and issues resolved in the report or notes.</li>
+<li>The QA reference also uses PASS WITH EDITS, FAIL and ESCALATE. In this dashboard, unresolved edits/failures must not be mapped to Pass: use Needs edits and return to Researching; use Hold for a human-judgment blocker. Document the detailed QA outcome in the report.</li>
+<li>Selecting Pass records the result; it does not run a QA engine or approve communication.</li>
+</ul>
+<h3>Draft status</h3>
+<ul>
+<li><strong>Select:</strong> <strong>Not drafted</strong>, <strong>Draft requested by Jeff</strong>, or <strong>Draft awaiting separate approval</strong>.</li>
+<li><strong>Get the answer from:</strong> the actual drafting work and Jeff&#39;s request/route decision.</li>
+<li><strong>Gate behavior:</strong> no specific draft status is required to complete the research-route workflow. Research can be approved while no message exists.</li>
+<li>Choose Draft requested by Jeff only when Jeff actually requested it. Choose Draft awaiting separate approval only when a draft exists and is available for review. Link its location in the report/notes.</li>
+<li>This dropdown does not create a draft. Newly added companies have no built-in message editor or automatic draft card. Existing message drafts are historical, read-only examples that still need exact-copy/recipient approval before manual use.</li>
+</ul>
+<h3>Next action / open questions</h3>
+<ul>
+<li><strong>Enter:</strong> the next concrete task, its owner, what is missing, and the evidence needed to resolve it. Include a due date when agreed.</li>
+<li><strong>Get it from:</strong> the researcher&#39;s findings, QA feedback or Jeff&#39;s decision.</li>
+<li><strong>Required by process:</strong> keep it useful on every record, even though the software does not require it to be filled; up to 4,000 characters.</li>
+<li><strong>Example:</strong> <code>Jeff: confirm conflict status in authorized internal records. Researcher: recheck current finance contact. No drafting until route review.</code></li>
+<li>This is the current work instruction. It is different from the Decision or hold reason, which explains the action being saved into history.</li>
+</ul>
+<h3>Move to</h3>
+<ul>
+<li><strong>Select:</strong> the appropriate next workflow stage from the available choices.</li>
+<li><strong>Get the decision from:</strong> completed work and the transition checklist below, not a desire to move the company forward quickly.</li>
+<li><strong>Required:</strong> the main save uses this selection. Opening a Queued record preselects Researching. Opening alone does not activate it, but saving without changing that selection does.</li>
+<li>To save notes while remaining Queued, explicitly choose Queued. Stages cannot be skipped. Returning to Researching clears the recorded QA result and requires a fresh review.</li>
+</ul>
+<h3>Decision or hold reason</h3>
+<ul>
+<li><strong>Enter:</strong> why you are making this status decision, what was approved or blocked, and what happens next.</li>
+<li><strong>Get it from:</strong> Jeff&#39;s actual decision or the documented blocker/research finding.</li>
+<li><strong>Required by dashboard:</strong> when saving Approved, saving Hold (including edits while remaining on Hold), or releasing Hold to Queued; up to 4,000 characters. Helpful for all other transitions.</li>
+<li><strong>Examples:</strong> <code>Hold: buying authority may sit with the parent. Jeff to resolve before pursuit.</code> / <code>Jeff approved the direct-finance research route on [date]. No message or send approval granted.</code></li>
+<li>This note is written to Activity history and resets when the form is reopened. It is not a persistent unfinished-note field.</li>
+</ul>
+<h3>Human review confirmation checkbox</h3>
+<ul>
+<li><strong>Confirm only:</strong> Jeff has actually reviewed and approved this route decision or the release of this hold.</li>
+<li><strong>Evidence:</strong> a recorded instruction from Jeff covering the company, decision and scope. Note its date/reference in the decision reason or report.</li>
+<li><strong>Required by dashboard:</strong> Approved and Hold → Queued. It resets on reopening.</li>
+<li>The checkbox is an attestation, not an independent approval request or identity verification. An authorized reviewer must not check it on Jeff&#39;s behalf without his actual decision. Practice simulations must be visibly marked as simulations and never transferred into live approvals.</li>
+</ul>
+<h2>4. What is required at each stage?</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Software requirement</th>
+<th>Human work that makes it legitimate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Add unscored company</td>
+<td>Company name and source; unscored selected</td>
+<td>Enough identification to avoid a knowingly ambiguous/duplicate prospect; otherwise document the gap. Creates Hold.</td>
+</tr>
+<tr>
+<td>Add scored company</td>
+<td>Name, source, 1–5 score and reason</td>
+<td>Evidence supports the score. 1–2 creates Hold; 3–5 creates Queued.</td>
+</tr>
+<tr>
+<td>Activate research</td>
+<td>Queued, score 3–5, no higher-scored eligible company still Queued</td>
+<td>Work is assigned intentionally; sensitivities/known conflicts are not bypassed. Search filters do not change priority rules.</td>
+</tr>
+<tr>
+<td>Submit QA Review</td>
+<td>Researching; nonblank route, contact, summary, sources and valid-pattern report URL</td>
+<td>Research and report actually exist; links match the company; uncertainties are visible.</td>
+</tr>
+<tr>
+<td>Ready for Approval</td>
+<td>QA Review; same evidence fields plus QA Pass, Cleared by Jeff, relationship approved/not applicable</td>
+<td>QA was completed and permissions/clearance have evidence.</td>
+</tr>
+<tr>
+<td>Approved</td>
+<td>Ready for Approval; all preceding gates plus human checkbox and decision reason</td>
+<td>Jeff&#39;s actual research-route decision. Does not authorize a message.</td>
+</tr>
+<tr>
+<td>Hold</td>
+<td>Decision or hold reason</td>
+<td>Clear blocker and next owner/action. Available from any active stage.</td>
+</tr>
+<tr>
+<td>Release Hold to Queued</td>
+<td>Score 3–5, human checkbox and release reason</td>
+<td>Jeff resolved the reason for the hold. A high score alone is insufficient.</td>
+</tr>
+<tr>
+<td>Return to Researching</td>
+<td>Available from QA Review or Ready for Approval</td>
+<td>Correct/recheck evidence; prior QA is cleared. From Approved, first use Hold, then authorized release and reactivation.</td>
+</tr>
+</tbody></table>
+<p>Reviewed evidence cannot be edited while staying Ready for Approval or Approved, or during direct Ready → Approved. Return to Researching through an allowed path to change evidence and re-review it. The current dashboard has no separate final-score field; put post-research score conclusions in the report and summary rather than pretending the preliminary score is a verified final qualification.</p>
+<h2>5. Read-only fields and controls</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Where it comes from / how to use it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Awaiting approval</td>
+<td>Count of current queue records in Ready for Approval; it is not a count of approved messages.</td>
+</tr>
+<tr>
+<td>Active research</td>
+<td>Count of records in Researching or QA Review.</td>
+</tr>
+<tr>
+<td>Sent by AI</td>
+<td>Fixed at zero because this dashboard has no sending capability; not an external email delivery audit.</td>
+</tr>
+<tr>
+<td>Stage filters / Find company</td>
+<td>View controls only. They do not change records, priority rules or approval status.</td>
+</tr>
+<tr>
+<td>Company row score / status</td>
+<td>Saved queue data, or repository/practice data according to the mode banner.</td>
+</tr>
+<tr>
+<td>Activate / review / Open review</td>
+<td>Opens the company form. A successful save performs a change.</td>
+</tr>
+<tr>
+<td>Open research report</td>
+<td>Opens the stored GitHub link; check access, company identity and report date.</td>
+</tr>
+<tr>
+<td>Activity history</td>
+<td>Saved actions with timestamp, actor, from/to stage and decision note. Practice entries use Practice reviewer; shared actions use the authorized account identity. It is not proof that a source was verified.</td>
+</tr>
+<tr>
+<td>Existing message drafts</td>
+<td>Three prior beta drafts retained for reading. They are not automatically generated from new queue entries and are not current send approvals.</td>
+</tr>
+</tbody></table>
+<h2>6. Common problems</h2>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Add opportunity / review buttons disabled</td>
+<td>Check the connection banner. Use practice mode only for training; configure shared access for real work.</td>
+</tr>
+<tr>
+<td>Company already exists</td>
+<td>Find and use the existing record. Resolve an alias/parent mismatch before creating another.</td>
+</tr>
+<tr>
+<td>A score-4 record will not activate</td>
+<td>Another eligible score-5 company is still Queued. Clear the search/filter to inspect priority; do not hold higher scores just to bypass the rule.</td>
+</tr>
+<tr>
+<td>Scored company remains on Hold</td>
+<td>Rescoring does not release it. Record Jeff&#39;s actual release decision and move to Queued separately.</td>
+</tr>
+<tr>
+<td>Cannot reach QA Review</td>
+<td>Complete route, contact, summary, sources and the project report URL. Do not add filler just to satisfy validation.</td>
+</tr>
+<tr>
+<td>Cannot reach Ready for Approval</td>
+<td>QA, conflict clearance or relationship permission is incomplete. Resolve the actual issue, not only the dropdown.</td>
+</tr>
+<tr>
+<td>Save says record changed in another session</td>
+<td>Copy your unsaved notes, refresh, compare the latest record and reapply only appropriate changes.</td>
+</tr>
+<tr>
+<td>Save response is uncertain</td>
+<td>Do not assume success or repeatedly add the company. Refresh and inspect the record/history first.</td>
+</tr>
+<tr>
+<td>Notes vanished after Save preliminary score</td>
+<td>That button saves only scoring. Reopen and save research fields separately.</td>
+</tr>
+<tr>
+<td>Need to correct identity/site or preserve a long history</td>
+<td>Ask the maintainer for a supported correction/archive. Do not directly edit the shared row&#39;s technical storage or create a duplicate.</td>
+</tr>
+</tbody></table>
+<h2>7. Quick completion checklist</h2>
+<ul>
+<li>Intake provenance and company identity recorded.</li>
+<li>Preliminary score justified; score gate and priority honored.</li>
+<li>Research route and contact/authority findings supported.</li>
+<li>Current report link opens and sources distinguish facts, indicators and hypotheses.</li>
+<li>Draft status reflects what actually exists.</li>
+<li>QA issues resolved or explicitly held.</li>
+<li>Conflict and relationship decisions came from Jeff&#39;s actual review.</li>
+<li>Next action, owner and open questions are visible.</li>
+<li>Correct saving mode and success message checked; history reviewed.</li>
+<li>Any outreach remains separately approved and manually sent.</li>
+</ul>
+<h2>References and maintenance</h2>
+<ul>
+<li><a href="dashboard-training-module.md">Dashboard training module and pilot test</a></li>
+<li><a href="../../dashboard/README.md">Dashboard implementation and setup</a></li>
+<li><a href="../../AGENTS.md">Project operating rules</a></li>
+<li><a href="../discovery/agent-skill-prospect-fit-scoring.md">Prospect fit scoring rubric</a></li>
+<li><a href="../discovery/agent-skill-compliance-qa-check.md">Compliance / QA rules</a></li>
+<li><a href="../../data/beta_tracker.csv">Existing beta tracker</a></li>
+</ul>
+<p>Validation basis: actual intake/review labels, save handlers and workflow guards in the version 4 source. This guide distinguishes code-enforced completeness from human evidence checks. It does not claim that every browser interaction or live integration has been tested. Owner should review after each field, permission or workflow change.</p>
+<hr><h1>Jeff Outreach Engine — Training Module and Company Test</h1>
+<p><strong>Audience:</strong> Jeff and authorized research/review support
+<strong>Duration:</strong> 30 minutes, plus live-integration testing once access is configured
+<strong>Facilitator:</strong> Joe Bouffard or the designated trainer
+<strong>Updated:</strong> September 11, 2026
+<strong>Practice company selected by Joe:</strong> Azure Water Services</p>
+<h2>Learning outcomes</h2>
+<p>By the end, the learner can identify each field&#39;s source, separate evidence from assumptions, explain the preliminary score gate, save a review without accidentally activating research, and recognize where Jeff&#39;s decision is required. Completion means accurate records and correct blocking behavior, not forcing a company to Approved.</p>
+<p>Use the <a href="dashboard-field-guide.md">Field Guide</a> alongside the dashboard. All real-company examples remain pending wherever evidence or permission is missing.</p>
+<h2>Lesson 1 — Know where changes go (3 minutes)</h2>
+<p>Show the connection banner. Explain disconnected, shared and practice modes. Ask the learner to identify the current mode before clicking anything.</p>
+<p>For training, use <strong>Try local practice mode</strong>. It is a separate device-local queue. Do not interpret practice history as a shared record or real approval. No practice data automatically becomes live data.</p>
+<p>Trainer prompt: “If you save a practice change here, can Jeff see it on another computer?” Correct answer: No. Shared visibility requires the configured shared queue and access, followed by verification.</p>
+<h2>Lesson 2 — Start with identity and provenance (5 minutes)</h2>
+<p>Search <strong>Azure</strong> under Find company. An existing Azure Water Services intake record is already present, so use <strong>Activate / review</strong> rather than Add opportunity. Explain the five intake fields using the Field Guide: company name, optional website, source details, preliminary score and score reason.</p>
+<p>Open Add opportunity only to demonstrate an empty form, then close without creating a duplicate. Explain that unscored intake lands on Hold. Show that the ZoomInfo intent number from an input report must not be copied into the 1–5 fit score.</p>
+<p>Trainer prompt: “Does a company name alone trigger research?” Correct answer: No. It can create an unscored record for preliminary review; qualifying score and activation are separate.</p>
+<h2>Lesson 3 — Test the priority gate using Azure (5 minutes)</h2>
+<p>Azure&#39;s existing preliminary score is 3/5. Do not raise it to make the test easier. Opening a Queued record preselects Researching; the save is the action that attempts activation.</p>
+<ol>
+<li>Confirm practice mode and Azure&#39;s current Queued/3 state.</li>
+<li>Note any higher-scored companies still Queued.</li>
+<li>Attempt <strong>Move to: Researching → Save practice change</strong>.</li>
+<li>Expect an error while higher-score queued work exists. Confirm Azure remains Queued.</li>
+<li>Select <strong>Move to: Queued</strong> before saving preliminary notes.</li>
+</ol>
+<p>Actual September 11 observation: Azure&#39;s activation attempt was rejected with the score-priority message. This is a successful gate test, not a failed research task. The current error may name the first higher-score record in data order rather than the queue&#39;s maximum score. The rule remains 5, then 4, then 3.</p>
+<p>Do not hold unrelated records or inflate scores to make a test pass. If the business needs a deliberate one-company pilot exception, define and approve an explicit exception mechanism in a later product change. Version 4 has no such override.</p>
+<h2>Lesson 4 — Fill the research fields honestly (7 minutes)</h2>
+<p>Open the <a href="../discovery/opportunity-report-azure-water-services.md">Azure preliminary pilot notes</a>. Use it as a provenance and uncertainty example, not as completed deep research.</p>
+<p>Walk through the review fields in screen order:</p>
+<ol>
+<li><strong>Recommended route:</strong> what approach is proposed and what remains unvalidated.</li>
+<li><strong>Contact / authority findings:</strong> what is known about identity, role and purchasing authority; unknown is acceptable as a finding, but not a reason to pass substantive QA.</li>
+<li><strong>GitHub report URL:</strong> an actual project file that opens and matches this company.</li>
+<li><strong>Research summary:</strong> facts, indicators, hypotheses and gaps.</li>
+<li><strong>Sources and confidence:</strong> claim-by-claim sources/dates, preserving the original intake provenance.</li>
+<li><strong>Conflict checks:</strong> actual Jeff/internal clearance; leave pending without it.</li>
+<li><strong>Relationship permission:</strong> actual permission or a truly non-relationship route; never infer approval from a connection.</li>
+<li><strong>QA result:</strong> the result of a review, not a button that runs the review.</li>
+<li><strong>Draft status:</strong> what actually exists. Azure has no draft from this pilot.</li>
+<li><strong>Next action / open questions:</strong> what remains, who owns it and what resolves it.</li>
+<li><strong>Move to:</strong> choose Queued when only saving Azure&#39;s preliminary notes under the current priority blocker.</li>
+<li><strong>Decision or hold reason / human checkbox:</strong> the reason for the specific action and evidence of Jeff&#39;s decision when required. Do not check approval for Azure.</li>
+</ol>
+<p>Point out the separate scoring panel. <strong>Save preliminary score</strong> saves scoring only and closes the review; it does not save other pending research-form edits.</p>
+<h2>Lesson 5 — Know the approval boundary (5 minutes)</h2>
+<p>Ask the learner to explain the difference among QA Review, Ready for Approval and Approved.</p>
+<ul>
+<li>QA Review means research is presented for review; it does not mean it passed.</li>
+<li>Ready for Approval requires a completed QA pass, Jeff&#39;s conflict clearance and approved/not-applicable relationship permission.</li>
+<li>Approved means Jeff approved the research route. A particular message still requires his separate approval.</li>
+</ul>
+<p>For Azure, leave QA Not reviewed, conflict checks pending, relationship permission pending and draft status Not drafted. The real-company exercise should stop at the actual evidence/priority boundary. Do not enter fictional clearances into a real-company record, even to demonstrate the later screens.</p>
+<p>For a later isolated full-path software rehearsal, use a clearly fictional record in an isolated practice dataset. Use synthetic evidence labeled throughout and never transfer simulated approvals to the real queue. Such an isolated full-path exercise is not part of the Azure result below.</p>
+<h2>Lesson 6 — Verify the result (5 minutes)</h2>
+<p>After saving Azure&#39;s preliminary notes, reopen the same record and check the saved values, state, score and Activity history. Reload only after confirming all edits are saved. The page attempts shared mode again; re-enter Try local practice mode, search Azure, and confirm the record persists on this device. This tests practice persistence, not Google Sheets.</p>
+<p>Ask the learner to name the next actionable blocker. For this pilot: higher-score queue priority plus unverified scale/authority and pending Jeff-account checks. Correct behavior is to preserve those gaps.</p>
+<h2>Real-company live pilot: once connected</h2>
+<p>This is a planned test, not a completed one. Use Azure only when queue priority legitimately permits activation or an explicitly approved exception mechanism exists.</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Procedure</th>
+<th>Pass condition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shared identity</td>
+<td>Sign in as each authorized reviewer and read the same queue</td>
+<td>Both sessions see Azure&#39;s same current revision/state.</td>
+</tr>
+<tr>
+<td>Successful save</td>
+<td>Save a real, evidence-supported note from session A; refresh B</td>
+<td>B shows the same note and attributed activity event.</td>
+</tr>
+<tr>
+<td>Stale edit</td>
+<td>Open the same revision in A and B; save A, then attempt an outdated B change</td>
+<td>B is rejected; A&#39;s change remains intact. Copy unfinished notes before refreshing.</td>
+</tr>
+<tr>
+<td>Activation</td>
+<td>Activate Azure when score/priority permit</td>
+<td>Exactly one persisted transition to Researching.</td>
+</tr>
+<tr>
+<td>Evidence gate</td>
+<td>Attempt QA with one required evidence field omitted</td>
+<td>Rejected; no stage advance. Restore only real evidence.</td>
+</tr>
+<tr>
+<td>Permission gate</td>
+<td>Attempt Ready with conflict/relationship review pending</td>
+<td>Rejected; no false clearance.</td>
+</tr>
+<tr>
+<td>Human decision</td>
+<td>Jeff reviews the completed real report and states a route decision</td>
+<td>Record that decision only then, with its scope and reason.</td>
+</tr>
+<tr>
+<td>Outreach separation</td>
+<td>Inspect draft status and permissions after route approval</td>
+<td>No sending occurs; exact message approval remains separate.</td>
+</tr>
+</tbody></table>
+<p>Do not simulate network failures by interrupting real saves. If an actual response is uncertain, inspect the saved state/history before retrying.</p>
+<h2>Knowledge check and answer key</h2>
+<ol>
+<li>A company has intent score 64. What is its dashboard fit score? <strong>Not determined by 64; use the independent 1–5 fit assessment.</strong></li>
+<li>You changed an unscored Hold to 4/5. Is it automatically Queued? <strong>No. A separate human-reviewed hold release is required.</strong></li>
+<li>You found a current CFO on a company page. Are conflicts cleared? <strong>No. Role evidence and conflict checks are different fields/sources.</strong></li>
+<li>Does a LinkedIn connection permit a mutual-contact mention? <strong>No. Jeff&#39;s specific permission is required.</strong></li>
+<li>Does QA Pass mean the message may be sent? <strong>No. Every communication needs separate human approval.</strong></li>
+<li>What does successful practice persistence prove? <strong>That device-local saving worked, not shared Sheet integration or cross-account visibility.</strong></li>
+</ol>
+<p>Suggested training completion standard: all six answers correct, provenance and gaps recorded accurately, and no false advancement or approval. The facilitator records completion; the dashboard does not issue a training certificate.</p>
+<h2>Test log — September 11, 2026</h2>
+<ul>
+<li>Selected company: Azure Water Services, existing record, preliminary 3/5.</li>
+<li>Environment observed: published version 4 in Chrome, device-local practice mode.</li>
+<li>Existing work preserved: other practice records were not reset or changed.</li>
+<li>Activation gate: observed rejection while higher-score records remained Queued.</li>
+<li>Practice save/persistence: preliminary fields saved while remaining Queued; reloaded the page, re-entered practice mode and verified the fields and Queued → Queued audit event dated 2026-09-11T15:53:11.728Z.</li>
+<li>Research scope: official-site identity/triage only; no deep research triggered.</li>
+<li>QA / conflict / relationship / draft: pending or not reviewed; no approvals granted.</li>
+<li>Shared queue, cross-account persistence and automated ZoomInfo: not tested; connection remains pending.</li>
+<li>Detailed source notes: Azure preliminary pilot report.</li>
+</ul>
+<p>Keep this log factual. Do not mark the entire live workflow passed based on the priority rejection alone.</p>
+</main></body></html>

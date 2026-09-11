@@ -77,7 +77,7 @@ For a later isolated full-path software rehearsal, use a clearly fictional recor
 
 ## Lesson 6 — Verify the result (5 minutes)
 
-After saving Azure's preliminary notes, reopen the same record and check the saved values, state, score and Activity history. Reload only after confirming all edits are saved; confirm the record persists on this device. This tests practice persistence, not Google Sheets.
+After saving Azure's preliminary notes, reopen the same record and check the saved values, state, score and Activity history. Reload only after confirming all edits are saved. The page attempts shared mode again; re-enter Try local practice mode, search Azure, and confirm the record persists on this device. This tests practice persistence, not Google Sheets.
 
 Ask the learner to name the next actionable blocker. For this pilot: higher-score queue priority plus unverified scale/authority and pending Jeff-account checks. Correct behavior is to preserve those gaps.
 
@@ -115,6 +115,7 @@ Suggested training completion standard: all six answers correct, provenance and 
 - Environment observed: published version 4 in Chrome, device-local practice mode.
 - Existing work preserved: other practice records were not reset or changed.
 - Activation gate: observed rejection while higher-score records remained Queued.
+- Practice save/persistence: preliminary fields saved while remaining Queued; reloaded the page, re-entered practice mode and verified the fields and Queued → Queued audit event dated 2026-09-11T15:53:11.728Z.
 - Research scope: official-site identity/triage only; no deep research triggered.
 - QA / conflict / relationship / draft: pending or not reviewed; no approvals granted.
 - Shared queue, cross-account persistence and automated ZoomInfo: not tested; connection remains pending.

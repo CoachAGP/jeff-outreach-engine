@@ -32,6 +32,8 @@ Azure was already present at 3/5, Queued, in the user's device-local practice qu
 
 The message names the first higher-scored record in data order, not necessarily the highest score anywhere in the queue. Treat it as a higher-priority blocker and inspect the complete queue. Do not raise Azure's score or hold unrelated prospects to bypass the rule.
 
+Preliminary notes and the report link were saved in practice mode with a Queued → Queued history event. After a reload and re-entry into practice mode, the saved fields, 3/5 score and history event remained visible. QA remained Not reviewed, conflict/relationship checks remained pending and draft status remained Not drafted.
+
 Shared storage, cross-account persistence and live integration were not tested. No communication, introduction, CRM update or approval was performed.
 
 ## References

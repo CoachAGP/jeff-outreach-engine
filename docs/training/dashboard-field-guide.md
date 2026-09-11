@@ -21,6 +21,7 @@ The normal path is **Queued → Researching → QA Review → Ready for Approval
 | Try local practice mode | Enables a separate device-local exercise. Changes stay on this device and never sync into the shared Sheet. Never use practice mode as the live prospect tracker. |
 | Shared Google Sheet connected | The configured shared queue was read successfully. Confirm the save message after each change. Live cross-account persistence still needs a pilot test after setup. |
 | Refresh shared queue | Retrieves the shared state. Save or copy unfinished notes before refreshing. A successful connection exits practice mode. |
+| After reloading the page | The dashboard attempts shared mode again. Choose Try local practice mode to reopen previously saved practice work; a reset mode banner does not mean your practice data was lost. |
 | Exit practice mode | Attempts to reconnect to the shared queue. It does not upload practice records. |
 
 At the version 4 handoff, shared Sheet setup, Jeff's dashboard access and live ZoomInfo research execution were pending. Follow the current connection banner; do not infer a connection from the fact that the website opens.
