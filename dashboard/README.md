@@ -64,3 +64,9 @@ node scripts/preview.mjs
 Tests cover progression, scores, ranking, holds, QA, human confirmation, evidence protection, stale writes, duplicate requests, Sheet adapter state/audit persistence, identity checks, missing credentials, cross-origin rejection, and asset routes. Sheet tests use mocks; they are not live Google integration validation. 19 automated checks currently pass, including intake, duplicate prevention and rescoring. No browser interaction testing or live Sheet writes have been performed in this build.
 
 Official reference: [Google Apps Script locking](https://developers.google.com/apps-script/reference/lock/lock-service).
+
+## Training
+
+- [Field-by-field training guide](../docs/training/dashboard-field-guide.md): what to enter, where it comes from, evidence requirements and exact save behavior.
+- [Training module and Azure pilot](../docs/training/dashboard-training-module.md): 30-minute walkthrough, observed practice test and planned live acceptance checks.
+- [Azure preliminary notes](../docs/discovery/opportunity-report-azure-water-services.md): source-grounded triage, not completed deep research or approval.
