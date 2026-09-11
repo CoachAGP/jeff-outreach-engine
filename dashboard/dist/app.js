@@ -4,6 +4,7 @@ const PRACTICE_KEY='jeff-engine-practice-v2';
 const text=(tag,value,className)=>{const e=document.createElement(tag);e.textContent=value;if(className)e.className=className;return e;};
 function message(value){$('#notice').textContent=value;}
 function render(){
+ $('#addOpportunity').disabled=mode==='disconnected';
  $('#readyCount').textContent=rows.filter(r=>r.status==='Ready for Approval').length;
  $('#researchCount').textContent=rows.filter(r=>['Researching','QA Review'].includes(r.status)).length;
  $('#filters').replaceChildren();
@@ -11,13 +12,13 @@ function render(){
  const visible=Workflow.ranked(rows).filter(r=>(filter==='All'||r.status===filter)&&r.company.toLowerCase().includes($('#search').value.toLowerCase()));
  $('#resultCount').textContent=`${visible.length} of ${rows.length} companies · ${mode==='shared'?'Shared queue':mode==='practice'?'Practice data only':'Repository snapshot — connection required'}`;
  $('#researchQueue').replaceChildren();
- for(const r of visible){const card=text('article','','research-row');card.dataset.status=r.status;const name=text('div','');name.append(text('p',r.status,'status'),text('h3',r.company));const details=text('div','');details.append(text('p',r.route||r.reason),text('p',r.note||'Record the next action.'));const action=text('button',r.status==='Queued'?'Activate / review':'Open review');action.disabled=mode==='disconnected';action.onclick=()=>openEditor(r.id);if(r.report && /^https:\/\/github\.com\/CoachAGP\/jeff-outreach-engine\/blob\//.test(r.report)){const reportLink=text('a','Open research report','report-link');reportLink.href=r.report;reportLink.target='_blank';reportLink.rel='noreferrer';details.append(reportLink);}card.append(name,details,text('span',`${r.score}/5`,'score'),action);$('#researchQueue').append(card);}
+ for(const r of visible){const card=text('article','','research-row');card.dataset.status=r.status;const name=text('div','');name.append(text('p',r.status,'status'),text('h3',r.company));const details=text('div','');details.append(text('p',r.route||r.reason),text('p',r.note||'Record the next action.'));const action=text('button',r.status==='Queued'?'Activate / review':'Open review');action.disabled=mode==='disconnected';action.onclick=()=>openEditor(r.id);if(r.report && /^https:\/\/github\.com\/CoachAGP\/jeff-outreach-engine\/blob\//.test(r.report)){const reportLink=text('a','Open research report','report-link');reportLink.href=r.report;reportLink.target='_blank';reportLink.rel='noreferrer';details.append(reportLink);}card.append(name,details,text('span',r.score ? `${r.score}/5` : 'Unscored','score'),action);$('#researchQueue').append(card);}
  $('#researchEmpty').hidden=visible.length>0;
 }
 function openEditor(id){selected=rows.find(r=>r.id===id);$('#editTitle').textContent=selected.company;$('#editStatus').textContent=`${selected.status} · Preliminary score ${selected.score}/5`;$('#editReason').textContent=selected.reason;
  for(const field of $('#editForm').querySelectorAll('[name]'))field.value=selected[field.name]||'';
  $('#target').replaceChildren();for(const state of [selected.status,...Workflow.edges[selected.status]])$('#target').append(new Option(state,state));if(selected.status==='Queued')$('#target').value='Researching';
- $('#decisionNote').value='';$('#humanConfirmed').checked=false;$('#formError').textContent='';$('#save').textContent=mode==='practice'?'Save practice change':'Save to shared queue';$('#history').replaceChildren();for(const h of selected.history)$('#history').append(text('li',`${h.at} · ${h.actor} · ${h.from} → ${h.to}: ${h.note}`));if(!selected.history.length)$('#history').append(text('li','No dashboard activity recorded.'));$('#editor').showModal();}
+ $('#decisionNote').value='';$('#humanConfirmed').checked=false;$('#formError').textContent='';$('#save').textContent=mode==='practice'?'Save practice change':'Save to shared queue';$('#history').replaceChildren();for(const h of selected.history)$('#history').append(text('li',`${h.at} · ${h.actor} · ${h.from} → ${h.to}: ${h.note}`));if(!selected.history.length)$('#history').append(text('li','No dashboard activity recorded.'));$('#triagePanel').hidden=!['Hold','Queued'].includes(selected.status);$('#triageScore').value=selected.score||'';$('#triageReason').value=selected.reason;$('#editor').showModal();}
 async function refresh(){if(busy)return;busy=true;$('#refresh').disabled=true;
  try{const response=await fetch('/api/queue',{cache:'no-store'});const result=await response.json();if(!response.ok||result.error)throw Error(result.error||'Shared queue unavailable.');if(!Array.isArray(result.rows))throw Error('Invalid queue response.');rows=result.rows;mode='shared';$('#connection').textContent=`Shared Google Sheet connected · refreshed ${new Date().toLocaleTimeString()}`;$('#exitDemo').hidden=true;message('');}
  catch(e){if(mode!=='practice'){rows=seed;mode='disconnected';}$('#connection').textContent=`Shared queue not connected. ${e.message.includes('JSON')?'Connection setup is required.':e.message}`;}
@@ -30,3 +31,21 @@ $('#demo').onclick=()=>{if(busy)return;try{rows=JSON.parse(localStorage.getItem(
 $('#exitDemo').onclick=()=>{mode='disconnected';refresh();};
 for(const item of legacyDrafts){const card=text('article','','opportunity-card');card.append(text('h3',item.company),text('p',item.contact),text('p','Historical beta draft — human send approval still required.'));const details=text('details','');details.append(text('summary','Review draft'),text('p',item.subject),text('pre',item.draft));const link=text('a','Open supporting report','report-link');link.href='https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/'+item.report;link.target='_blank';link.rel='noreferrer';card.append(details,link);$('#legacy').append(card);}
 (async()=>{try{const r=await fetch('./seed.json');if(!r.ok)throw Error();seed=await r.json();await refresh();}catch{message('Could not load the repository snapshot. Reload the dashboard.');}})();
+
+async function saveOperation(action,command,next){
+ if(mode==='practice'){localStorage.setItem(PRACTICE_KEY,JSON.stringify(next));rows=next;}
+ else if(mode==='shared'){const response=await fetch('/api/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});const result=await response.json();if(!response.ok||result.error)throw Error(result.error||'Save not confirmed. Refresh before retrying.');rows=result.rows;}
+ else throw Error('Connect the shared queue or enter practice mode first.');
+}
+$('#addOpportunity').onclick=()=>{if(busy)return;$('#intakeForm').reset();$('#intakeSource').value='Manual entry';$('#intakeError').textContent='';$('#submitIntake').textContent=mode==='practice'?'Add practice opportunity':'Add to shared queue';$('#intakeDialog').showModal();};
+$('#closeIntake').onclick=()=>{if(!busy)$('#intakeDialog').close();};$('#intakeDialog').addEventListener('cancel',e=>{if(busy)e.preventDefault();});
+$('#intakeForm').onsubmit=async e=>{e.preventDefault();if(busy)return;busy=true;$('#submitIntake').disabled=true;
+ const command={company:$('#companyName').value,website:$('#companyWebsite').value,source:$('#intakeSource').value,score:Number($('#intakeScore').value),reason:$('#intakeReason').value,requestId:crypto.randomUUID()};
+ try{const next=Workflow.intake(rows,command,mode==='practice'?'Practice reviewer':'Human reviewer');await saveOperation('intake',command,next);$('#intakeDialog').close();filter='All';$('#search').value=command.company.trim();render();message(mode==='practice'?'Practice opportunity added on this device only.':'Opportunity saved to the shared queue.');}
+ catch(error){$('#intakeError').textContent=error.message;}finally{busy=false;$('#submitIntake').disabled=false;}
+};
+$('#saveTriage').onclick=async()=>{if(busy)return;busy=true;$('#saveTriage').disabled=true;
+ const command={id:selected.id,revision:selected.revision,score:Number($('#triageScore').value),reason:$('#triageReason').value,requestId:crypto.randomUUID()};
+ try{const next=Workflow.triage(rows,command,mode==='practice'?'Practice reviewer':'Human reviewer');await saveOperation('triage',command,next);$('#editor').close();render();message('Preliminary score saved. An existing hold still needs a separate human release.');}
+ catch(error){$('#formError').textContent=error.message;}finally{busy=false;$('#saveTriage').disabled=false;}
+};

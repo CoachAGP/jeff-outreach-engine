@@ -15,3 +15,7 @@ Implemented the preliminary-score research activation workflow and shared-Sheet 
 See `dashboard/README.md` for exact setup and credential ownership. Successful local automated tests do not establish live Sheet delivery or Jeff access. Activation tracks research work; it does not invoke paid agents.
 
 Validation: 15 automated checks passed, plus asset routing, successful local HTTP response and clean whitespace checks. Browser interaction QA and live Google integration remain unperformed.
+
+## Company intake follow-up
+
+Added the Start an opportunity form with name, optional website, source notes, preliminary score and reason. Added authoritative Sheet intake and triage operations, duplicate prevention, retry handling and safe spreadsheet text values. Unscored companies remain held until scored and explicitly released. Activation remains a tracked research task, not an automated provider call. 19 automated checks pass. ZoomInfo access, logo files, live Sheet connection and private publication remain pending.

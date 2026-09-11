@@ -2,6 +2,16 @@
 
 GitHub is the source of truth for code, scoring rules, report links, documentation and release history. Google Sheets is the temporary shared workflow queue, until Jeff authorizes HubSpot access and mapping.
 
+## What starts the workflow
+
+The **Start an opportunity → Add opportunity** form accepts a company name, optional website, source notes (including pasted ZoomInfo details), and an optional preliminary score with a reason. Company-name-only intake creates an unscored Hold; it does not consume research credits. Preliminary scoring can be recorded inside the company review. Scores 1–2 remain held. Scores 3–5 can enter the queue, prioritized 5 then 4 then 3. Rescoring never silently releases an existing hold; human release is a separate action.
+
+**Activate / review → Researching → Save** is the current activation trigger. This records the task in the queue; it does not invoke ZoomInfo or an autonomous research agent. Research findings and QA decisions can be recorded in the same dashboard. Human route approval is the final research decision, and communications require separate explicit approval and manual sending.
+
+**ZoomInfo status:** no callable ZoomInfo connector is available in this Codex session. Pasted source details work now. A live feed, CSV batch import, scheduled intake and automatic research execution are not implemented. Jeff must supply authorized integration/API access and confirm the permitted workflow before live enrichment can be enabled. Source-provided indicators must remain labeled until validated. A connector available inside Codex does not automatically grant the hosted dashboard runtime access.
+
+**Branding status:** no logo assets were found in the project. Approved logo files or exact source locations are required before adding branding; no substitute logos were invented.
+
 ## What works
 
 - The full repository intake is shown, ranked by preliminary fit: 5, 4, 3, then held lower scores.
@@ -51,6 +61,6 @@ node scripts/preview.mjs
 
 `dist/index.html`, `dist/app.js`, `dist/styles.css`, `dist/workflow.js`, `dist/legacy.js`, and `dist/seed.json` are authored static sources retained from v1. `src/worker.js` is the private API gateway. Build regenerates the standalone Worker, hosting manifest copy, and Apps Script copies. GitHub remains canonical; Sites receives only this dashboard, never the parent repository's confidential source documents.
 
-Tests cover progression, scores, ranking, holds, QA, human confirmation, evidence protection, stale writes, duplicate requests, Sheet adapter state/audit persistence, identity checks, missing credentials, cross-origin rejection, and asset routes. Sheet tests use mocks; they are not live Google integration validation. No browser interaction testing or live Sheet writes have been performed in this build.
+Tests cover progression, scores, ranking, holds, QA, human confirmation, evidence protection, stale writes, duplicate requests, Sheet adapter state/audit persistence, identity checks, missing credentials, cross-origin rejection, and asset routes. Sheet tests use mocks; they are not live Google integration validation. 19 automated checks currently pass, including intake, duplicate prevention and rescoring. No browser interaction testing or live Sheet writes have been performed in this build.
 
 Official reference: [Google Apps Script locking](https://developers.google.com/apps-script/reference/lock/lock-service).

@@ -5,6 +5,36 @@ const Workflow = (() => {
   const fields = ['route','contact','report','summary','sources','conflicts','relationship','qa','note','draftStatus'];
   const eligible = r => Number.isInteger(r.score) && r.score >= 3 && r.score <= 5;
   const ranked = rows => [...rows].sort((a,b) => b.score-a.score || a.company.localeCompare(b.company));
+  const normalizeName = value => value.trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  function intake(rows, cmd, actor, now = new Date().toISOString()) {
+    if (!actor || typeof cmd.requestId !== 'string' || !/^[\w-]{1,100}$/.test(cmd.requestId)) throw Error('Reviewer and valid request ID required.');
+    if (rows.some(r => r.history.some(h => h.requestId === cmd.requestId))) return rows;
+    const company = typeof cmd.company === 'string' ? cmd.company.trim() : '';
+    if (!company || company.length > 200 || !normalizeName(company)) throw Error('Enter a company name of at most 200 characters.');
+    if (rows.some(r => normalizeName(r.company) === normalizeName(company))) throw Error('This company is already in the queue. Search and open its existing record.');
+    const website = typeof cmd.website === 'string' ? cmd.website.trim() : '';
+    if (website && !/^https:\/\/[a-z0-9.-]+(?::\d+)?(?:[/?#][^\s]*)?$/i.test(website)) throw Error('Use a complete HTTPS company website URL.');
+    for (const field of ['source','reason']) if (typeof cmd[field] !== 'string' || cmd[field].length > 4000) throw Error('Source and score reason must be text of at most 4,000 characters.');
+    if (!cmd.source.trim()) throw Error('Record where this opportunity came from.');
+    const score = cmd.score;
+    if (!Number.isInteger(score) || score < 0 || score > 5) throw Error('Choose a preliminary score from 1 to 5, or leave unscored.');
+    if (score && !cmd.reason.trim()) throw Error('Explain the preliminary score using available evidence.');
+    const status = score >= 3 ? 'Queued' : 'Hold';
+    const record = {id:'intake-'+cmd.requestId, company, website, score, status, reason:cmd.reason.trim() || 'Not scored. Preliminary review required.', route:'', contact:'', report:'', summary:'', sources:cmd.source.trim(), conflicts:'', relationship:'', qa:'', note:score>=3?'Ready for research activation in score order.':score?'Score 1–2: no deep research.':'Assign a preliminary score before research.', revision:0, draftStatus:'Not drafted', history:[{requestId:cmd.requestId, at:now, actor, from:'Intake', to:status, note:'Company added; source data is unverified until checked.'}]};
+    return [...rows,record];
+  }
+  function triage(rows, cmd, actor, now = new Date().toISOString()) {
+    const old = rows.find(r => r.id === cmd.id);
+    if (!old || !actor || typeof cmd.requestId !== 'string') throw Error('Company, reviewer and request ID required.');
+    if (old.history.some(h=>h.requestId===cmd.requestId)) return rows;
+    if (old.revision !== cmd.revision) throw Error('This company changed in another session. Refresh before saving.');
+    if (!['Hold','Queued'].includes(old.status)) throw Error('Preliminary scoring is available only before active research or while on hold.');
+    if (!Number.isInteger(cmd.score) || cmd.score<1 || cmd.score>5 || typeof cmd.reason!=='string' || !cmd.reason.trim() || cmd.reason.length>4000) throw Error('Provide a score from 1 to 5 and an evidence-based reason.');
+    // A revised score does not release an existing hold; human review remains separate.
+    const status=old.status==='Hold'||cmd.score<3?'Hold':'Queued';
+    const next={...old,score:cmd.score,reason:cmd.reason.trim(),status,revision:old.revision+1,history:[...old.history,{requestId:cmd.requestId,at:now,actor,from:old.status,to:status,note:'Preliminary score '+old.score+' → '+cmd.score+': '+cmd.reason.trim()}]};
+    return rows.map(r=>r.id===next.id?next:r);
+  }
   function apply(rows, cmd, actor, now = new Date().toISOString()) {
     const index = rows.findIndex(r => r.id === cmd.id);
     if (index < 0) throw Error('Company not found. Refresh the queue.');
@@ -43,5 +73,5 @@ const Workflow = (() => {
     next.history = [...old.history, {requestId:cmd.requestId, at:now, actor, from:old.status, to:next.status, note:cmd.note || 'Research fields updated', changes:Object.fromEntries(fields.filter(k=>old[k]!==next[k]).map(k=>[k,{from:old[k],to:next[k]}]))}];
     return rows.map((r,i) => i===index ? next : r);
   }
-  return {states, edges, eligible, ranked, apply};
+  return {states, edges, eligible, ranked, intake, triage, apply};
 })();

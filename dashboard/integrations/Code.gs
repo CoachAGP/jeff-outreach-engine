@@ -17,15 +17,16 @@ function doPost(e) {
     const data = sheet.getDataRange().getValues();
     if (JSON.stringify(data[0]) !== JSON.stringify(['Company ID','Company','Score','Status','Record JSON'])) throw Error('Queue columns changed. Restore the documented schema.');
     let rows = data.slice(1).map(r=>JSON.parse(r[4]));
-    if (input.action === 'transition') {
-      const updated = Workflow.apply(rows,input.command,input.actor);
-      const index = rows.findIndex(r=>r.id===input.command.id);
+    if (['transition','intake','triage'].includes(input.action)) {
+      const operation = input.action === 'transition' ? Workflow.apply : Workflow[input.action];
+      const updated = operation(rows,input.command,input.actor);
+      const index = input.action === 'intake' ? updated.length-1 : rows.findIndex(r=>r.id===input.command.id);
       if (updated !== rows) {
         const r=updated[index];
         const encoded=JSON.stringify(r);
         if(encoded.length>45000) throw Error('Audit record is full. Archive this company history before continuing.');
         // One row write includes the state and audit event, avoiding split-write history loss.
-        sheet.getRange(index+2,1,1,5).setValues([[r.id,r.company,r.score,r.status,encoded]]);
+        sheet.getRange(index+2,1,1,5).setValues([[safeCell_(r.id),safeCell_(r.company),r.score,r.status,encoded]]);
         SpreadsheetApp.flush();
       }
       rows=updated;
@@ -47,3 +48,5 @@ function setupQueue() {
     sheet.setFrozenRows(1);
   } finally {lock.releaseLock();}
 }
+
+function safeCell_(value) { return /^[=+@-]/.test(value) ? "'"+value : value; }
