@@ -21,3 +21,11 @@ work/transcribe_audio
 # Temporary Office files
 ~$*.docx
 ~$*.xlsx
+
+# Dashboard local secrets and generated staging
+.env
+.env.*
+!.env.example
+.clasprc.json
+dashboard/dist/server/
+dashboard/dist/.openai/
