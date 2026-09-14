@@ -1,215 +1,228 @@
 # Jeff Outreach Engine Call Follow-Up — September 14, 2026
 
-Status: product decisions and implementation backlog for the next dashboard version.
+Status: transcript-validated product decisions, action register, and next-version backlog.
 
-No outreach was sent or approved by this review. Approval of a company route remains separate from approval of a specific communication.
+No outreach was sent or approved by this review. Research-route approval and approval of an exact communication remain separate decisions. The current project instruction is to prepare communications for human review and not send outreach.
 
-## Evidence reviewed
+## Evidence and authority
 
-- [Gemini meeting notes](https://docs.google.com/document/d/1_vDrSmYL6d71EIF_TipbOsDgfCxco-5NtiOD9hClB58/edit), including the Quick notes and Full notes tabs.
-- The three screenshots embedded in the Full notes tab: the live research queue, the training guide, and the current company review form.
-- The linked 39-minute Google Meet recording. The recording is accessible in Joe's Google account, but Google Drive had not finished creating a transcript during this review. Timestamp-level conclusions remain pending until that transcript is available.
-- The current dashboard, training guide, workflow rules, tests, Google Sheet adapter, and HubSpot/Athena handoff documentation in this repository.
+- The full 39-minute recording supplied by Joe was reviewed.
+- The complete machine transcript is stored at [`../../transcripts/jeff-dashboard-review-2026-09-14.srt`](../../transcripts/jeff-dashboard-review-2026-09-14.srt). It has timestamps but no reliable speaker names.
+- Video frames were checked at the dashboard queue, company review form, HubSpot contact history, and HubSpot Breeze demonstration.
+- Gemini Quick notes and Full notes were used only as a secondary comparison.
+- The recording contains feedback, questions, examples, and future-state ideas. It does not override `AGENTS.md`, the no-send instruction, or the required approval gates.
 
-## Decisions from the call
+## Executive readout
 
-1. Keep the dashboard's compartmentalized queue. Jeff prefers this structure over the earlier chat-only presentation.
-2. Make the normal experience conversational. Jeff should tell the assistant what company to add or what decision he wants to make, then review compact decision cards.
-3. Grade companies before deep research. Scores 1–2 stop; scores 3–5 qualify and remain prioritized 5, then 4, then 3.
-4. Add an Athena check near the beginning of the workflow so known, claimed, excluded, or conflicting accounts do not consume deep-research effort.
-5. Reduce manual data entry. Jeff should make decisions; the system should populate research, evidence, status, and audit fields.
-6. Replace generic dropdown-driven phase movement with a clear next action for the current stage.
-7. Use HubSpot for the eventual company/contact record, activity timeline, follow-up task, and engagement tracking. GitHub remains canonical for code, rules, reports, and release history. Google Sheets remains the shared beta queue until the HubSpot mapping is approved and tested.
-8. Use a dummy HubSpot company named **Coach Proof Enterprises** for integration testing.
-9. Keep every outgoing communication behind a separate human approval. The dashboard must not treat research approval as permission to send.
+Jeff likes the dashboard direction, especially the compartmentalized queues and direct research-report links. The main problem is that the current company review form makes him interpret internal workflow states and enter information the system should create. His desired experience is closer to an assistant: show the company, explain the one decision needed, accept a spoken or clicked decision, complete the authorized background work, and return only when another human decision is required.
 
-## Product diagnosis
+The next version should keep the complete workflow in the audit trail while simplifying Jeff's surface to three actions:
 
-The beta proves the workflow rules, but it currently asks Jeff to act like the database operator. The screenshot of the review form shows twelve research and workflow controls at once, including a report URL, research narrative, sources, conflict status, relationship permission, QA result, draft status, next action, destination status, a decision reason, and a confirmation checkbox. That is the main source of friction.
+1. Add or receive a company.
+2. Resolve an Athena conflict when one exists, then start eligible research.
+3. Review the compact report and approve the route, return it for changes, or hold it.
 
-The disconnected/shared/practice-mode choice also appears before Jeff can do useful work. In the meeting screenshot, the dashboard says the shared queue is not connected, requires local practice mode, and still disables **Activate / review** for the selected test company because higher-scored records exist. The system is enforcing a technical state and a global priority rule without giving Jeff one obvious next step.
+Message preparation appears only after route approval. An exact message and recipient require a separate approval, and Jeff sends it manually under the current operating rules.
 
-The next version should behave as a guided operating queue: the system gathers and stores evidence, explains the next decision, and Jeff chooses one of a few plain-language actions.
+## What the recording confirms
 
-## Remove or move out of Jeff's main workflow
-
-| Current feature | Change | Replacement |
+| Time | Evidence | Product implication |
 | --- | --- | --- |
-| **Try local practice mode** as a primary production action | Remove it from the normal Jeff-facing header. Keep an admin-only sandbox for training and regression tests. | The dashboard connects to the shared queue automatically or shows one precise connection blocker with an owner and remedy. |
-| **Activate / review** label | Remove the ambiguous label. | Use the stage-specific action **Start research** when the company is eligible. If it is blocked, show the exact reason on the button/card. |
-| **Move to** dropdown | Remove it from Jeff's approval view. | Show one primary next-phase button and one secondary exception action: **Start research**, **Send to QA**, **Ready for my approval**, **Approve route**, **Return for edits**, or **Place on hold**. |
-| Manual **GitHub report URL** field | Remove it from Jeff's form. | Generate the report in GitHub and attach the link automatically. |
-| Manual **Research summary**, **Sources and confidence**, **Contact / authority findings**, and **Recommended route** fields | Remove them from Jeff's default edit surface. | Agents/researchers populate structured evidence. Jeff sees a compact read-only summary with an expandable evidence drawer and can request a correction conversationally. |
-| Manual **Conflict checks** dropdown | Remove routine manual interpretation. | Run the authorized Athena and HubSpot checks automatically. Show **Clear**, **Possible conflict — Jeff decision needed**, or **Unavailable — access required**, with evidence and timestamp. |
-| Manual **QA result** and **Draft status** dropdowns | Remove them from Jeff's decision form. | Derive these states from completed QA and draft artifacts. A reviewer can return an item with a short reason. |
-| Separate **Save preliminary score** and **Save to shared queue** actions | Remove the two-save pattern. | Save system-generated work automatically; a stage decision saves and advances in one action. |
-| Repeated human-confirmation checkbox | Remove routine checkbox friction. | Require a clear confirmation only on consequential decisions. Display the exact effect before **Approve route**, **Release hold**, or approving a communication. |
-| **Sent by AI** counter fixed at zero | Remove it from the operational summary. | Show useful work counts: **Needs my decision**, **Research in progress**, **Blocked**, and **Follow-up due**. |
-| Standalone **Existing message drafts** section | Remove it from the bottom of the research queue. | Put a draft inside the company card only after the route is approved. Keep message approval separate and prominent. |
-| Long training guide as the way to understand normal operation | Move it to Help/training. | The current card tells Jeff what the field means, where the data came from, and what decision is needed. |
+| 02:47–05:13 | Joe and Jeff review manual one-company intake alongside ZoomInfo bulk intake. | Keep both manual intake and batch/connected intake. A manual opportunity must not depend on ZoomInfo. |
+| 05:33–07:48 | They agree to grade companies before expensive research and deep-research only scores 3–5. | Enforce the preliminary scoring gate: 1–2 stop; 3–5 qualify; priority 5, then 4, then 3. |
+| 06:44–06:59 | Jeff proposes checking Athena before research because a claimed account should not consume research effort. | Athena is an early eligibility gate. |
+| 07:52–08:34 | Jeff reports that prior ChatGPT work stalled and required repeated prompts. | Every research run needs durable progress, blockers, resume, and completion states. |
+| 08:34–14:26 | Jeff needs the stages and fields explained and asks Joe to develop the training offline. | Keep training, but design the interface so training is supporting material rather than a prerequisite for each decision. |
+| 14:36–15:26 | Jeff says the queues help him compartmentalize and the report link prevents scrolling through chat. | Keep the queues and report access. Highlight the queues that require human action. |
+| 15:35–18:07 | Jeff asks for conversational/voice operation with as little typing as possible. | Add an assistant control that proposes a specific dashboard action and applies it only within the relevant approval boundary. |
+| 18:25–21:30 | They discuss eliminating fields and replacing the destination dropdown with a clear next-phase action. | Hide internal state controls from Jeff's normal view. Use a single stage-aware primary action and explicit exception actions. |
+| 21:36–24:02 | Jeff says the current conflict language is unclear and wants the system to tell him what the conflict is and what decision is required. | Replace generic conflict dropdowns with an evidence-backed Athena alert and resolution action. |
+| 24:10–25:43 | Jeff explains HubSpot is not the account-conflict authority because he is its only operator. | Remove HubSpot and a generic “Jeff check” from the conflict label. HubSpot duplicate detection remains data hygiene, not conflict clearance. |
+| 25:43–31:52 | Jeff demonstrates HubSpot/Breeze using prior activity to draft a follow-up, then logging email/call activity and creating a task. | Use HubSpot for history, draft context, activity timeline, and follow-up tasks. New prospects may have no prior history. |
+| 31:52–33:40 | They propose a dummy-company integration test and confirm HubSpot should be the eventual sending surface for engagement tracking. | Test only with a clearly labeled internal/synthetic record. Do not treat the conversation as approval to send. |
+| 33:42–34:45 | Jeff says he is pleased with the dashboard, wants less information, logos, and access from phone and laptop. | Simplify first; add supplied branding later; preserve responsive behavior. |
+| 35:20–36:17 | Joe identifies the missing trigger: scheduled ZoomInfo intake versus manual upload. | Make intake source and trigger status visible. Implement a fallback ladder rather than claiming a live ZoomInfo connection. |
+| 36:26–37:11 | They prioritize a HubSpot test before the next ZoomInfo batch and discuss an internal test recipient and extra user seat. | HubSpot access, test-record details, and the extra seat are Jeff-supplied dependencies. |
 
-## Enhance in the next version
+## Decisions versus open proposals
 
-### 1. Conversational intake and commands
+### Confirmed direction
 
-Add an assistant panel where Jeff can use plain requests such as:
+- Keep the queue concept and direct report access.
+- Keep one-off company intake in addition to ZoomInfo batch intake.
+- Score before deep research; stop scores 1–2 and prioritize 5, 4, then 3.
+- Check Athena before deep research.
+- Remove routine manual data entry from Jeff's main decision surface.
+- Show the current decision and next step in plain language.
+- Use HubSpot for history, recordkeeping, activity, and follow-up tasks after access and mapping are tested.
+- Preserve human review for every communication.
+- Produce a practical training guide.
 
-- `Add Azure Water Services from this ZoomInfo report.`
-- `Show me the companies waiting on my decision.`
-- `Why is this company on hold?`
-- `Approve the research route and prepare a draft for my review.`
+### Proposed and still requiring validation
 
-The assistant should convert the request into a proposed action, show the affected company and result, and require Jeff's confirmation when the action clears a conflict, releases a hold, approves a route, changes a meaningful HubSpot field, or approves a communication.
+- Voice control inside or beside the dashboard.
+- Direct scheduled pull from ZoomInfo through a connector or plugin.
+- Direct HubSpot write access from the hosted dashboard or Codex.
+- Email engagement readback into the dashboard.
+- Final product name and logo treatment.
 
-### 2. One-field opportunity start
+## Remove or move out of Jeff's normal workflow
 
-Keep a visible **Add company** option for Jeff, but require only the company name. Website, ZoomInfo link/report, referral context, and notes are optional source inputs. The system should:
+| Current element | Change | Replacement |
+| --- | --- | --- |
+| **Try local practice mode** as the first useful action | Move to an admin/test area. | Open in shared mode when connected; otherwise show one connection blocker with an owner and remedy. |
+| **Activate / review** | Rename and make stage-specific. | **Start research** for an eligible queued company; show the exact block when it cannot start. |
+| **Move to** dropdown | Remove from Jeff's standard view. | One primary next action plus **Return for changes** and **Place on hold** where relevant. |
+| Empty **Recommended route** and **Contact / authority findings** inputs before research | Remove from Jeff's edit surface. | Show “Not researched yet” and populate read-only results when the research job finishes. |
+| Manual **GitHub report URL** | Remove. | Generate and attach the GitHub report automatically. Keep the link because Jeff explicitly values it. |
+| Manual **Research summary** and **Sources and confidence** text areas | Remove from routine review. | Display an expandable evidence summary labeled Verified fact, Reasonable indicator, and Hypothesis. |
+| **Pending HubSpot / Athena / Jeff check** | Remove this combined label. | Show **Athena eligibility** separately. Show HubSpot duplicate/history status in the integration area. |
+| Routine **Relationship permission**, **QA result**, and **Draft status** dropdowns | Hide unless a real exception needs a human decision. | Derive status from artifacts and rules; surface only the unresolved decision with its evidence. |
+| Repeated save controls and confirmation checkbox | Remove from routine progress. | Save authorized system work automatically. Confirm consequential approvals with the exact effect stated on the button. |
+| **Sent by AI** metric | Remove. | Show **Needs my decision**, **Research running**, **Blocked**, and **Follow-up due**. |
+| Drafts detached from company context | Remove from the general queue. | Place a draft inside the approved company workspace with a separate message-approval card. |
 
-1. Normalize the company name and look for duplicates.
-2. Check the temporary Google Sheet, then authorized HubSpot and Athena sources.
-3. Ask one targeted clarification only when identity is ambiguous.
-4. Produce the preliminary score and reason.
-5. Place scores 1–2 on Hold and scores 3–5 in the ranked queue.
+## Enhance in the next functional version
 
-### 3. Low-cost gate before research
+### 1. Decision-first landing page
 
-The order of work should be:
+Open on **Needs my decision**. Each card answers:
 
-1. Intake and identity normalization.
-2. Duplicate, client, ownership, opt-out, and conflict checks in the Google Sheet, HubSpot, and Athena when available.
-3. Preliminary fit score from available industry, operating scale/spend indicators, intent/trigger, and relationship context.
-4. Stop scores 1–2 with a short reason.
-5. Queue scores 3–5 by score, then source urgency and age.
-6. Run deep research only after activation.
+- What company is this?
+- Why is it here?
+- What has the system completed?
+- What is blocking it?
+- What single decision does Jeff need to make?
 
-For production work, priority remains 5, then 4, then 3. A separate clearly labeled sandbox record may bypass the live backlog for a controlled integration test without changing the real priority order.
+The full queue remains one click away.
 
-### 4. Guided company workspace
+### 2. Intake triggers
 
-Each company should have one workspace with:
+Support a visible trigger ladder:
 
-- Current stage and the single next action.
-- Preliminary and validated scores with short explanations.
-- Conflict status, source, timestamp, and any decision needed.
-- Three-part evidence summary: **Verified fact**, **Reasonable indicator**, and **Hypothesis**.
-- Recommended route and decision-maker confidence.
-- Research/QA progress and an explicit blocker if work cannot continue.
-- Automatically attached GitHub report.
-- HubSpot activity timeline when connected.
-- Draft approval card only after the route is approved.
+1. **Manual:** company name required; website, referral context, and source notes optional.
+2. **File intake:** approved ZoomInfo CSV/report import into the temporary Google Sheet.
+3. **Scheduled intake:** weekly ZoomInfo pull only after the connector is tested inside Jeff's account and the hosted-runtime path is proven.
 
-### 5. Reliable background work
+Every intake records source, time, identity confidence, and duplicate result. A connector visible in Codex does not establish dashboard runtime access.
 
-The system should not depend on Jeff repeatedly telling chat to continue. Each research run needs a durable job state:
+### 3. Low-cost eligibility gate
 
-- queued
-- in progress, with current step
-- waiting on access or clarification
-- failed, with retry/resume action
-- completed, with output links
+1. Normalize company identity and check duplicates.
+2. Run the authorized Athena lookup.
+3. If Athena shows claimed, excluded, or ambiguous ownership, stop and ask Jeff the specific resolution question.
+4. Assign the preliminary score from supplied industry, scale/spend indicators, intent/trigger, and relationship context.
+5. Place scores 1–2 on Hold with a short reason.
+6. Rank scores 3–5 by score, then source urgency and age.
+7. Start deep research only through **Start research** or the approved scheduled-worker rule.
 
-Store each step, timestamp, source, and blocker. A retry resumes from the last completed step rather than restarting paid research.
+### 4. Durable research jobs
 
-### 6. HubSpot integration with approval controls
+Each run stores:
 
-The first integration should support the Coach Proof Enterprises test account and prove:
+- queued;
+- in progress with current step;
+- waiting on access or one clarification;
+- failed with a plain-language retry action;
+- completed with report and QA links.
 
-1. Find or create the test company without creating a duplicate.
+A retry resumes after the last completed step and does not duplicate paid research.
+
+### 5. Guided company workspace
+
+Show the stage, preliminary and validated score, Athena result, evidence summary, likely decision-maker, recommended route, report, research/QA progress, and audit history. The main action changes with the stage:
+
+| Stage | Primary action shown to Jeff |
+| --- | --- |
+| Queued | **Start research** |
+| Researching | No approval action; show progress or the precise blocker |
+| QA Review | No routine Jeff action; show only an exception requiring his judgment |
+| Ready for Approval | **Approve route** |
+| Approved | **Prepare message for review** |
+| Hold | **Review hold** or **Release hold**, with a reason |
+
+### 6. Conversational control
+
+Accept commands such as “Open Accede Mold & Tool,” “Why is this held?”, or “Move this to the next step.” Translate the request into one proposed action card showing the company, current stage, resulting stage, and any approval effect. Voice is an input option; the auditable dashboard action remains the system event.
+
+Phrases such as “looks good” must not approve both a route and a communication. The assistant asks which artifact is being approved when the context is ambiguous.
+
+### 7. HubSpot role
+
+After access and field mapping are approved, the first integration should prove:
+
+1. Find or create one clearly labeled test company without duplication.
 2. Attach a designated internal test contact.
-3. Create a draft follow-up for review.
-4. Log a note or activity with the correct timestamp and owner.
-5. Create a follow-up task.
-6. Read the result back into the dashboard activity timeline.
+3. Read prior activity when it exists and use it as draft context.
+4. Prepare a draft for review.
+5. Log an approved manual email or call with correct date, time, type, owner, and content/notes.
+6. Create the next follow-up task.
+7. Read the activity and task back into the dashboard timeline.
 
-No prospect email is part of this test. If an internal test email is later used to validate open/click tracking, Jeff must first approve the exact recipient and message. Delivery must occur through HubSpot so HubSpot can record the engagement.
+HubSpot is not the Athena conflict check. No external or internal test email will be sent as part of this implementation.
 
-### 7. Source and system-of-record clarity
+## Detailed action register
 
-| Information | Source of truth during beta | Later state |
-| --- | --- | --- |
-| Code, scoring rules, reports, documentation, releases | GitHub | GitHub |
-| Shared queue and transition history | Google Sheet | HubSpot after approved migration |
-| Company/contact/activity/follow-up records | Pending/manual | HubSpot |
-| ERA conflict and account ownership | Pending/manual | Athena through an authorized read-only lookup or approved integration |
-| Intent and enrichment signals | Pasted/exported ZoomInfo data, labeled as indicators | Authorized ZoomInfo connection, still labeled until independently verified |
-| Message send, opens, and clicks | No dashboard sending | HubSpot after exact communication approval |
-
-## Implementation backlog
-
-### P0 — prove the operating loop
+### P0 — next dashboard release
 
 | Owner | Action | Acceptance check |
 | --- | --- | --- |
-| Joe/Codex | Replace the large review form with stage-specific decision cards and context buttons. | Jeff can move an eligible test record through Queued → Researching → QA Review → Ready for Approval → Approved/Hold without using a status dropdown. |
-| Joe/Codex | Move practice mode out of the normal production header and replace connection ambiguity with an exact blocker. | Jeff sees either a connected queue or one actionable access/configuration message. |
-| Joe/Codex | Add conversational company intake plus one-field manual fallback. | `Add <company>` creates or identifies one record and returns a score/hold result without requiring Jeff to complete research fields. |
-| Joe/Codex | Automate report linking, system statuses, timestamps, and activity history. | Jeff does not type a GitHub URL, QA status, or draft status. |
-| Joe/Codex | Add durable research-step status, blockers, and resume behavior. | A failed or access-blocked run names the step and can resume without duplicating completed work. |
-| Jeff | Create the **Coach Proof Enterprises** test company and assign Joe a HubSpot test seat/license. | Joe can see the test portal/company with the agreed least-privilege access. |
-| Jeff + Joe | Approve the HubSpot beta field map and test boundaries. | Company, contact, note/activity, task, owner, timestamps, and dashboard readback have documented mappings. |
+| Joe/Codex | Replace the large company form with the guided workspace and stage-aware actions. | Jeff can move an eligible practice record through the full pipeline without selecting a destination status or typing system fields. |
+| Joe/Codex | Split Athena eligibility from HubSpot duplicate/history status. | No screen says “HubSpot / Athena / Jeff check”; the reason and source for every stop are visible. |
+| Joe/Codex | Add job progress, blocker, retry, and resume state. | Closing and reopening the dashboard does not lose the current step or repeat completed work. |
+| Joe/Codex | Add decision-first counts and views. | Jeff can immediately identify every item requiring human action. |
+| Joe/Codex | Keep report access and add an in-dashboard report preview. | Jeff can read the compact report without searching chat; the canonical GitHub link remains available. |
+| Joe/Codex | Update training materials after the interface change. | The guide teaches the decision flow, sources, and approval boundaries shown in the release. |
 
-### P1 — connect the operating systems
-
-| Owner | Action | Acceptance check |
-| --- | --- | --- |
-| Jeff/ERA | Provide an approved Athena lookup method and define what counts as a conflict. | The dashboard can return clear, possible conflict, or unavailable with source and timestamp. |
-| Jeff | Authorize ZoomInfo access or provide the supported report/export path in Jeff's account. | Intake captures company identity, intent, and relevant indicators without manual retyping. |
-| Joe/Codex | Implement HubSpot company/contact lookup, draft preparation, activity logging, task creation, and readback. | The Coach Proof Enterprises test completes without duplicate records or prospect outreach. |
-| Joe/Codex | Add an internal-only HubSpot engagement test plan. | Exact recipient/message approval is captured before any test send; open/click events appear in HubSpot if the account supports them. |
-
-### P2 — polish after the loop works
+### P1 — shared queue and intake
 
 | Owner | Action | Acceptance check |
 | --- | --- | --- |
-| Jeff | Send the Strategic Operations logo files and usage guidance. | Approved light/dark or transparent assets are available. |
-| Joe/Codex | Apply the approved branding after workflow changes stabilize. | Dashboard remains readable on desktop and mobile. |
-| Joe/Codex | Update the training module to match the simplified interface. | Training teaches decisions and sources rather than manual field completion. |
+| Jeff/queue owner | Confirm the existing Google Sheet and editor account. | The correct Sheet and owner are documented without exposing credentials. |
+| Joe/Codex | Deploy and validate the approved Sheet bridge. | One authorized test record persists across two sessions with revision and audit history intact. |
+| Jeff | Provide the recurring ZoomInfo report/export or authorize the supported connector. | A sample intake can be parsed without manual retyping and remains labeled as ZoomInfo-supplied data. |
+| Joe/Codex | Add file intake first, then test scheduled intake. | Manual, file, and scheduled sources are distinguishable and idempotent. |
 
-## Two-company validation plan
+### P2 — HubSpot proof
 
-### Test A — Azure Water Services: research workflow
+| Owner | Action | Acceptance check |
+| --- | --- | --- |
+| Jeff | Invite Joe to the test portal/seat and approve least-privilege access. | Joe can access only the approved company, contact, note/activity, and task functions. |
+| Joe + Jeff | Choose the clearly labeled internal test company/contact and approve the field map. | Test data cannot be mistaken for a real prospect. |
+| Joe/Codex | Prove lookup/create, context read, draft preparation, activity logging, task creation, and readback. | The dashboard timeline matches HubSpot and no email is sent. |
 
-Use the existing Azure Water Services test record to validate the score-3 path without external writes:
+### P3 — polish after the loop works
 
-1. Confirm the identity and existing preliminary evidence.
-2. Confirm that the record is eligible but lower priority than score-5 and score-4 production records.
-3. Run it in the isolated sandbox lane.
-4. Verify each stage transition, research blocker, QA return path, hold path, persistence, and audit history.
-5. Stop before any communication.
+| Owner | Action | Acceptance check |
+| --- | --- | --- |
+| Jeff | Supply approved Strategic Operations logo files and usage guidance. | Transparent/light/dark assets and naming choice are available. |
+| Joe/Codex | Apply branding and mobile QA. | The workflow remains readable and usable on phone and laptop. |
+| Joe/Codex | Evaluate voice control against the proven action model. | Spoken actions produce the same reviewable proposal and audit event as clicked actions. |
 
-### Test B — Coach Proof Enterprises: HubSpot integration
+## Validation cases
 
-1. Connect with the approved test seat and authorization.
-2. Look up the test company and prevent duplicates.
-3. Create/read back a test contact, note/activity, and follow-up task.
-4. Prepare a draft addressed only to an approved internal test recipient.
-5. Confirm that route approval did not approve the message.
-6. Stop before sending unless Jeff separately approves the exact internal test send.
-7. If approved, send through HubSpot and verify timestamp, open/click tracking availability, and dashboard readback.
+### Azure Water Services — research workflow
 
-## Access and materials only Jeff can supply
+Use the existing score-3 record in a clearly isolated practice lane. Confirm identity, Athena-unavailable behavior, score priority, each stage transition, QA return, hold/release, persistence, audit history, and the no-message boundary. It may bypass the live backlog only because it is labeled practice data.
 
-- HubSpot test portal access: Joe's assigned seat or invitation plus approved OAuth/private-app authorization. Do not send passwords in chat.
-- Approval of the minimum HubSpot permissions for company/contact lookup and creation, notes/activities, tasks, ownership, and the later internal email-engagement test.
-- The **Coach Proof Enterprises** test company details and the approved internal test contact/recipient.
-- Athena access or an authorized read-only lookup/export method, plus the ERA definition of client, claimed account, owner conflict, exclusion, and stale record.
-- ZoomInfo access in Jeff's account, an approved connector/API authorization, or the exact recurring export/report format.
-- The Strategic Operations logos and any color/usage rules.
-- The referenced cheat sheet documents; no file with “cheat sheet” in its name is currently present in this repository.
-- Screenshots or printouts of the ChatGPT stalls/errors, including the task prompt, last completed step, error text, and approximate time.
+### Coach Bouf Enterprises test record — HubSpot workflow
 
-The Google Sheet bridge also requires an authorized Apps Script deployment URL, a bridge secret stored as a server-side secret, and the reviewer email allowlist. These values must never be committed to GitHub or placed in browser code.
+Use `TEST - Coach Bouf Enterprises` or another name Jeff and Joe explicitly designate. Prevent duplicates, create/read the internal contact, prepare but do not send a draft, log a synthetic/manual activity only if it is clearly labeled, create a follow-up task, and verify dashboard readback. Do not use “Coach Proof Enterprises”; that name came from transcription error in the earlier notes.
 
-## Open questions for the next working session
+## Integration credentials and decisions only Jeff can supply
 
-1. Should Jeff's normal landing view be **Needs my decision**, with the full queue one click away?
-2. Which Athena states are hard stops, and which require Jeff's judgment?
-3. Should a score change require a reason only when Jeff overrides the system recommendation?
-4. Which HubSpot user owns new records and follow-up tasks during the test?
-5. Is the first HubSpot test limited to create/read/log/task, or does Jeff want a separately approved internal email tracking test in the same session?
-6. Where are the cheat sheet documents referenced in the meeting?
-7. When Google finishes generating the recording transcript, does any timestamped statement change these product decisions or add a missed commitment?
+- The correct existing Google Sheet URL and an authorized editor/owner for Apps Script authorization.
+- Jeff's reviewer identity and access to the private dashboard.
+- An approved Athena lookup method and the meaning of claimed, excluded, stale, and ambiguous records.
+- ZoomInfo authorization in Jeff's account or the exact recurring report/export format.
+- A HubSpot invitation/seat and approved OAuth or private-app authorization. Passwords should not be shared or committed.
+- The minimum HubSpot permission set and approved owner/field mapping.
+- The exact internal test company/contact identity. Any later send test needs a separate approval of the exact recipient and message.
+- Strategic Operations logo files and usage rules.
+- Screenshots or exports of the prior ChatGPT stalls so the failure and last completed step can be reproduced.
 
-## Definition of done for the next version
+The Sheet bridge also requires a deployment URL, a server-side secret, and a reviewer allowlist. These are configuration outputs owned by the authorized Sheet editor and must never be committed to GitHub or exposed in browser code.
 
-Jeff can type a company name, see the source and preliminary score, understand why it is queued or held, start eligible research, monitor progress without prompting chat to continue, review a compact evidence-backed route, and approve or hold it through one clear action per phase. The Google Sheet records the beta state, GitHub holds the report and rules, and the Coach Proof Enterprises HubSpot test proves read/write activity logging. No communication can be sent without a separate approval of the exact message and recipient.
+## Definition of done
+
+Jeff can add or receive a company, see its source and preliminary score, understand any Athena stop, start eligible research, leave the dashboard while work continues, return to a compact report, and approve or hold the route through one clear action per decision. GitHub remains canonical for code, rules, reports, documentation, and releases. The existing Google Sheet holds beta queue state. HubSpot supplies history and activity only after the test passes. Every message remains separately reviewable and manually sent.

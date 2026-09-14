@@ -17,6 +17,7 @@ work/**/ffmpeg-bin/
 
 # Compiled local transcription helper
 work/transcribe_audio
+work/call-*/
 
 # Temporary Office files
 ~$*.docx
