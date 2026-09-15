@@ -42,7 +42,7 @@ Message preparation appears only after route approval. An exact message and reci
 | 31:52–33:40 | They propose a dummy-company integration test and confirm HubSpot should be the eventual sending surface for engagement tracking. | Test only with a clearly labeled internal/synthetic record. Do not treat the conversation as approval to send. |
 | 33:42–34:45 | Jeff says he is pleased with the dashboard, wants less information, logos, and access from phone and laptop. | Simplify first; add supplied branding later; preserve responsive behavior. |
 | 35:20–36:17 | Joe identifies the missing trigger: scheduled ZoomInfo intake versus manual upload. | Make intake source and trigger status visible. Implement a fallback ladder rather than claiming a live ZoomInfo connection. |
-| 36:26–37:11 | They prioritize a HubSpot test before the next ZoomInfo batch and discuss an internal test recipient and extra user seat. | HubSpot access, test-record details, and the extra seat are Jeff-supplied dependencies. |
+| 36:26–37:11 | They prioritize a HubSpot test before the next ZoomInfo batch and discuss an internal test recipient and extra user seat. | The seat has since been granted and browser access verified. Test-record details, permissions, and API authorization remain open. |
 
 ## Decisions versus open proposals
 
@@ -187,7 +187,8 @@ HubSpot is not the Athena conflict check. No external or internal test email wil
 
 | Owner | Action | Acceptance check |
 | --- | --- | --- |
-| Jeff | Invite Joe to the test portal/seat and approve least-privilege access. | Joe can access only the approved company, contact, note/activity, and task functions. |
+| Jeff | **Complete:** grant `joe@aigrowthplan.com` a HubSpot seat. | Verified September 14, 2026: Joe can authenticate to portal `241906394` and read the Companies workspace. |
+| Joe/Codex + Jeff | Verify the seat's create/edit, note/activity, and task permissions; choose OAuth/private-app access for integration. | A permission matrix is recorded without changing a live prospect. |
 | Joe + Jeff | Choose the clearly labeled internal test company/contact and approve the field map. | Test data cannot be mistaken for a real prospect. |
 | Joe/Codex | Prove lookup/create, context read, draft preparation, activity logging, task creation, and readback. | The dashboard timeline matches HubSpot and no email is sent. |
 
@@ -215,7 +216,8 @@ Use `TEST - Coach Bouf Enterprises` or another name Jeff and Joe explicitly desi
 - Jeff's reviewer identity and access to the private dashboard.
 - An approved Athena lookup method and the meaning of claimed, excluded, stale, and ambiguous records.
 - ZoomInfo authorization in Jeff's account or the exact recurring report/export format.
-- A HubSpot invitation/seat and approved OAuth or private-app authorization. Passwords should not be shared or committed.
+- **Received and verified:** the HubSpot seat for `joe@aigrowthplan.com`, including authenticated browser access and read access to the Companies workspace.
+- Still needed for HubSpot integration: confirmed create/edit, note/activity, and task permissions plus approved OAuth or private-app authorization. A browser seat alone does not provide a dashboard API credential. Passwords should not be shared or committed.
 - The minimum HubSpot permission set and approved owner/field mapping.
 - The exact internal test company/contact identity. Any later send test needs a separate approval of the exact recipient and message.
 - Strategic Operations logo files and usage rules.

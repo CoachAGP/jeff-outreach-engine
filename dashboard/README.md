@@ -47,7 +47,8 @@ The Sheet's `Engine Queue v2` columns are `Company ID`, `Company`, `Score`, `Sta
 - Existing queue URL and an authorized Google account with editor access; Sheet-owner OAuth authorization for Apps Script. This cannot be substituted with Joe's connector credentials.
 - Jeff's reviewer identity and access to the private dashboard. Current Site is owner-only for Joe; Jeff access is not yet granted.
 - Deployed bridge URL and matching secret set by the authorized owner; these are setup outputs, not Jeff's personal password.
-- Later: HubSpot private-app/OAuth access and approved field mapping; Athena/conflict access or explicit checks from Jeff; ZoomInfo/LinkedIn access in Jeff's account for source validation. None is required to practice the workflow. Do not collect passwords in chat.
+- HubSpot seat update, September 14, 2026: Jeff granted `joe@aigrowthplan.com` a seat. Authenticated browser access to portal `241906394` and read access to Companies were verified. Create/edit, note/activity, and task permissions have not yet been tested.
+- Still needed: HubSpot private-app/OAuth access and approved field mapping; Athena/conflict access or explicit checks from Jeff; ZoomInfo/LinkedIn access in Jeff's account for source validation. None is required to practice the workflow. Do not collect passwords in chat.
 
 ## Development and validation
 
