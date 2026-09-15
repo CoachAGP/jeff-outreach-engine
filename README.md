@@ -54,3 +54,9 @@ python3 scripts/transcribe_with_mlx.py \
 
 This repository contains confidential business documents, prospect information, commercial records, and interview audio. Keep the GitHub repository private and review collaborator access before inviting anyone.
 
+
+## Functional dashboard v2
+
+The dashboard now implements research activation and guarded progression through Queued, Researching, QA Review, Ready for Approval, Approved and Hold. It includes the repository intake, human review checks, revision protection and an auditable Google Sheet adapter. Live shared operation requires the existing Sheet owner's authorization; disconnected mode is read-only with an explicit local practice option.
+
+See [dashboard setup and validation](dashboard/README.md), [current handoff](docs/discovery/dashboard-v2-validation.md), and the [September 14 call follow-up and revision backlog](docs/discovery/jeff-call-follow-up-2026-09-14.md). These supersede the older discovery-only status above for dashboard implementation. HubSpot remains unconnected and all communications remain human-approved and manually sent.

@@ -1,0 +1,8 @@
+const{test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');
+const load=async()=> (await import('data:text/javascript;base64,'+fs.readFileSync('dist/server/index.js').toString('base64'))).default;
+const env={REVIEWER_EMAILS:'jeff@example.test',SHEETS_BRIDGE_URL:'https://script.google.com/macros/s/test/exec',SHEETS_BRIDGE_KEY:'test-secret'};
+const request=(path,options={})=>new Request('https://dashboard.test'+path,options);
+test('private API rejects anonymous and unlisted users',async()=>{const w=await load();assert.equal((await w.fetch(request('/api/queue'),env)).status,403);assert.equal((await w.fetch(request('/api/queue',{headers:{'oai-authenticated-user-email':'other@example.test'}}),env)).status,403);});
+test('missing bridge credentials fail closed',async()=>{const w=await load();assert.equal((await w.fetch(request('/api/queue',{headers:{'oai-authenticated-user-email':'jeff@example.test'}}),{REVIEWER_EMAILS:env.REVIEWER_EMAILS})).status,503);});
+test('cross-origin writes are rejected before the bridge',async()=>{const w=await load();assert.equal((await w.fetch(request('/api/transition',{method:'POST',headers:{'oai-authenticated-user-email':'jeff@example.test','Origin':'https://attacker.test','Content-Type':'application/json'},body:'{}'}),env)).status,403);});
+test('Worker serves all authored assets, no source paths or credentials',async()=>{const w=await load();for(const path of ['/','/app.js','/workflow.js','/legacy.js','/seed.json','/styles.css'])assert.equal((await w.fetch(request(path),{})).status,200);assert.equal((await w.fetch(request('/integrations/Code.gs'),{})).status,404);});

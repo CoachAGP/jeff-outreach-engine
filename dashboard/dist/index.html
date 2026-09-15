@@ -1,92 +1,15 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Jeff Outreach Engine approval and research queue." />
-    <title>Jeff Outreach Engine | Approval Queue</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">Jeff Outreach Engine</p>
-        <h1>Approval Queue</h1>
-      </div>
-      <div class="summary" aria-label="Queue summary">
-        <div><strong id="readyCount">0</strong><span>Ready drafts</span></div>
-        <div><strong id="researchCount">0</strong><span>Research queue</span></div>
-        <div><strong>0</strong><span>Sent by AI</span></div>
-      </div>
-    </header>
-
-    <main>
-      <section class="control-strip" aria-label="Dashboard filters">
-        <button class="filter active" data-filter="all">All</button>
-        <button class="filter" data-filter="ready">Ready</button>
-        <button class="filter" data-filter="validate">Needs validation</button>
-        <button class="filter" data-filter="hold">Hold</button>
-      </section>
-
-      <section class="research-gate" aria-label="Research credit control">
-        <strong>Research gate</strong>
-        <span>Quick-score every company first. Deep research only scores 3–5, in the order 5, 4, then 3.</span>
-      </section>
-
-      <section class="section-header">
-        <div>
-          <h2>Messages To Approve</h2>
-          <p>Review the message, choose a decision, then send it manually outside this dashboard.</p>
-        </div>
-        <span class="local-note">Decisions save on this device</span>
-      </section>
-      <section id="approvalQueue" class="card-grid" aria-label="Approval queue"></section>
-      <p id="approvalEmpty" class="empty" hidden>No messages match this filter.</p>
-
-      <section class="section-header research-heading">
-        <div>
-          <h2>Research Queue</h2>
-          <p>Only preliminary scores 3–5 move into deep research, preserving credits for the strongest opportunities.</p>
-        </div>
-      </section>
-      <section id="researchQueue" class="research-list" aria-label="Research queue"></section>
-      <p id="researchEmpty" class="empty" hidden>No research items match this filter.</p>
-    </main>
-
-    <template id="approval-card-template">
-      <article class="opportunity-card">
-        <div class="card-head">
-          <div><p class="priority"></p><h3></h3></div>
-          <span class="score"></span>
-        </div>
-        <dl class="facts">
-          <div><dt>Contact</dt><dd class="contact"></dd></div>
-          <div><dt>Route</dt><dd class="route"></dd></div>
-          <div><dt>QA</dt><dd class="qa"></dd></div>
-          <div><dt>Decision</dt><dd class="decision"></dd></div>
-        </dl>
-        <div class="draft-box">
-          <p class="subject"></p>
-          <pre class="draft"></pre>
-        </div>
-        <div class="actions" aria-label="Review actions">
-          <button data-decision="approved">Approve</button>
-          <button data-decision="edits">Needs edits</button>
-          <button data-decision="hold">Hold</button>
-          <button data-decision="rejected">Reject</button>
-        </div>
-        <p class="saved-decision" aria-live="polite"></p>
-        <a class="report-link" target="_blank" rel="noreferrer">Open full report</a>
-      </article>
-    </template>
-
-    <template id="research-row-template">
-      <article class="research-row">
-        <div><p class="status"></p><h3></h3></div>
-        <p class="route"></p><p class="next"></p><span class="score"></span>
-      </article>
-    </template>
-
-    <script src="./app.js"></script>
-  </body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Jeff Outreach Engine | Research Queue</title><link rel="stylesheet" href="./styles.css"></head><body>
+<header class="topbar"><div><p class="eyebrow">Jeff Outreach Engine</p><h1>Research & Approval</h1></div><div class="summary"><div><strong id="readyCount">0</strong><span>Awaiting approval</span></div><div><strong id="researchCount">0</strong><span>Active research</span></div><div><strong>0</strong><span>Sent by AI</span></div></div></header><main>
+<section class="research-gate"><strong>Research gate</strong><span>Scores 3–5 qualify. Activate 5s first, then 4s, then 3s. Scores 1–2 stay on hold.</span></section>
+<section class="connection"><p id="connection" role="status">Connecting to the shared Google Sheet…</p><button id="refresh">Refresh shared queue</button><button id="demo">Try local practice mode</button><button id="exitDemo" hidden>Exit practice mode</button></section><p id="notice" role="alert"></p>
+<section class="intake-start"><div><h2>Start an opportunity</h2><p>Add a company, score its fit, then activate eligible research.</p></div><button id="addOpportunity">Add opportunity</button><p class="connection-note">ZoomInfo: not connected · Add a company and paste its source details below.</p></section>
+<nav id="filters" class="control-strip" aria-label="Filter by workflow stage"></nav><section class="section-header"><div><h2>Research Queue</h2><p>Activate a company, record research, and bring a checked route to Jeff for review.</p></div><label>Find company<input id="search" type="search" placeholder="Company name"></label></section>
+<p id="resultCount"></p><section id="researchQueue" class="research-list" aria-label="Research queue"></section><p id="researchEmpty" class="empty" hidden>No companies match this view.</p>
+<section class="section-header research-heading"><div><h2>Existing message drafts</h2><p>Prior beta drafts remain available. Every communication requires Jeff’s explicit approval and manual sending.</p></div></section><section id="legacy" class="card-grid"></section>
+<details class="integration"><summary>Connections and handoff</summary><p>GitHub stores code, research reports and operating rules. The shared Google Sheet stores workflow state and audit history. HubSpot and Athena checks remain manual until Jeff supplies access and approves field mapping.</p><p>Activation assigns research work; it does not launch a paid research provider. Add verified findings and a GitHub report before QA. Route approval never authorizes a message. This dashboard has no sending controls.</p><a href="https://github.com/CoachAGP/jeff-outreach-engine" target="_blank" rel="noreferrer">Open project on GitHub</a></details></main>
+<dialog id="editor"><form id="editForm"><div class="card-head"><h2 id="editTitle"></h2><button type="button" id="close">Close</button></div><p id="editStatus"></p><p id="editReason"></p><div class="edit-grid">
+<label>Recommended route<input name="route" maxlength="4000"></label><label>Contact / authority findings<input name="contact" maxlength="4000"></label>
+<label class="wide">GitHub report URL<input name="report" type="url" maxlength="4000"></label><label class="wide">Research summary<textarea name="summary" maxlength="4000" placeholder="Distinguish verified facts, indicators and hypotheses."></textarea></label><label class="wide">Sources and confidence<textarea name="sources" maxlength="4000" placeholder="Source URLs, dates checked, and what each supports."></textarea></label>
+<label>Conflict checks<select name="conflicts"><option value="">Pending HubSpot / Athena / Jeff check</option><option>Cleared by Jeff</option><option>Conflict found</option></select></label><label>Relationship permission<select name="relationship"><option value="">Pending Jeff review</option><option>Approved by Jeff</option><option>Not applicable</option></select></label><label>QA result<select name="qa"><option value="">Not reviewed</option><option>Pass</option><option>Needs edits</option></select></label><label>Draft status<select name="draftStatus"><option>Not drafted</option><option>Draft requested by Jeff</option><option>Draft awaiting separate approval</option></select></label>
+<label class="wide">Next action / open questions<textarea name="note" maxlength="4000"></textarea></label><label>Move to<select id="target"></select></label><label>Decision or hold reason<input id="decisionNote" maxlength="4000"></label><label class="wide check"><input id="humanConfirmed" type="checkbox">I confirm Jeff’s human review of this route or hold release. This does not approve any communication.</label></div>
+<fieldset id="triagePanel"><legend>Preliminary scoring</legend><p>Use available revenue/spend, urgency and industry evidence. A new score does not release a hold.</p><label>Score<select id="triageScore"><option value="">Not scored</option><option value="1">1 — Poor fit</option><option value="2">2 — Weak fit</option><option value="3">3 — Possible fit</option><option value="4">4 — Strong fit</option><option value="5">5 — Excellent fit</option></select></label><label>Evidence and reason<textarea id="triageReason" maxlength="4000"></textarea></label><button type="button" id="saveTriage">Save preliminary score</button></fieldset><p id="formError" role="alert"></p><button id="save" type="submit">Save to shared queue</button><details><summary>Activity history</summary><ol id="history"></ol></details></form></dialog><dialog id="intakeDialog"><form id="intakeForm"><div class="card-head"><h2>Add opportunity</h2><button type="button" id="closeIntake">Close</button></div><p>Start with a company name. If there is not enough evidence to score it, leave it unscored for preliminary review.</p><div class="edit-grid"><label>Company name<input id="companyName" required maxlength="200" autocomplete="organization"></label><label>Company website (optional)<input id="companyWebsite" type="url" placeholder="https://" maxlength="2000"></label><label class="wide">Source / ZoomInfo details<textarea id="intakeSource" required maxlength="4000" placeholder="Manual referral, ZoomInfo company link, intent topic, revenue/headcount indicators, or other source details."></textarea></label><label>Preliminary fit score<select id="intakeScore"><option value="0">Not scored — preliminary review needed</option><option value="1">1 — Poor fit</option><option value="2">2 — Weak fit</option><option value="3">3 — Possible fit</option><option value="4">4 — Strong fit</option><option value="5">5 — Excellent fit</option></select></label><label>Score reason<textarea id="intakeReason" maxlength="4000" placeholder="What evidence supports this score?"></textarea></label></div><p id="intakeError" role="alert"></p><button id="submitIntake" type="submit">Add to queue</button></form></dialog><script src="./workflow.js"></script><script src="./legacy.js"></script><script src="./app.js"></script></body></html>

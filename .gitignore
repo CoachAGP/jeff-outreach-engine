@@ -17,7 +17,16 @@ work/**/ffmpeg-bin/
 
 # Compiled local transcription helper
 work/transcribe_audio
+work/call-*/
 
 # Temporary Office files
 ~$*.docx
 ~$*.xlsx
+
+# Dashboard local secrets and generated staging
+.env
+.env.*
+!.env.example
+.clasprc.json
+dashboard/dist/server/
+dashboard/dist/.openai/

@@ -1,202 +1,51 @@
-const REPORT_ROOT = "https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/";
-const STORAGE_KEY = "jeff-outreach-dashboard-decisions-v1";
-
-const opportunities = [
-  {
-    id: "new-castle-maria",
-    priority: "Priority 1",
-    company: "New Castle Building Products",
-    score: "5/5",
-    filter: "ready",
-    contact: "Maria Kotereva",
-    route: "Warm path to finance; possible CFO/controller route",
-    qa: "Pass; human approval required",
-    decision: "Confirm comfort with the referral and send manually",
-    report: "opportunity-report-new-castle-building-products.md",
-    subject: "Subject: Quick question on New Castle's finance/operations route",
-    draft: `Maria,
-
-Joe Bouffard suggested I reach out to you with a quick routing question.
-
-I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. New Castle looks like the kind of multi-location distribution operation where categories like fleet, logistics, facilities, purchasing, insurance, and technology could at least be worth a conversation, but I do not want to assume the right person internally.
-
-Would John Hutt, Philip DeBellis, or someone else on the finance/operations side be the best person for me to speak with?
-
-No obligation and no assumption that savings exist. The goal would simply be to see whether a spend review is relevant.
-
-Thanks,
-
-Jeff Peduto`
-  },
-  {
-    id: "colony-grill-ken",
-    priority: "Priority 2",
-    company: "Colony Grill",
-    score: "5/5",
-    filter: "ready",
-    contact: "Ken Martin",
-    route: "Warm path to owner/operator route",
-    qa: "Pass; human approval required",
-    decision: "Verify the channel and send manually",
-    report: "opportunity-report-colony-grill.md",
-    subject: "Subject: Quick question on Colony Grill operating spend",
-    draft: `Ken,
-
-Joe Bouffard suggested I reach out with a quick routing question.
-
-I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. For multi-location restaurant groups, that can include facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating expenses.
-
-Given Colony Grill's continued growth and multi-location footprint, I wanted to see whether this kind of review would be worth a short conversation, or whether someone else on the finance or operations side would be the better person to ask.
-
-No obligation and no assumption that savings exist. The goal would simply be to see whether a spend review is relevant.
-
-Thanks,
-
-Jeff Peduto`
-  },
-  {
-    id: "tvg-will",
-    priority: "Priority 3",
-    company: "TVG Fast and Fresh / Jimmy John's CT",
-    score: "4/5",
-    filter: "ready",
-    contact: "Will Roth",
-    route: "Warm path to franchise owner route",
-    qa: "Pass; human approval required",
-    decision: "Verify the channel and send manually",
-    report: "opportunity-report-tvg-fast-and-fresh-jimmy-johns.md",
-    subject: "Subject: Quick operating-cost question for your Jimmy John's group",
-    draft: `Will,
-
-Joe Bouffard suggested I reach out with a quick routing question.
-
-I work with ERA Group to help restaurant and middle-market operators reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. For multi-location groups, that can include facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating expenses.
-
-Given your Connecticut Jimmy John's growth, I wanted to see whether this kind of review would be worth a short conversation. I know franchise groups can have purchasing constraints, so the question is whether any local operating categories are flexible enough to review.
-
-No obligation and no assumption that savings exist. The goal would simply be to see whether a spend review is relevant.
-
-Thanks,
-
-Jeff Peduto`
-  }
-];
-
-const researchQueue = [
-  { company: "Connecticut Spring & Stamping", status: "Needs validation", score: "5/5", route: "Direct CFO route to Mike Nowak", next: "Check HubSpot/Athena, then draft a CFO routing message.", filter: "validate" },
-  { company: "Bohlsen Restaurant Group", status: "Needs validation", score: "5/5", route: "Restaurant-network warm check, then owner route", next: "Check whether Ken Martin, Will Roth, or restaurant contacts know Michael or Kurt Bohlsen.", filter: "validate" },
-  { company: "Accede Mold & Tool", status: "Needs validation", score: "5/5", route: "Senior manufacturing route needs contact validation", next: "Use ZoomInfo or LinkedIn in Jeff's account to confirm the current senior route.", filter: "validate" },
-  { company: "Prestige Consumer Healthcare", status: "Hold", score: "5/5", route: "CFO/COO route with public-company caution", next: "Decide whether public-company targets belong in beta wave one.", filter: "hold" },
-  { company: "FGX International", status: "Hold", score: "5/5", route: "Buyer not confirmed; parent-company authority issue", next: "Resolve local authority versus EssilorLuxottica parent authority.", filter: "hold" }
-];
-
-const approvalQueue = document.querySelector("#approvalQueue");
-const researchList = document.querySelector("#researchQueue");
-const approvalTemplate = document.querySelector("#approval-card-template");
-const researchTemplate = document.querySelector("#research-row-template");
-const approvalEmpty = document.querySelector("#approvalEmpty");
-const researchEmpty = document.querySelector("#researchEmpty");
-
-function readDecisions() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
-  catch { return {}; }
+const $ = s => document.querySelector(s);
+let rows=[],seed=[],filter='All',mode='disconnected',selected=null,busy=false;
+const PRACTICE_KEY='jeff-engine-practice-v2';
+const text=(tag,value,className)=>{const e=document.createElement(tag);e.textContent=value;if(className)e.className=className;return e;};
+function message(value){$('#notice').textContent=value;}
+function render(){
+ $('#addOpportunity').disabled=mode==='disconnected';
+ $('#readyCount').textContent=rows.filter(r=>r.status==='Ready for Approval').length;
+ $('#researchCount').textContent=rows.filter(r=>['Researching','QA Review'].includes(r.status)).length;
+ $('#filters').replaceChildren();
+ for(const state of ['All',...Workflow.states]){const count=rows.filter(r=>state==='All'||r.status===state).length;const b=text('button',`${state} (${count})`,filter===state?'active':'');b.onclick=()=>{filter=state;render();};$('#filters').append(b);}
+ const visible=Workflow.ranked(rows).filter(r=>(filter==='All'||r.status===filter)&&r.company.toLowerCase().includes($('#search').value.toLowerCase()));
+ $('#resultCount').textContent=`${visible.length} of ${rows.length} companies · ${mode==='shared'?'Shared queue':mode==='practice'?'Practice data only':'Repository snapshot — connection required'}`;
+ $('#researchQueue').replaceChildren();
+ for(const r of visible){const card=text('article','','research-row');card.dataset.status=r.status;const name=text('div','');name.append(text('p',r.status,'status'),text('h3',r.company));const details=text('div','');details.append(text('p',r.route||r.reason),text('p',r.note||'Record the next action.'));const action=text('button',r.status==='Queued'?'Activate / review':'Open review');action.disabled=mode==='disconnected';action.onclick=()=>openEditor(r.id);if(r.report && /^https:\/\/github\.com\/CoachAGP\/jeff-outreach-engine\/blob\//.test(r.report)){const reportLink=text('a','Open research report','report-link');reportLink.href=r.report;reportLink.target='_blank';reportLink.rel='noreferrer';details.append(reportLink);}card.append(name,details,text('span',r.score ? `${r.score}/5` : 'Unscored','score'),action);$('#researchQueue').append(card);}
+ $('#researchEmpty').hidden=visible.length>0;
 }
+function openEditor(id){selected=rows.find(r=>r.id===id);$('#editTitle').textContent=selected.company;$('#editStatus').textContent=`${selected.status} · Preliminary score ${selected.score}/5`;$('#editReason').textContent=selected.reason;
+ for(const field of $('#editForm').querySelectorAll('[name]'))field.value=selected[field.name]||'';
+ $('#target').replaceChildren();for(const state of [selected.status,...Workflow.edges[selected.status]])$('#target').append(new Option(state,state));if(selected.status==='Queued')$('#target').value='Researching';
+ $('#decisionNote').value='';$('#humanConfirmed').checked=false;$('#formError').textContent='';$('#save').textContent=mode==='practice'?'Save practice change':'Save to shared queue';$('#history').replaceChildren();for(const h of selected.history)$('#history').append(text('li',`${h.at} · ${h.actor} · ${h.from} → ${h.to}: ${h.note}`));if(!selected.history.length)$('#history').append(text('li','No dashboard activity recorded.'));$('#triagePanel').hidden=!['Hold','Queued'].includes(selected.status);$('#triageScore').value=selected.score||'';$('#triageReason').value=selected.reason;$('#editor').showModal();}
+async function refresh(){if(busy)return;busy=true;$('#refresh').disabled=true;
+ try{const response=await fetch('/api/queue',{cache:'no-store'});const result=await response.json();if(!response.ok||result.error)throw Error(result.error||'Shared queue unavailable.');if(!Array.isArray(result.rows))throw Error('Invalid queue response.');rows=result.rows;mode='shared';$('#connection').textContent=`Shared Google Sheet connected · refreshed ${new Date().toLocaleTimeString()}`;$('#exitDemo').hidden=true;message('');}
+ catch(e){if(mode!=='practice'){rows=seed;mode='disconnected';}$('#connection').textContent=`Shared queue not connected. ${e.message.includes('JSON')?'Connection setup is required.':e.message}`;}
+ finally{busy=false;$('#refresh').disabled=false;render();}}
+$('#editForm').onsubmit=async e=>{e.preventDefault();if(busy)return;const patch=Object.fromEntries([...$('#editForm').querySelectorAll('[name]')].map(f=>[f.name,f.value]));const command={id:selected.id,revision:selected.revision,to:$('#target').value,patch,note:$('#decisionNote').value,humanConfirmed:$('#humanConfirmed').checked,requestId:crypto.randomUUID()};busy=true;$('#save').disabled=true;
+ try{const next=Workflow.apply(rows,command,mode==='practice'?'Practice reviewer':'Human reviewer');if(mode==='practice'){localStorage.setItem(PRACTICE_KEY,JSON.stringify(next));rows=next;}else if(mode==='shared'){const response=await fetch('/api/transition',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});const result=await response.json();if(!response.ok||result.error)throw Error(result.error||'Save not confirmed. Refresh before retrying.');rows=result.rows;}else throw Error('Connect the shared queue before saving.');$('#editor').close();message(mode==='practice'?'Practice change saved on this device only.':'Saved to shared Google Sheet.');render();}
+ catch(error){$('#formError').textContent=error.message;}finally{busy=false;$('#save').disabled=false;}};
+$('#close').onclick=()=>{if(!busy)$('#editor').close();};$('#editor').addEventListener('cancel',e=>{if(busy)e.preventDefault();});$('#search').oninput=render;$('#refresh').onclick=refresh;
+$('#demo').onclick=()=>{if(busy)return;try{rows=JSON.parse(localStorage.getItem(PRACTICE_KEY)||JSON.stringify(seed));if(!Array.isArray(rows))throw Error();}catch{rows=structuredClone(seed);}mode='practice';$('#connection').textContent='Practice mode — device-local changes, no shared Sheet writes.';$('#exitDemo').hidden=false;message('Practice changes never sync into the live queue.');render();};
+$('#exitDemo').onclick=()=>{mode='disconnected';refresh();};
+for(const item of legacyDrafts){const card=text('article','','opportunity-card');card.append(text('h3',item.company),text('p',item.contact),text('p','Historical beta draft — human send approval still required.'));const details=text('details','');details.append(text('summary','Review draft'),text('p',item.subject),text('pre',item.draft));const link=text('a','Open supporting report','report-link');link.href='https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/'+item.report;link.target='_blank';link.rel='noreferrer';card.append(details,link);$('#legacy').append(card);}
+(async()=>{try{const r=await fetch('./seed.json');if(!r.ok)throw Error();seed=await r.json();await refresh();}catch{message('Could not load the repository snapshot. Reload the dashboard.');}})();
 
-function saveDecision(id, decision) {
-  const decisions = readDecisions();
-  decisions[id] = decision;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(decisions));
+async function saveOperation(action,command,next){
+ if(mode==='practice'){localStorage.setItem(PRACTICE_KEY,JSON.stringify(next));rows=next;}
+ else if(mode==='shared'){const response=await fetch('/api/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});const result=await response.json();if(!response.ok||result.error)throw Error(result.error||'Save not confirmed. Refresh before retrying.');rows=result.rows;}
+ else throw Error('Connect the shared queue or enter practice mode first.');
 }
-
-function labelDecision(value) {
-  return ({ approved: "Approved for manual send", edits: "Needs edits", hold: "On hold", rejected: "Rejected" })[value] || "";
-}
-
-function applyDecisionState(article, id) {
-  const value = readDecisions()[id];
-  article.querySelectorAll("[data-decision]").forEach((button) => button.classList.toggle("selected", button.dataset.decision === value));
-  article.querySelector(".saved-decision").textContent = value ? `Saved: ${labelDecision(value)}` : "No decision saved yet";
-}
-
-function render(filter = "all") {
-  approvalQueue.innerHTML = "";
-  researchList.innerHTML = "";
-  const visibleOpportunities = opportunities.filter((item) => filter === "all" || item.filter === filter);
-  const visibleResearch = researchQueue.filter((item) => filter === "all" || item.filter === filter);
-
-  visibleOpportunities.forEach((item) => {
-    const fragment = approvalTemplate.content.cloneNode(true);
-    const article = fragment.querySelector("article");
-    article.dataset.status = item.filter;
-    article.dataset.id = item.id;
-    fragment.querySelector(".priority").textContent = item.priority;
-    fragment.querySelector("h3").textContent = item.company;
-    fragment.querySelector(".score").textContent = item.score;
-    fragment.querySelector(".contact").textContent = item.contact;
-    fragment.querySelector(".route").textContent = item.route;
-    fragment.querySelector(".qa").textContent = item.qa;
-    fragment.querySelector(".decision").textContent = item.decision;
-    fragment.querySelector(".subject").textContent = item.subject;
-    fragment.querySelector(".draft").textContent = item.draft;
-    fragment.querySelector(".report-link").href = `${REPORT_ROOT}${item.report}`;
-    article.querySelectorAll("[data-decision]").forEach((button) => {
-      button.addEventListener("click", () => {
-        saveDecision(item.id, button.dataset.decision);
-        applyDecisionState(article, item.id);
-      });
-    });
-    applyDecisionState(article, item.id);
-    approvalQueue.appendChild(fragment);
-  });
-
-  visibleResearch.forEach((item) => {
-    const fragment = researchTemplate.content.cloneNode(true);
-    const article = fragment.querySelector("article");
-    article.dataset.status = item.filter;
-    fragment.querySelector(".status").textContent = item.status;
-    fragment.querySelector("h3").textContent = item.company;
-    fragment.querySelector(".route").textContent = item.route;
-    fragment.querySelector(".next").textContent = item.next;
-    fragment.querySelector(".score").textContent = item.score;
-    researchList.appendChild(fragment);
-  });
-
-  approvalEmpty.hidden = visibleOpportunities.length > 0;
-  researchEmpty.hidden = visibleResearch.length > 0;
-}
-
-document.querySelectorAll(".filter").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filter").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    render(button.dataset.filter);
-  });
-});
-
-document.querySelector("#readyCount").textContent = opportunities.length;
-document.querySelector("#researchCount").textContent = researchQueue.length;
-
-if (document.modelContext?.registerTool) {
-  const allowed = ["approved", "edits", "hold", "rejected"];
-  void Promise.resolve(document.modelContext.registerTool({
-    name: "record_outreach_review_decision",
-    title: "Record outreach review decision",
-    description: "Save Jeff's review decision for one dashboard opportunity on this device.",
-    inputSchema: {
-      type: "object",
-      properties: { opportunityId: { type: "string" }, decision: { type: "string", enum: allowed } },
-      required: ["opportunityId", "decision"],
-      additionalProperties: false
-    },
-    annotations: { readOnlyHint: false, untrustedContentHint: false },
-    execute(input) {
-      if (!opportunities.some((item) => item.id === input.opportunityId)) throw new Error("Unknown opportunity");
-      if (!allowed.includes(input.decision)) throw new Error("Invalid decision");
-      saveDecision(input.opportunityId, input.decision);
-      render(document.querySelector(".filter.active")?.dataset.filter || "all");
-      return { opportunityId: input.opportunityId, decision: input.decision, saved: true };
-    }
-  })).catch(() => {});
-}
-
-render();
+$('#addOpportunity').onclick=()=>{if(busy)return;$('#intakeForm').reset();$('#intakeSource').value='Manual entry';$('#intakeError').textContent='';$('#submitIntake').textContent=mode==='practice'?'Add practice opportunity':'Add to shared queue';$('#intakeDialog').showModal();};
+$('#closeIntake').onclick=()=>{if(!busy)$('#intakeDialog').close();};$('#intakeDialog').addEventListener('cancel',e=>{if(busy)e.preventDefault();});
+$('#intakeForm').onsubmit=async e=>{e.preventDefault();if(busy)return;busy=true;$('#submitIntake').disabled=true;
+ const command={company:$('#companyName').value,website:$('#companyWebsite').value,source:$('#intakeSource').value,score:Number($('#intakeScore').value),reason:$('#intakeReason').value,requestId:crypto.randomUUID()};
+ try{const next=Workflow.intake(rows,command,mode==='practice'?'Practice reviewer':'Human reviewer');await saveOperation('intake',command,next);$('#intakeDialog').close();filter='All';$('#search').value=command.company.trim();render();message(mode==='practice'?'Practice opportunity added on this device only.':'Opportunity saved to the shared queue.');}
+ catch(error){$('#intakeError').textContent=error.message;}finally{busy=false;$('#submitIntake').disabled=false;}
+};
+$('#saveTriage').onclick=async()=>{if(busy)return;busy=true;$('#saveTriage').disabled=true;
+ const command={id:selected.id,revision:selected.revision,score:Number($('#triageScore').value),reason:$('#triageReason').value,requestId:crypto.randomUUID()};
+ try{const next=Workflow.triage(rows,command,mode==='practice'?'Practice reviewer':'Human reviewer');await saveOperation('triage',command,next);$('#editor').close();render();message('Preliminary score saved. An existing hold still needs a separate human release.');}
+ catch(error){$('#formError').textContent=error.message;}finally{busy=false;$('#saveTriage').disabled=false;}
+};
