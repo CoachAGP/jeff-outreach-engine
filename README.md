@@ -4,9 +4,9 @@ Private working repository for the Jeff Outreach Engine discovery, design, and i
 
 ## Current status
 
-The discovery framework and consolidated working brief are complete. The system is not yet ready for autonomous outreach: Jeff-specific rules, verified interview transcripts, access requirements, and approval boundaries still need to be validated.
+The three-company dashboard beta is published with linked reports and drafts. It is currently a read-only review snapshot. Alert intake, Jeff-account HubSpot documentation, relationship mapping, meeting support, and pipeline coaching are the next capabilities to build and test. See the [September 22 capability plan](docs/discovery/jeff-feedback-capability-plan-2026-09-22.md).
 
-Human review remains required before sending outreach, changing sensitive CRM records, scheduling meetings, or communicating with existing clients.
+Human review remains required before sending outreach, using a relationship path, changing meaningful CRM fields, or scheduling meetings.
 
 ## Repository map
 
@@ -45,11 +45,10 @@ python3 scripts/transcribe_with_mlx.py \
 
 ## Next build phase
 
-1. Produce and validate transcripts for the three interview recordings.
-2. Extract confirmed decisions and unresolved questions.
-3. Update and re-render the consolidated discovery brief.
-4. Confirm the Phase 1 scope, HubSpot fields, approval gates, and acceptance criteria.
-5. Build and test the first approval-gated workflow against three to five real prospects.
+1. Test a combined ZoomInfo and Sales Navigator alert intake with Jeff's latest examples.
+2. Show sourced warm paths and compare one account brief with Athena's AI ERA Insight.
+3. Test one approved HubSpot note and task through Jeff's existing access.
+4. Pilot meeting preparation, voice recap, and pipeline coaching against real Jeff workflows.
 
 ## Confidentiality
 
