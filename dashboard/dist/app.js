@@ -1,5 +1,5 @@
 const REPORT_ROOT = "https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/";
-const STORAGE_KEY = "jeff-outreach-dashboard-decisions-v1";
+const REVIEW_KEY = "jeff-outreach-dashboard-review-v2";
 const INTAKE_KEY = "jeff-outreach-dashboard-intake-v1";
 
 const opportunities = [
@@ -11,6 +11,7 @@ const opportunities = [
     filter: "ready",
     contact: "Maria Kotereva",
     route: "Warm path to finance; possible CFO/controller route",
+    summary: "Multi-location building products distributor with visible finance leadership and fleet, logistics, and purchasing operations. Maria is a possible warm route into finance.",
     qa: "Pass; human approval required",
     decision: "Confirm comfort with the referral and send manually",
     report: "opportunity-report-new-castle-building-products.md",
@@ -37,6 +38,7 @@ Jeff Peduto`
     filter: "ready",
     contact: "Ken Martin",
     route: "Warm path to owner/operator route",
+    summary: "Nine-location restaurant group with Connecticut expansion activity. Ken Martin is a senior operator/co-owner route; operating spend categories may warrant a conversation.",
     qa: "Pass; human approval required",
     decision: "Verify the channel and send manually",
     report: "opportunity-report-colony-grill.md",
@@ -63,6 +65,7 @@ Jeff Peduto`
     filter: "ready",
     contact: "Will Roth",
     route: "Warm path to franchise owner route",
+    summary: "Connecticut Jimmy John's franchise group with at least three reported locations. Will Roth is an owner route; franchise purchasing rules may limit food-category flexibility.",
     qa: "Pass; human approval required",
     decision: "Verify the channel and send manually",
     report: "opportunity-report-tvg-fast-and-fresh-jimmy-johns.md",
@@ -95,112 +98,87 @@ const approvalQueue = document.querySelector("#approvalQueue");
 const researchList = document.querySelector("#researchQueue");
 const approvalTemplate = document.querySelector("#approval-card-template");
 const researchTemplate = document.querySelector("#research-row-template");
-const approvalEmpty = document.querySelector("#approvalEmpty");
-const researchEmpty = document.querySelector("#researchEmpty");
-
-function readDecisions() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
-  catch { return {}; }
+function readReviews() {
+  try {
+    const value = JSON.parse(localStorage.getItem(REVIEW_KEY) || "{}");
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch { return {}; }
 }
 
-function saveDecision(id, decision) {
-  const decisions = readDecisions();
-  decisions[id] = decision;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(decisions));
+function saveReview(id, review) {
+  const reviews = readReviews();
+  reviews[id] = review;
+  localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews));
 }
 
-function labelDecision(value) {
-  return ({ approved: "Approved for manual send", edits: "Needs edits", hold: "On hold", rejected: "Rejected" })[value] || "";
-}
-
-function applyDecisionState(article, id) {
-  const value = readDecisions()[id];
-  article.querySelectorAll("[data-decision]").forEach((button) => button.classList.toggle("selected", button.dataset.decision === value));
-  article.querySelector(".saved-decision").textContent = value ? `Saved: ${labelDecision(value)}` : "No decision saved yet";
-}
-
-function render(filter = "all") {
-  approvalQueue.innerHTML = "";
-  researchList.innerHTML = "";
-  const visibleOpportunities = opportunities.filter((item) => filter === "all" || item.filter === filter);
-  const visibleResearch = researchQueue.filter((item) => filter === "all" || item.filter === filter);
-
-  visibleOpportunities.forEach((item) => {
+function renderReviews() {
+  approvalQueue.replaceChildren();
+  const reviews = readReviews();
+  for (const item of opportunities) {
     const fragment = approvalTemplate.content.cloneNode(true);
     const article = fragment.querySelector("article");
-    article.dataset.status = item.filter;
-    article.dataset.id = item.id;
+    const state = { conflict: "", qa: false, hubspot: false, subject: item.subject.replace(/^Subject:\s*/i, ""), draft: item.draft, approved: false, ...reviews[item.id] };
     fragment.querySelector(".priority").textContent = item.priority;
     fragment.querySelector("h3").textContent = item.company;
     fragment.querySelector(".score").textContent = item.score;
+    fragment.querySelector(".research-summary").textContent = item.summary;
     fragment.querySelector(".contact").textContent = item.contact;
     fragment.querySelector(".route").textContent = item.route;
-    fragment.querySelector(".qa").textContent = item.qa;
-    fragment.querySelector(".decision").textContent = item.decision;
-    fragment.querySelector(".subject").textContent = item.subject;
-    fragment.querySelector(".draft").textContent = item.draft;
     fragment.querySelector(".report-link").href = `${REPORT_ROOT}${item.report}`;
-    article.querySelectorAll("[data-decision]").forEach((button) => {
-      button.addEventListener("click", () => {
-        saveDecision(item.id, button.dataset.decision);
-        applyDecisionState(article, item.id);
-      });
+    const subject = fragment.querySelector(".subject");
+    const draft = fragment.querySelector(".draft");
+    const qa = fragment.querySelector(".qa-check");
+    const hubspot = fragment.querySelector(".hubspot-check");
+    const approve = fragment.querySelector(".approve");
+    const status = fragment.querySelector(".saved-decision");
+    subject.value = state.subject;
+    draft.value = state.draft;
+    qa.checked = state.qa;
+    hubspot.checked = state.hubspot;
+    article.querySelectorAll('.conflict-check input').forEach((radio) => {
+      radio.name = `conflict-${item.id}`;
+      radio.checked = state.conflict === radio.value;
+      radio.addEventListener("change", () => { state.conflict = radio.value; state.approved = false; persist(); });
     });
-    applyDecisionState(article, item.id);
-    approvalQueue.appendChild(fragment);
-  });
 
-  visibleResearch.forEach((item) => {
+    function updateStatus() {
+      const complete = state.conflict === "no" && state.qa && state.hubspot && state.subject.trim() && state.draft.trim();
+      approve.disabled = !complete || state.approved;
+      status.textContent = state.approved ? "Marked approved locally; Jeff sends manually" : state.conflict === "yes" ? "Conflict: do not send" : complete ? "Ready for Jeff's approval" : "Complete conflict, QA, and HubSpot checks before approval";
+    }
+    function persist() {
+      saveReview(item.id, state);
+      updateStatus();
+      const current = readReviews();
+      document.querySelector("#readyCount").textContent = opportunities.filter((opportunity) => !current[opportunity.id]?.approved).length;
+    }
+    qa.addEventListener("change", () => { state.qa = qa.checked; state.approved = false; persist(); });
+    hubspot.addEventListener("change", () => { state.hubspot = hubspot.checked; state.approved = false; persist(); });
+    subject.addEventListener("input", () => { state.subject = subject.value; state.approved = false; persist(); });
+    draft.addEventListener("input", () => { state.draft = draft.value; state.approved = false; persist(); });
+    approve.addEventListener("click", () => {
+      if (state.conflict !== "no" || !state.qa || !state.hubspot || !state.subject.trim() || !state.draft.trim()) return;
+      state.approved = true;
+      persist();
+    });
+    updateStatus();
+    approvalQueue.append(fragment);
+  }
+
+  researchList.replaceChildren();
+  for (const item of researchQueue) {
     const fragment = researchTemplate.content.cloneNode(true);
-    const article = fragment.querySelector("article");
-    article.dataset.status = item.filter;
     fragment.querySelector(".status").textContent = item.status;
     fragment.querySelector("h3").textContent = item.company;
-    fragment.querySelector(".route").textContent = item.route;
     fragment.querySelector(".next").textContent = item.next;
     fragment.querySelector(".score").textContent = item.score;
-    researchList.appendChild(fragment);
-  });
-
-  approvalEmpty.hidden = visibleOpportunities.length > 0;
-  researchEmpty.hidden = visibleResearch.length > 0;
+    researchList.append(fragment);
+  }
+  document.querySelector("#readyCount").textContent = opportunities.filter((item) => !reviews[item.id]?.approved).length;
+  document.querySelector("#researchCount").textContent = researchQueue.length;
 }
 
-document.querySelectorAll(".filter").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filter").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    render(button.dataset.filter);
-  });
-});
-
-document.querySelector("#readyCount").textContent = opportunities.length;
-document.querySelector("#researchCount").textContent = researchQueue.length;
-
-if (document.modelContext?.registerTool) {
-  const allowed = ["approved", "edits", "hold", "rejected"];
-  void Promise.resolve(document.modelContext.registerTool({
-    name: "record_outreach_review_decision",
-    title: "Record outreach review decision",
-    description: "Save Jeff's review decision for one dashboard opportunity on this device.",
-    inputSchema: {
-      type: "object",
-      properties: { opportunityId: { type: "string" }, decision: { type: "string", enum: allowed } },
-      required: ["opportunityId", "decision"],
-      additionalProperties: false
-    },
-    annotations: { readOnlyHint: false, untrustedContentHint: false },
-    execute(input) {
-      if (!opportunities.some((item) => item.id === input.opportunityId)) throw new Error("Unknown opportunity");
-      if (!allowed.includes(input.decision)) throw new Error("Invalid decision");
-      saveDecision(input.opportunityId, input.decision);
-      render(document.querySelector(".filter.active")?.dataset.filter || "all");
-      return { opportunityId: input.opportunityId, decision: input.decision, saved: true };
-    }
-  })).catch(() => {});
-}
-
-render();
+renderReviews();
 
 const intakeList = document.querySelector("#intakeList");
 const intakeFeedback = document.querySelector("#intakeFeedback");
@@ -247,7 +225,8 @@ function renderIntake() {
     const name = document.createElement("h4");
     name.textContent = item.company;
     const meta = document.createElement("p");
-    meta.textContent = `${item.source} | ${item.date} | ${item.status}`;
+    const fit = Number(item.score);
+    meta.textContent = `${item.source} | ${item.date} | ${fit >= 3 ? "Research candidate" : fit > 0 ? "Triage only" : "Needs score"}`;
     title.append(name, meta);
     article.append(title);
 
@@ -255,23 +234,8 @@ function renderIntake() {
       selected: item.score || "", options: [["", "Unscored"], ["1", "1 - Poor"], ["2", "2 - Weak"], ["3", "3 - Possible"], ["4", "4 - Good"], ["5", "5 - Strong"]]
     }, (score) => {
       item.score = score;
-      item.status = "Needs review";
       writeIntake(items);
     });
-    addIntakeField(article, "Athena check", {
-      selected: item.athena || "pending", options: [["pending", "Not checked"], ["clear", "Clear"], ["conflict", "Conflict"], ["unknown", "Unclear"]]
-    }, (athena) => { item.athena = athena; writeIntake(items); });
-
-    const action = document.createElement("button");
-    action.textContent = item.status === "Queued for research" ? "Queued" : "Queue research";
-    action.disabled = Number(item.score) < 3 || item.athena === "conflict" || item.status === "Queued for research";
-    action.title = item.athena === "conflict" ? "Resolve conflict before research" : "Only scores 3-5 qualify";
-    action.addEventListener("click", () => {
-      item.status = "Queued for research";
-      writeIntake(items);
-      intakeFeedback.textContent = `${item.company} queued locally. Ask Codex to run the research request; this button does not spend credits.`;
-    });
-    article.append(action);
     intakeList.append(article);
   }
 }
@@ -285,7 +249,7 @@ document.querySelector("#intakeForm").addEventListener("submit", (event) => {
   let added = 0;
   for (const company of names) {
     if (existing.has(company.toLocaleLowerCase())) continue;
-    items.push({ company, source: document.querySelector("#sourceInput").value, date: new Date().toISOString().slice(0, 10), score: "", athena: "pending", status: "Needs review" });
+    items.push({ company, source: document.querySelector("#sourceInput").value, date: new Date().toISOString().slice(0, 10), score: "" });
     existing.add(company.toLocaleLowerCase());
     added += 1;
   }
@@ -295,13 +259,13 @@ document.querySelector("#intakeForm").addEventListener("submit", (event) => {
 });
 
 document.querySelector("#copyResearch").addEventListener("click", async () => {
-  const queued = readIntake().filter((item) => item.status === "Queued for research")
+  const queued = readIntake().filter((item) => Number(item.score) >= 3)
     .sort((a, b) => Number(b.score) - Number(a.score));
   if (!queued.length) {
-    intakeFeedback.textContent = "Score and queue at least one company first.";
+    intakeFeedback.textContent = "Score at least one company 3 or higher first.";
     return;
   }
-  const list = queued.map((item) => `- ${item.company}: preliminary fit ${item.score}/5; source ${item.source}; Athena ${item.athena}`).join("\n");
+  const list = queued.map((item) => `- ${item.company}: preliminary fit ${item.score}/5; source ${item.source}`).join("\n");
   const request = `Run the Jeff Outreach Engine research queue for these companies in score order:\n${list}\n\nCheck Athena and HubSpot conflicts before outreach recommendations. Deep-research only scores 3-5, verify facts and likely contacts, and return a compact decision-first report with sources, QA status, and blockers. Do not send messages or change HubSpot records without Jeff's explicit approval.`;
   try {
     await navigator.clipboard.writeText(request);

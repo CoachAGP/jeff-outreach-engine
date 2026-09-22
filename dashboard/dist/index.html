@@ -3,27 +3,31 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Jeff Outreach Engine approval and research queue." />
-    <title>Jeff Outreach Engine | Approval Queue</title>
+    <meta name="description" content="Jeff Outreach Engine company review." />
+    <title>Jeff Outreach Engine | Company Review</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="topbar">
-      <div>
-        <p class="eyebrow">Jeff Outreach Engine</p>
-        <h1>Approval Queue</h1>
-      </div>
-      <div class="summary" aria-label="Queue summary">
-        <div><strong id="readyCount">0</strong><span>Ready drafts</span></div>
-        <div><strong id="researchCount">0</strong><span>Research queue</span></div>
-        <div><strong>0</strong><span>Sent by AI</span></div>
+      <div><p class="eyebrow">Jeff Outreach Engine</p><h1>Company Review</h1></div>
+      <div class="summary" aria-label="Workspace summary">
+        <div><strong id="readyCount">0</strong><span>Drafts to review</span></div>
+        <div><strong id="researchCount">0</strong><span>Research candidates</span></div>
       </div>
     </header>
 
     <main>
+      <section class="review-workspace" aria-labelledby="reviewTitle">
+        <div class="section-header">
+          <div><h2 id="reviewTitle">Reviewed companies</h2><p>Research, checks, and draft together. Jeff approves the wording; nothing sends from this dashboard.</p></div>
+          <span class="local-note">Review changes save on this device</span>
+        </div>
+        <div id="approvalQueue" class="review-list"></div>
+      </section>
+
       <section class="intake" aria-labelledby="intakeTitle">
         <div class="section-header">
-          <div><h2 id="intakeTitle">Tuesday Intake</h2><p>Add companies from this week's ZoomInfo list. Nothing is researched or sent automatically.</p></div>
+          <div><h2 id="intakeTitle">New companies</h2><p>Score once; fit 3–5 automatically enters the research request.</p></div>
           <span class="local-note">Saved on this device only</span>
         </div>
         <form id="intakeForm" class="intake-form">
@@ -33,84 +37,57 @@
             <label for="sourceInput">Source
               <select id="sourceInput"><option>ZoomInfo Tuesday email</option><option>Manual</option><option>HubSpot export</option></select>
             </label>
-            <button type="submit">Add to intake</button>
+            <button type="submit">Add companies</button>
           </div>
         </form>
         <p id="intakeFeedback" role="status" aria-live="polite"></p>
-        <div class="intake-head"><h3>Score before research</h3><div><span id="intakeCount"></span><button id="copyResearch" type="button">Copy research request</button></div></div>
+        <div class="intake-head"><h3>Preliminary fit</h3><div><span id="intakeCount"></span><button id="copyResearch" type="button">Copy research request</button></div></div>
         <div id="intakeList" class="intake-list"></div>
         <p id="intakeEmpty" class="empty">No companies in the local intake yet.</p>
       </section>
 
+      <section class="pending" aria-labelledby="pendingTitle">
+        <div class="section-header"><div><h2 id="pendingTitle">Awaiting review</h2><p>These companies still need validation before a draft is ready.</p></div></div>
+        <div id="researchQueue" class="research-list"></div>
+      </section>
+
       <section class="crm-strip" aria-label="HubSpot status">
-        <div><strong>HubSpot: connection unverified</strong><p>Dashboard changes stay local. Check ownership and conflicts in HubSpot before outreach or any CRM edit.</p></div>
+        <div><strong>HubSpot connection unverified</strong><p>Dashboard decisions remain local. Check CRM ownership and conflict before sending or changing a record.</p></div>
         <a href="https://app.hubspot.com/" target="_blank" rel="noopener noreferrer">Open HubSpot</a>
       </section>
-
-      <section class="control-strip" aria-label="Dashboard filters">
-        <button class="filter active" data-filter="all">All</button>
-        <button class="filter" data-filter="ready">Ready</button>
-        <button class="filter" data-filter="validate">Needs validation</button>
-        <button class="filter" data-filter="hold">Hold</button>
-      </section>
-
-      <section class="research-gate" aria-label="Research credit control">
-        <strong>Research gate</strong>
-        <span>Quick-score every company first. Deep research only scores 3–5, in the order 5, 4, then 3.</span>
-      </section>
-
-      <section class="section-header">
-        <div>
-          <h2>Messages To Approve</h2>
-          <p>Review the message, choose a decision, then send it manually outside this dashboard.</p>
-        </div>
-        <span class="local-note">Decisions save on this device</span>
-      </section>
-      <section id="approvalQueue" class="card-grid" aria-label="Approval queue"></section>
-      <p id="approvalEmpty" class="empty" hidden>No messages match this filter.</p>
-
-      <section class="section-header research-heading">
-        <div>
-          <h2>Research Queue</h2>
-          <p>Only preliminary scores 3–5 move into deep research, preserving credits for the strongest opportunities.</p>
-        </div>
-      </section>
-      <section id="researchQueue" class="research-list" aria-label="Research queue"></section>
-      <p id="researchEmpty" class="empty" hidden>No research items match this filter.</p>
     </main>
 
     <template id="approval-card-template">
-      <article class="opportunity-card">
-        <div class="card-head">
-          <div><p class="priority"></p><h3></h3></div>
-          <span class="score"></span>
+      <article class="opportunity-row">
+        <div class="opportunity-main">
+          <div class="card-head"><div><p class="priority"></p><h3></h3></div><span class="score"></span></div>
+          <p class="research-summary"></p>
+          <dl class="facts">
+            <div><dt>Contact</dt><dd class="contact"></dd></div>
+            <div><dt>Route</dt><dd class="route"></dd></div>
+          </dl>
+          <a class="report-link" target="_blank" rel="noopener noreferrer">Open GitHub report</a>
+          <fieldset class="conflict-check"><legend>Conflict found?</legend>
+            <label><input type="radio" value="no" /> No</label>
+            <label><input type="radio" value="yes" /> Yes</label>
+          </fieldset>
+          <div class="review-checks">
+            <label><input class="qa-check" type="checkbox" /> QA passed</label>
+            <label><input class="hubspot-check" type="checkbox" /> HubSpot entered and reviewed</label>
+          </div>
         </div>
-        <dl class="facts">
-          <div><dt>Contact</dt><dd class="contact"></dd></div>
-          <div><dt>Route</dt><dd class="route"></dd></div>
-          <div><dt>QA</dt><dd class="qa"></dd></div>
-          <div><dt>Decision</dt><dd class="decision"></dd></div>
-        </dl>
-        <div class="draft-box">
-          <p class="subject"></p>
-          <pre class="draft"></pre>
+        <div class="draft-panel">
+          <label class="draft-label">Draft email
+            <input class="subject" type="text" aria-label="Email subject" />
+            <textarea class="draft" aria-label="Email draft"></textarea>
+          </label>
+          <div class="approval-actions"><button class="approve" type="button">Approve draft</button><span class="saved-decision" aria-live="polite"></span></div>
         </div>
-        <div class="actions" aria-label="Review actions">
-          <button data-decision="approved">Approve</button>
-          <button data-decision="edits">Needs edits</button>
-          <button data-decision="hold">Hold</button>
-          <button data-decision="rejected">Reject</button>
-        </div>
-        <p class="saved-decision" aria-live="polite"></p>
-        <a class="report-link" target="_blank" rel="noreferrer">Open full report</a>
       </article>
     </template>
 
     <template id="research-row-template">
-      <article class="research-row">
-        <div><p class="status"></p><h3></h3></div>
-        <p class="route"></p><p class="next"></p><span class="score"></span>
-      </article>
+      <article class="research-row"><div><p class="status"></p><h3></h3></div><p class="next"></p><span class="score"></span></article>
     </template>
 
     <script src="./app.js"></script>

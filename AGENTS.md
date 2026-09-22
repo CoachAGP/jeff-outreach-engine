@@ -51,9 +51,9 @@ Use the approval-first workflow:
 7. Deep-research scores 3, 4, and 5 in descending score order. Validate company size, likely spend categories, decision-makers, relationship path, and current triggers.
 8. Confirm or revise the fit score after validation and recommend a route: warm path, direct finance, owner/operator route, research more, hold, or reject.
 9. Produce a compact approval-queue item for Jeff review. Put the draft or decision first and link the supporting report below it.
-10. Draft outreach only after Jeff approves the report route, unless he explicitly asks for draft-ready output.
+10. For reviewed, qualified companies, prepare a draft with the report so Jeff can evaluate both together. Do not treat a draft as permission to send.
 11. Run Compliance / QA before any draft is used.
-12. Wait for Jeff to approve and send manually.
+12. Confirm conflict status, QA, and HubSpot entry/review before marking a draft ready. Wait for Jeff to approve and send manually.
 
 ## Jeff Review Output Contract
 
