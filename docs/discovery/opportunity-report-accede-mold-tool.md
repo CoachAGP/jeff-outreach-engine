@@ -1,6 +1,6 @@
 # Opportunity Report: Accede Mold & Tool
 
-Status: pre-handoff beta opportunity report.
+Status: beta research and draft prepared September 22, 2026; not cleared for outreach.
 
 Prepared for: Jeff Peduto.
 
@@ -10,22 +10,22 @@ No outreach has been sent.
 
 ## Executive Recommendation
 
-Accede Mold & Tool is a strong manufacturing fit, but it needs contact-route validation before drafting.
+Accede Mold & Tool is a strong manufacturing fit. A first-person routing draft is prepared for Jeff's review, but contact, conflict, and HubSpot checks remain open.
 
-Recommended action: use Jeff-account ZoomInfo/LinkedIn access to confirm the current owner, CFO, controller, president, or operations route.
+Recommended action: confirm Roger Fox's current role and contact channel, check Jeff's HubSpot and Athena for an existing relationship or conflict, then decide whether the draft should be used.
 
-Reason: the company and intent signal look strong, but the best named decision-maker is not yet clean enough for a first draft.
+Reason: the company and manufacturing fit are supported, while the old ZoomInfo intent score and current route are not independently confirmed.
 
 ## Opportunity Score
 
-Fit score: `5/5`
+Fit score: `4/5` (revised from preliminary 5/5 because revenue/spend size and a current urgency trigger remain unverified).
 
-Decision: excellent fit, pending contact validation.
+Decision: strong fit, pending Jeff-account conflict and route validation.
 
 Top reasons:
 
 - Manufacturing/tooling aligns with the highest-priority beta segment.
-- ZoomInfo intent topic is Cost Control with a score of 99.
+- The earlier ZoomInfo email supplied a Cost Control intent score of 99. This is a source-provided indicator with no confirmed event date, not evidence of current buying intent.
 - Precision moldmaking likely creates relevant indirect spend categories.
 - Company identity appears clear.
 
@@ -74,7 +74,7 @@ Hypotheses to validate:
 
 Primary route: to be confirmed.
 
-Possible route: Roger Fox or current owner/president/finance/operations contact, subject to validation.
+Possible route: Roger Fox. Accede's site describes his leadership; an older company article names him president and owner. Confirm current role and channel before using a name in outreach.
 
 Warm-connect status: no confirmed warm connection in current workspace.
 
@@ -82,15 +82,34 @@ Jeff/Joe question: does anyone in the Rochester, plastics, tooling, medical-devi
 
 ## Draft Readiness
 
-Status: not ready for draft.
+Status: draft prepared; not ready to send.
 
-Reason: decision-maker confidence is not high enough yet.
+Reason: the copy is safe for review, but Jeff's conflict, CRM, and relationship checks are pending.
 
 Required before drafting:
 
-- Confirm current senior contact.
-- Check HubSpot/Athena conflict status.
-- Confirm whether there is any warm path.
+- Confirm Roger Fox's current role and contact channel.
+- Check Jeff's HubSpot and Athena conflict status and any warm path.
+- Jeff must approve the final message before manual sending.
+
+## Connected HubSpot Check
+
+In the connected Joe Bouffard portal (account 241906394), a September 22 search by company name and exact `accedemold.com` domain returned no company match; a name search for Roger Fox returned no contact match. This does not establish absence from Jeff's HubSpot or Athena, and no record was created or changed. HubSpot entry/review: **not complete**. Conflict status: **pending Jeff**.
+
+## Draft For Jeff Review
+
+Subject: Quick question about Accede Mold & Tool
+
+Hello Roger,
+
+I work with ERA Group, helping organizations review indirect supplier spend with deep category expertise and no upfront cost. I came across Accede's work in precision moldmaking and systems integration and thought there might be a useful conversation.
+
+Are you the right person to ask whether a brief discussion about operating supplier costs would be relevant, or would someone on your finance or operations team be better?
+
+Best,
+Jeff Peduto
+
+QA: **Pass for human review only.** The draft makes no savings claim, does not imply an existing relationship, and requests no data. Replace the salutation if Roger's current role or route cannot be confirmed. No outreach has been sent.
 
 ## Compliance Notes
 
@@ -100,11 +119,13 @@ Human approval remains required before sending.
 
 ## Recommended Next Step
 
-Use ZoomInfo and LinkedIn in Jeff's Codex/account to validate current leadership and choose a route. Then draft a short first-person routing message from Jeff Peduto.
+Have Jeff confirm the route and conflict status in his own systems, review the draft, and send manually only if approved.
 
 ## Sources
 
 - Accede Mold & Tool website: https://accedemold.com/
+- Accede company history and Roger Fox leadership: https://accedemold.com/about-us/
+- Accede company article identifying Roger Fox as president and owner: https://accedemold.com/plastics_fall_conference_2023/
 - Accede LinkedIn company page: https://www.linkedin.com/company/accedemold
 - LinkedIn profile signal for Roger Fox: https://www.linkedin.com/in/roger-fox-614b998a
 

@@ -3,7 +3,7 @@ fs.mkdirSync('dist/server',{recursive:true});
 fs.mkdirSync('dist/.openai',{recursive:true});
 fs.mkdirSync('dist/client',{recursive:true});
 // Embed the small static surface to keep the Worker dependency-free.
-const files=['index.html','styles.css','app.js','workflow.js','legacy.js','seed.json'];
+const files=['index.html','styles.css','app.js','workflow.js','seed.json'];
 const types={'html':'text/html; charset=utf-8','css':'text/css','js':'text/javascript','json':'application/json'};
 const assets=Object.fromEntries(files.map(f=>['/'+f,{body:fs.readFileSync('dist/'+f,'utf8'),type:types[f.split('.').pop()]}]));
 let source=fs.readFileSync('src/worker.js','utf8').replace('return env.ASSETS.fetch(request);',`{ const path=url.pathname==='/'?'/index.html':url.pathname; const asset=ASSETS[path]; return asset?new Response(asset.body,{headers:{'Content-Type':asset.type,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}}):new Response('Not found',{status:404}); }`);

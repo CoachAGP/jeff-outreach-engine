@@ -1,6 +1,6 @@
 const $ = selector => document.querySelector(selector);
 let rows = [], seed = [], filter = 'All', mode = 'disconnected', selected = null, busy = false;
-const PRACTICE_KEY = 'jeff-engine-practice-v3';
+const PRACTICE_KEY = 'jeff-engine-practice-v4';
 const text = (tag, value, className) => { const el = document.createElement(tag); el.textContent = value; if (className) el.className = className; return el; };
 const reportIsValid = url => /^https:\/\/github\.com\/CoachAGP\/jeff-outreach-engine\/blob\/[^\s]+$/.test(url || '');
 const evidenceReady = record => ['route', 'contact', 'summary', 'sources', 'report'].every(key => record[key]?.trim()) && reportIsValid(record.report);
@@ -72,6 +72,7 @@ function openEditor(id) {
   $('#editTitle').textContent = record.company;
   $('#editStatus').textContent = `${record.status} · Preliminary fit ${record.score || 'unscored'}/5`;
   $('#editReason').textContent = record.reason || '';
+  $('#hubspotFinding').textContent = record.hubspotFinding || 'Not checked in this workspace. Jeff must verify the company in his HubSpot account.';
   for (const name of ['route', 'contact', 'report', 'summary', 'sources', 'note', 'draftSubject', 'draft']) $('#editForm').elements[name].value = record[name] || '';
   for (const radio of $('#editForm').querySelectorAll('input[name="conflicts"]')) radio.checked = radio.value === record.conflicts;
   $('#qaCheck').checked = record.qa === 'Pass';
@@ -157,13 +158,6 @@ $('#demo').onclick = () => {
 };
 $('#exitDemo').onclick = () => { mode = 'disconnected'; refresh(); };
 $('#researchQueue').after($('#editor'));
-for (const item of legacyDrafts) {
-  const card = text('article', '', 'opportunity-card');
-  card.append(text('h3', item.company), text('p', item.contact));
-  const details = text('details', ''); details.append(text('summary', 'View draft'), text('p', item.subject), text('pre', item.draft));
-  const link = text('a', 'Open GitHub report', 'report-link'); link.href = 'https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/' + item.report; link.target = '_blank'; link.rel = 'noreferrer';
-  card.append(details, link); $('#legacy').append(card);
-}
 $('#addOpportunity').onclick = () => { $('#intakeForm').reset(); $('#intakeSource').value = 'Manual entry'; $('#intakeError').textContent = ''; $('#intakeDialog').showModal(); };
 $('#closeIntake').onclick = () => $('#intakeDialog').close();
 $('#intakeForm').onsubmit = async event => {

@@ -1,18 +1,23 @@
-# Jeff Outreach Engine dashboard
+# Jeff Outreach Engine dashboard beta
 
-This directory mirrors the published Sites dashboard source. Build from here with Node 22+:
+The September 22, 2026 snapshot contains only Accede Mold & Tool, Delcath Systems, and AngioDynamics. The prior 50-company snapshot is archived in the central GitHub repository at `data/archive/dashboard-seed-before-2026-09-22.json`. Earlier message examples are not served by the dashboard.
+
+Each current company has a sourced report, a first-person Jeff draft, and a QA result. Conflict clearance, Jeff-account HubSpot/Athena checks, HubSpot entry/review, and Jeff's send approval remain pending. The connected Joe HubSpot portal was searched read-only; no CRM record was created or updated.
+
+The shared Google Sheet bridge is not configured. Consequently the published Site displays a read-only snapshot. Practice mode saves only to the current device and never syncs to Jeff. It uses a new local key for this pilot so old practice records do not reappear.
+
+The Site does not run research agents, use paid ZoomInfo credits, write to HubSpot, or send messages. Its `hubspotReviewed` checkbox is a human attestation, not an integration. Do not mark a draft ready until Jeff has checked his own HubSpot/Athena and resolved any conflict.
+
+## Build and test
+
+With Node 22+:
 
 ```sh
-npm run build
-npm test
+node scripts/build.cjs
+node --test tests/*.test.cjs
+node scripts/preview.mjs
 ```
 
-The build embeds `dist/index.html`, `dist/app.js`, `dist/styles.css`, `dist/workflow.js`, `dist/legacy.js`, and `dist/seed.json` into `dist/server/index.js`. Always run the build before publishing; publishing only the authored files leaves the live Worker serving the previous interface.
+Build before publishing. The build embeds the authored dashboard assets in `dist/server/index.js`, copies `.openai/hosting.json`, and regenerates the Apps Script workflow/seed files. Publishing without building can leave the live Worker serving old code.
 
-The company review uses one page section for the GitHub report, research summary, conflict Yes/No, QA check, HubSpot entry-and-review confirmation, and draft. A draft is generated when the research evidence is complete. Saving advances eligible work to QA Review or Ready for Approval automatically. Jeff must explicitly approve a completed draft for manual sending. The dashboard does not send messages or write HubSpot records.
-
-The shared Google Sheet bridge is not configured. The public dashboard therefore shows a read-only repository snapshot. Practice mode writes only to the current device. The HubSpot checkbox records human confirmation, not a live integration. Do not treat practice changes as shared results.
-
-Before shared use, an authorized owner must confirm the intended existing Sheet, reconcile its records with `dist/seed.json`, configure the Apps Script files under `integrations/`, and set the Site's private bridge environment variables. Do not publish bridge keys, create a replacement Sheet without approval, or import the seed over existing work.
-
-`src/worker.js` implements the private API. `tests/` checks workflow gates, audit persistence, and Worker access. The published Site project ID is in `.openai/hosting.json`.
+`src/worker.js` is the API gateway. `integrations/` contains the optional Sheet bridge. `tests/` covers gates, audit behavior, access checks, and served assets. GitHub stores the durable reports and process files.
