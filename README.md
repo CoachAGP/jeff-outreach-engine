@@ -19,6 +19,7 @@ Human review remains required before sending outreach, changing sensitive CRM re
 - `scripts/` — utilities for document generation, extraction, review, and transcription
 - `artifacts/rendered-brief/` — rendered PDF and page images used for visual QA
 - `transcripts/` — validated transcript outputs when available
+- `dashboard/` — source and tests for the published company review dashboard
 
 ## Important evidence rule
 

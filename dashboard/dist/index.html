@@ -1,95 +1,26 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Jeff Outreach Engine company review." />
-    <title>Jeff Outreach Engine | Company Review</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <div><p class="eyebrow">Jeff Outreach Engine</p><h1>Company Review</h1></div>
-      <div class="summary" aria-label="Workspace summary">
-        <div><strong id="readyCount">0</strong><span>Drafts to review</span></div>
-        <div><strong id="researchCount">0</strong><span>Research candidates</span></div>
-      </div>
-    </header>
-
-    <main>
-      <section class="review-workspace" aria-labelledby="reviewTitle">
-        <div class="section-header">
-          <div><h2 id="reviewTitle">Reviewed companies</h2><p>Research, checks, and draft together. Jeff approves the wording; nothing sends from this dashboard.</p></div>
-          <span class="local-note">Review changes save on this device</span>
-        </div>
-        <div id="approvalQueue" class="review-list"></div>
-      </section>
-
-      <section class="intake" aria-labelledby="intakeTitle">
-        <div class="section-header">
-          <div><h2 id="intakeTitle">New companies</h2><p>Score once; fit 3–5 automatically enters the research request.</p></div>
-          <span class="local-note">Saved on this device only</span>
-        </div>
-        <form id="intakeForm" class="intake-form">
-          <label for="companyInput">Company names <span>one per line</span></label>
-          <textarea id="companyInput" rows="3" required placeholder="Paste company names"></textarea>
-          <div class="intake-controls">
-            <label for="sourceInput">Source
-              <select id="sourceInput"><option>ZoomInfo Tuesday email</option><option>Manual</option><option>HubSpot export</option></select>
-            </label>
-            <button type="submit">Add companies</button>
-          </div>
-        </form>
-        <p id="intakeFeedback" role="status" aria-live="polite"></p>
-        <div class="intake-head"><h3>Preliminary fit</h3><div><span id="intakeCount"></span><button id="copyResearch" type="button">Copy research request</button></div></div>
-        <div id="intakeList" class="intake-list"></div>
-        <p id="intakeEmpty" class="empty">No companies in the local intake yet.</p>
-      </section>
-
-      <section class="pending" aria-labelledby="pendingTitle">
-        <div class="section-header"><div><h2 id="pendingTitle">Awaiting review</h2><p>These companies still need validation before a draft is ready.</p></div></div>
-        <div id="researchQueue" class="research-list"></div>
-      </section>
-
-      <section class="crm-strip" aria-label="HubSpot status">
-        <div><strong>HubSpot connection unverified</strong><p>Dashboard decisions remain local. Check CRM ownership and conflict before sending or changing a record.</p></div>
-        <a href="https://app.hubspot.com/" target="_blank" rel="noopener noreferrer">Open HubSpot</a>
-      </section>
-    </main>
-
-    <template id="approval-card-template">
-      <article class="opportunity-row">
-        <div class="opportunity-main">
-          <div class="card-head"><div><p class="priority"></p><h3></h3></div><span class="score"></span></div>
-          <p class="research-summary"></p>
-          <dl class="facts">
-            <div><dt>Contact</dt><dd class="contact"></dd></div>
-            <div><dt>Route</dt><dd class="route"></dd></div>
-          </dl>
-          <a class="report-link" target="_blank" rel="noopener noreferrer">Open GitHub report</a>
-          <fieldset class="conflict-check"><legend>Conflict found?</legend>
-            <label><input type="radio" value="no" /> No</label>
-            <label><input type="radio" value="yes" /> Yes</label>
-          </fieldset>
-          <div class="review-checks">
-            <label><input class="qa-check" type="checkbox" /> QA passed</label>
-            <label><input class="hubspot-check" type="checkbox" /> HubSpot entered and reviewed</label>
-          </div>
-        </div>
-        <div class="draft-panel">
-          <label class="draft-label">Draft email
-            <input class="subject" type="text" aria-label="Email subject" />
-            <textarea class="draft" aria-label="Email draft"></textarea>
-          </label>
-          <div class="approval-actions"><button class="approve" type="button">Approve draft</button><span class="saved-decision" aria-live="polite"></span></div>
-        </div>
-      </article>
-    </template>
-
-    <template id="research-row-template">
-      <article class="research-row"><div><p class="status"></p><h3></h3></div><p class="next"></p><span class="score"></span></article>
-    </template>
-
-    <script src="./app.js"></script>
-  </body>
-</html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Jeff Outreach Engine | Company Review</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+<header class="topbar"><div><p class="eyebrow">Jeff Outreach Engine</p><h1>Company Review</h1></div><div class="summary"><div><strong id="readyCount">0</strong><span>Ready for Jeff</span></div><div><strong id="researchCount">0</strong><span>In review</span></div></div></header>
+<main>
+<section class="connection"><p id="connection" role="status">Connecting...</p><button id="refresh">Refresh</button><button id="demo">Practice mode</button><button id="exitDemo" hidden>Exit practice</button></section><p id="notice" role="alert"></p>
+<div class="toolbar"><button id="addOpportunity">Add company</button><label>Find company<input id="search" type="search" placeholder="Company name"></label></div>
+<nav id="filters" class="control-strip" aria-label="Filter companies"></nav>
+<p id="resultCount"></p><section id="researchQueue" class="research-list" aria-label="Companies"></section><p id="researchEmpty" class="empty" hidden>No companies match this view.</p>
+<section class="section-header research-heading"><h2>Earlier draft examples</h2></section><section id="legacy" class="card-grid"></section>
+<details class="integration"><summary>Connections</summary><p>GitHub stores research reports. Shared workflow changes require the Google Sheet connection. HubSpot review is a human confirmation here; this dashboard does not write to HubSpot or send messages.</p></details>
+</main>
+<section id="editor" class="review-panel" hidden aria-label="Company review">
+<div class="review-inner"><div class="card-head"><div><p class="eyebrow">Company review</p><h2 id="editTitle"></h2><p id="editStatus"></p></div><button id="close" type="button">Close</button></div><p id="editReason"></p>
+<form id="editForm"><div class="review-layout"><div class="review-main"><div class="report-line"><strong>Research report</strong><a id="reportLink" target="_blank" rel="noreferrer" hidden>Open on GitHub</a><span id="reportMissing">No report linked</span></div>
+<label>Research summary<textarea name="summary" maxlength="4000" placeholder="Verified facts, indicators, and open questions"></textarea></label>
+<div class="checks"><fieldset><legend>Conflict check</legend><label><input name="conflicts" type="radio" value="No">No</label><label><input name="conflicts" type="radio" value="Yes">Yes</label></fieldset><label class="check"><input id="qaCheck" type="checkbox">QA checked</label><label class="check"><input id="hubspotCheck" type="checkbox">Entered into HubSpot and reviewed</label></div>
+<div class="draft-heading"><h3>Message draft</h3><span id="draftHint"></span></div><label>Subject<input name="draftSubject" maxlength="4000"></label><label>Message<textarea name="draft" maxlength="4000" class="draft-text"></textarea></label>
+<details class="supporting"><summary>Research details</summary><div class="edit-grid"><label>Recommended route<input name="route" maxlength="4000"></label><label>Contact / authority findings<input name="contact" maxlength="4000"></label><label class="wide">GitHub report URL<input name="report" type="url" maxlength="4000"></label><label class="wide">Sources and confidence<textarea name="sources" maxlength="4000"></textarea></label><label class="wide">Next action / open questions<textarea name="note" maxlength="4000"></textarea></label></div></details>
+<fieldset id="triagePanel" hidden><legend>Preliminary fit</legend><label>Score<select id="triageScore"><option value="">Not scored</option><option value="1">1 - Poor fit</option><option value="2">2 - Weak fit</option><option value="3">3 - Possible fit</option><option value="4">4 - Strong fit</option><option value="5">5 - Excellent fit</option></select></label><label>Evidence and reason<textarea id="triageReason" maxlength="4000"></textarea></label><button type="button" id="saveTriage">Save score</button></fieldset>
+<p id="formError" role="alert"></p><div class="review-actions"><button id="save" type="submit">Save review</button><button id="approve" type="button" hidden>Approve draft for manual send</button></div><p class="approval-note">Approval never sends a message.</p>
+</div><aside class="review-side"><h3>Review status</h3><p id="reviewStatus"></p><details><summary>Activity history</summary><ol id="history"></ol></details></aside></div></form></div></section>
+<dialog id="intakeDialog"><form id="intakeForm"><div class="card-head"><h2>Add company</h2><button type="button" id="closeIntake">Close</button></div><div class="edit-grid"><label>Company name<input id="companyName" required maxlength="200"></label><label>Company website (optional)<input id="companyWebsite" type="url" placeholder="https://" maxlength="2000"></label><label class="wide">Source details<textarea id="intakeSource" required maxlength="4000"></textarea></label><label>Preliminary fit score<select id="intakeScore"><option value="0">Not scored</option><option value="1">1 - Poor fit</option><option value="2">2 - Weak fit</option><option value="3">3 - Possible fit</option><option value="4">4 - Strong fit</option><option value="5">5 - Excellent fit</option></select></label><label>Score reason<textarea id="intakeReason" maxlength="4000"></textarea></label></div><p id="intakeError" role="alert"></p><button id="submitIntake" type="submit">Add company</button></form></dialog>
+<script src="./workflow.js"></script><script src="./legacy.js"></script><script src="./app.js"></script>
+</body></html>

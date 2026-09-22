@@ -1,278 +1,183 @@
-const REPORT_ROOT = "https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/";
-const REVIEW_KEY = "jeff-outreach-dashboard-review-v2";
-const INTAKE_KEY = "jeff-outreach-dashboard-intake-v1";
-
-const opportunities = [
-  {
-    id: "new-castle-maria",
-    priority: "Priority 1",
-    company: "New Castle Building Products",
-    score: "5/5",
-    filter: "ready",
-    contact: "Maria Kotereva",
-    route: "Warm path to finance; possible CFO/controller route",
-    summary: "Multi-location building products distributor with visible finance leadership and fleet, logistics, and purchasing operations. Maria is a possible warm route into finance.",
-    qa: "Pass; human approval required",
-    decision: "Confirm comfort with the referral and send manually",
-    report: "opportunity-report-new-castle-building-products.md",
-    subject: "Subject: Quick question on New Castle's finance/operations route",
-    draft: `Maria,
-
-Joe Bouffard suggested I reach out to you with a quick routing question.
-
-I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. New Castle looks like the kind of multi-location distribution operation where categories like fleet, logistics, facilities, purchasing, insurance, and technology could at least be worth a conversation, but I do not want to assume the right person internally.
-
-Would John Hutt, Philip DeBellis, or someone else on the finance/operations side be the best person for me to speak with?
-
-No obligation and no assumption that savings exist. The goal would simply be to see whether a spend review is relevant.
-
-Thanks,
-
-Jeff Peduto`
-  },
-  {
-    id: "colony-grill-ken",
-    priority: "Priority 2",
-    company: "Colony Grill",
-    score: "5/5",
-    filter: "ready",
-    contact: "Ken Martin",
-    route: "Warm path to owner/operator route",
-    summary: "Nine-location restaurant group with Connecticut expansion activity. Ken Martin is a senior operator/co-owner route; operating spend categories may warrant a conversation.",
-    qa: "Pass; human approval required",
-    decision: "Verify the channel and send manually",
-    report: "opportunity-report-colony-grill.md",
-    subject: "Subject: Quick question on Colony Grill operating spend",
-    draft: `Ken,
-
-Joe Bouffard suggested I reach out with a quick routing question.
-
-I work with ERA Group to help middle-market organizations reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. For multi-location restaurant groups, that can include facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating expenses.
-
-Given Colony Grill's continued growth and multi-location footprint, I wanted to see whether this kind of review would be worth a short conversation, or whether someone else on the finance or operations side would be the better person to ask.
-
-No obligation and no assumption that savings exist. The goal would simply be to see whether a spend review is relevant.
-
-Thanks,
-
-Jeff Peduto`
-  },
-  {
-    id: "tvg-will",
-    priority: "Priority 3",
-    company: "TVG Fast and Fresh / Jimmy John's CT",
-    score: "4/5",
-    filter: "ready",
-    contact: "Will Roth",
-    route: "Warm path to franchise owner route",
-    summary: "Connecticut Jimmy John's franchise group with at least three reported locations. Will Roth is an owner route; franchise purchasing rules may limit food-category flexibility.",
-    qa: "Pass; human approval required",
-    decision: "Verify the channel and send manually",
-    report: "opportunity-report-tvg-fast-and-fresh-jimmy-johns.md",
-    subject: "Subject: Quick operating-cost question for your Jimmy John's group",
-    draft: `Will,
-
-Joe Bouffard suggested I reach out with a quick routing question.
-
-I work with ERA Group to help restaurant and middle-market operators reduce indirect supplier spend with deep category expertise, no upfront cost, and no additional cost to the business. For multi-location groups, that can include facilities, waste, janitorial, insurance, merchant services, technology, uniforms, and related operating expenses.
-
-Given your Connecticut Jimmy John's growth, I wanted to see whether this kind of review would be worth a short conversation. I know franchise groups can have purchasing constraints, so the question is whether any local operating categories are flexible enough to review.
-
-No obligation and no assumption that savings exist. The goal would simply be to see whether a spend review is relevant.
-
-Thanks,
-
-Jeff Peduto`
+const $ = selector => document.querySelector(selector);
+let rows = [], seed = [], filter = 'All', mode = 'disconnected', selected = null, busy = false;
+const PRACTICE_KEY = 'jeff-engine-practice-v3';
+const text = (tag, value, className) => { const el = document.createElement(tag); el.textContent = value; if (className) el.className = className; return el; };
+const reportIsValid = url => /^https:\/\/github\.com\/CoachAGP\/jeff-outreach-engine\/blob\/[^\s]+$/.test(url || '');
+const evidenceReady = record => ['route', 'contact', 'summary', 'sources', 'report'].every(key => record[key]?.trim()) && reportIsValid(record.report);
+const gatesReady = record => evidenceReady(record) && record.conflicts === 'No' && record.qa === 'Pass' && record.hubspotReviewed === 'Yes' && !!record.draftSubject && !!record.draft;
+function message(value) { $('#notice').textContent = value; }
+function closeEditor() { selected = null; $('#editor').hidden = true; }
+function render() {
+  $('#addOpportunity').disabled = mode === 'disconnected';
+  $('#readyCount').textContent = rows.filter(r => r.status === 'Ready for Approval').length;
+  $('#researchCount').textContent = rows.filter(r => ['Researching', 'QA Review'].includes(r.status)).length;
+  $('#filters').replaceChildren();
+  for (const state of ['All', 'Queued', 'Researching', 'QA Review', 'Ready for Approval', 'Approved', 'Hold']) {
+    const count = rows.filter(r => state === 'All' || r.status === state).length;
+    const button = text('button', `${state} (${count})`, filter === state ? 'active' : '');
+    button.onclick = () => { filter = state; closeEditor(); render(); };
+    $('#filters').append(button);
   }
-];
-
-const researchQueue = [
-  { company: "Connecticut Spring & Stamping", status: "Needs validation", score: "5/5", route: "Direct CFO route to Mike Nowak", next: "Check HubSpot/Athena, then draft a CFO routing message.", filter: "validate" },
-  { company: "Bohlsen Restaurant Group", status: "Needs validation", score: "5/5", route: "Restaurant-network warm check, then owner route", next: "Check whether Ken Martin, Will Roth, or restaurant contacts know Michael or Kurt Bohlsen.", filter: "validate" },
-  { company: "Accede Mold & Tool", status: "Needs validation", score: "5/5", route: "Senior manufacturing route needs contact validation", next: "Use ZoomInfo or LinkedIn in Jeff's account to confirm the current senior route.", filter: "validate" },
-  { company: "Prestige Consumer Healthcare", status: "Hold", score: "5/5", route: "CFO/COO route with public-company caution", next: "Decide whether public-company targets belong in beta wave one.", filter: "hold" },
-  { company: "FGX International", status: "Hold", score: "5/5", route: "Buyer not confirmed; parent-company authority issue", next: "Resolve local authority versus EssilorLuxottica parent authority.", filter: "hold" }
-];
-
-const approvalQueue = document.querySelector("#approvalQueue");
-const researchList = document.querySelector("#researchQueue");
-const approvalTemplate = document.querySelector("#approval-card-template");
-const researchTemplate = document.querySelector("#research-row-template");
-function readReviews() {
+  const visible = Workflow.ranked(rows).filter(r => (filter === 'All' || r.status === filter) && r.company.toLowerCase().includes($('#search').value.toLowerCase()));
+  $('#resultCount').textContent = `${visible.length} of ${rows.length} companies · ${mode === 'shared' ? 'Shared queue' : mode === 'practice' ? 'Practice data' : 'Read-only snapshot'}`;
+  $('#researchQueue').replaceChildren();
+  for (const record of visible) {
+    const row = text('article', '', 'research-row');
+    row.dataset.status = record.status.toLowerCase();
+    const heading = text('div', '');
+    heading.append(text('p', record.status, 'status'), text('h3', record.company));
+    const detail = text('p', record.summary || record.reason || 'No research summary yet.', 'row-detail');
+    const score = text('span', record.score ? `${record.score}/5` : 'Unscored', 'score');
+    const button = text('button', 'Review');
+    button.onclick = () => openEditor(record.id);
+    row.append(heading, detail, score, button);
+    $('#researchQueue').append(row);
+  }
+  $('#researchEmpty').hidden = visible.length > 0;
+}
+function readForm() {
+  const form = $('#editForm');
+  const patch = {};
+  for (const name of ['route', 'contact', 'report', 'summary', 'sources', 'note', 'draftSubject', 'draft']) patch[name] = form.elements[name].value;
+  patch.conflicts = form.querySelector('input[name="conflicts"]:checked')?.value || '';
+  patch.qa = $('#qaCheck').checked ? 'Pass' : '';
+  patch.hubspotReviewed = $('#hubspotCheck').checked ? 'Yes' : '';
+  patch.draftStatus = patch.draft.trim() ? 'Draft awaiting separate approval' : 'Not drafted';
+  return patch;
+}
+function updateReviewStatus() {
+  if (!selected) return;
+  const candidate = {...selected, ...readForm()};
+  const draft = Workflow.draftFor(candidate);
+  if (draft && !candidate.draftSubject && !candidate.draft) {
+    $('#editForm').elements.draftSubject.value = draft.draftSubject;
+    $('#editForm').elements.draft.value = draft.draft;
+    $('#draftHint').textContent = 'Created from research. Review before approval.';
+    candidate.draftSubject = draft.draftSubject;
+    candidate.draft = draft.draft;
+  } else if (!draft) $('#draftHint').textContent = 'Add research details to generate a draft.';
+  const missing = [];
+  if (!evidenceReady(candidate)) missing.push('research details and GitHub report');
+  if (candidate.conflicts !== 'No') missing.push('no-conflict check');
+  if (candidate.qa !== 'Pass') missing.push('QA check');
+  if (candidate.hubspotReviewed !== 'Yes') missing.push('HubSpot entry and review');
+  if (!candidate.draftSubject || !candidate.draft) missing.push('message draft');
+  $('#reviewStatus').textContent = selected.status === 'Approved' ? 'Approved for manual send. No message has been sent.' : missing.length ? `Still needed: ${missing.join(', ')}.` : 'All checks complete. Save review, then Jeff can approve the draft.';
+  $('#approve').hidden = selected.status !== 'Ready for Approval';
+  $('#approve').disabled = mode === 'disconnected' || busy;
+}
+function openEditor(id) {
+  selected = rows.find(r => r.id === id);
+  const record = selected;
+  $('#editTitle').textContent = record.company;
+  $('#editStatus').textContent = `${record.status} · Preliminary fit ${record.score || 'unscored'}/5`;
+  $('#editReason').textContent = record.reason || '';
+  for (const name of ['route', 'contact', 'report', 'summary', 'sources', 'note', 'draftSubject', 'draft']) $('#editForm').elements[name].value = record[name] || '';
+  for (const radio of $('#editForm').querySelectorAll('input[name="conflicts"]')) radio.checked = radio.value === record.conflicts;
+  $('#qaCheck').checked = record.qa === 'Pass';
+  $('#hubspotCheck').checked = record.hubspotReviewed === 'Yes';
+  $('#reportLink').hidden = !reportIsValid(record.report);
+  $('#reportMissing').hidden = reportIsValid(record.report);
+  if (reportIsValid(record.report)) $('#reportLink').href = record.report;
+  $('#formError').textContent = '';
+  $('#draftHint').textContent = '';
+  $('#history').replaceChildren();
+  for (const item of record.history || []) $('#history').append(text('li', `${item.at} · ${item.actor} · ${item.from} to ${item.to}: ${item.note}`));
+  $('#triagePanel').hidden = record.status !== 'Hold';
+  $('#triageScore').value = record.score || '';
+  $('#triageReason').value = record.reason || '';
+  const locked = mode === 'disconnected' || ['Approved', 'Hold'].includes(record.status);
+  for (const field of $('#editForm').querySelectorAll('input, textarea, select')) field.disabled = locked;
+  $('#save').disabled = locked;
+  for (const field of $('#triagePanel').querySelectorAll('input, textarea, select, button')) field.disabled = mode === 'disconnected';
+  $('#editor').hidden = false;
+  updateReviewStatus();
+  $('#editor').scrollIntoView({behavior:'smooth', block:'start'});
+}
+async function refresh() {
+  if (busy) return;
+  busy = true; $('#refresh').disabled = true;
   try {
-    const value = JSON.parse(localStorage.getItem(REVIEW_KEY) || "{}");
-    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
-  } catch { return {}; }
+    const response = await fetch('/api/queue', {cache:'no-store'});
+    const result = await response.json();
+    if (!response.ok || result.error || !Array.isArray(result.rows)) throw Error(result.error || 'Connection unavailable.');
+    rows = result.rows; mode = 'shared'; $('#connection').textContent = `Shared Google Sheet connected · refreshed ${new Date().toLocaleTimeString()}`;
+    $('#exitDemo').hidden = true; message('');
+  } catch (error) {
+    if (mode !== 'practice') { rows = seed; mode = 'disconnected'; }
+    $('#connection').textContent = `Shared queue not connected. ${error.message}`;
+  } finally { busy = false; $('#refresh').disabled = false; closeEditor(); render(); }
 }
-
-function saveReview(id, review) {
-  const reviews = readReviews();
-  reviews[id] = review;
-  localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews));
+async function saveOperation(action, command, next) {
+  if (mode === 'practice') { localStorage.setItem(PRACTICE_KEY, JSON.stringify(next)); rows = next; }
+  else if (mode === 'shared') {
+    const response = await fetch('/api/' + action, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(command)});
+    const result = await response.json();
+    if (!response.ok || result.error || !Array.isArray(result.rows)) throw Error(result.error || 'Save not confirmed. Refresh before retrying.');
+    rows = result.rows;
+  } else throw Error('Connect the shared queue or enter practice mode before saving.');
 }
-
-function renderReviews() {
-  approvalQueue.replaceChildren();
-  const reviews = readReviews();
-  for (const item of opportunities) {
-    const fragment = approvalTemplate.content.cloneNode(true);
-    const article = fragment.querySelector("article");
-    const state = { conflict: "", qa: false, hubspot: false, subject: item.subject.replace(/^Subject:\s*/i, ""), draft: item.draft, approved: false, ...reviews[item.id] };
-    fragment.querySelector(".priority").textContent = item.priority;
-    fragment.querySelector("h3").textContent = item.company;
-    fragment.querySelector(".score").textContent = item.score;
-    fragment.querySelector(".research-summary").textContent = item.summary;
-    fragment.querySelector(".contact").textContent = item.contact;
-    fragment.querySelector(".route").textContent = item.route;
-    fragment.querySelector(".report-link").href = `${REPORT_ROOT}${item.report}`;
-    const subject = fragment.querySelector(".subject");
-    const draft = fragment.querySelector(".draft");
-    const qa = fragment.querySelector(".qa-check");
-    const hubspot = fragment.querySelector(".hubspot-check");
-    const approve = fragment.querySelector(".approve");
-    const status = fragment.querySelector(".saved-decision");
-    subject.value = state.subject;
-    draft.value = state.draft;
-    qa.checked = state.qa;
-    hubspot.checked = state.hubspot;
-    article.querySelectorAll('.conflict-check input').forEach((radio) => {
-      radio.name = `conflict-${item.id}`;
-      radio.checked = state.conflict === radio.value;
-      radio.addEventListener("change", () => { state.conflict = radio.value; state.approved = false; persist(); });
-    });
-
-    function updateStatus() {
-      const complete = state.conflict === "no" && state.qa && state.hubspot && state.subject.trim() && state.draft.trim();
-      approve.disabled = !complete || state.approved;
-      status.textContent = state.approved ? "Marked approved locally; Jeff sends manually" : state.conflict === "yes" ? "Conflict: do not send" : complete ? "Ready for Jeff's approval" : "Complete conflict, QA, and HubSpot checks before approval";
-    }
-    function persist() {
-      saveReview(item.id, state);
-      updateStatus();
-      const current = readReviews();
-      document.querySelector("#readyCount").textContent = opportunities.filter((opportunity) => !current[opportunity.id]?.approved).length;
-    }
-    qa.addEventListener("change", () => { state.qa = qa.checked; state.approved = false; persist(); });
-    hubspot.addEventListener("change", () => { state.hubspot = hubspot.checked; state.approved = false; persist(); });
-    subject.addEventListener("input", () => { state.subject = subject.value; state.approved = false; persist(); });
-    draft.addEventListener("input", () => { state.draft = draft.value; state.approved = false; persist(); });
-    approve.addEventListener("click", () => {
-      if (state.conflict !== "no" || !state.qa || !state.hubspot || !state.subject.trim() || !state.draft.trim()) return;
-      state.approved = true;
-      persist();
-    });
-    updateStatus();
-    approvalQueue.append(fragment);
-  }
-
-  researchList.replaceChildren();
-  for (const item of researchQueue) {
-    const fragment = researchTemplate.content.cloneNode(true);
-    fragment.querySelector(".status").textContent = item.status;
-    fragment.querySelector("h3").textContent = item.company;
-    fragment.querySelector(".next").textContent = item.next;
-    fragment.querySelector(".score").textContent = item.score;
-    researchList.append(fragment);
-  }
-  document.querySelector("#readyCount").textContent = opportunities.filter((item) => !reviews[item.id]?.approved).length;
-  document.querySelector("#researchCount").textContent = researchQueue.length;
+async function transition(to, patch = {}) {
+  const command = {id:selected.id, revision:selected.revision, to, patch, humanConfirmed:to === 'Approved', requestId:crypto.randomUUID()};
+  const next = Workflow.apply(rows, command, mode === 'practice' ? 'Practice reviewer' : 'Jeff');
+  await saveOperation('transition', command, next);
+  const id = selected.id;
+  render(); openEditor(id);
 }
-
-renderReviews();
-
-const intakeList = document.querySelector("#intakeList");
-const intakeFeedback = document.querySelector("#intakeFeedback");
-
-function readIntake() {
+$('#editForm').oninput = updateReviewStatus;
+$('#editForm').onchange = updateReviewStatus;
+$('#editForm').onsubmit = async event => {
+  event.preventDefault(); if (busy || !selected) return;
+  busy = true; $('#save').disabled = true;
   try {
-    const value = JSON.parse(localStorage.getItem(INTAKE_KEY) || "[]");
-    return Array.isArray(value) ? value.filter((item) => item && typeof item.company === "string") : [];
-  } catch { return []; }
+    const patch = readForm();
+    const candidate = {...selected, ...patch};
+    const to = gatesReady(candidate) ? 'Ready for Approval' : evidenceReady(candidate) ? 'QA Review' : selected.status === 'Ready for Approval' ? 'QA Review' : selected.status;
+    await transition(to, patch);
+    message(mode === 'practice' ? 'Practice review saved on this device.' : 'Review saved to the shared queue.');
+  } catch (error) { $('#formError').textContent = error.message; }
+  finally { busy = false; $('#save').disabled = mode === 'disconnected' || ['Approved', 'Hold'].includes(selected?.status); updateReviewStatus(); }
+};
+$('#approve').onclick = async () => {
+  if (busy || !selected || !confirm('Approve this draft for manual sending? No message will be sent by the dashboard.')) return;
+  busy = true; $('#approve').disabled = true;
+  try { await transition('Approved'); message('Draft approved for manual send. No communication was sent.'); }
+  catch (error) { $('#formError').textContent = error.message; }
+  finally { busy = false; updateReviewStatus(); }
+};
+$('#close').onclick = closeEditor;
+$('#search').oninput = () => { closeEditor(); render(); };
+$('#refresh').onclick = refresh;
+$('#demo').onclick = () => {
+  if (busy) return;
+  try { rows = JSON.parse(localStorage.getItem(PRACTICE_KEY) || JSON.stringify(seed)); if (!Array.isArray(rows)) throw Error(); }
+  catch { rows = structuredClone(seed); }
+  mode = 'practice'; $('#connection').textContent = 'Practice mode · changes stay on this device.';
+  $('#exitDemo').hidden = false; message('Practice changes do not sync to Jeff.'); closeEditor(); render();
+};
+$('#exitDemo').onclick = () => { mode = 'disconnected'; refresh(); };
+$('#researchQueue').after($('#editor'));
+for (const item of legacyDrafts) {
+  const card = text('article', '', 'opportunity-card');
+  card.append(text('h3', item.company), text('p', item.contact));
+  const details = text('details', ''); details.append(text('summary', 'View draft'), text('p', item.subject), text('pre', item.draft));
+  const link = text('a', 'Open GitHub report', 'report-link'); link.href = 'https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/' + item.report; link.target = '_blank'; link.rel = 'noreferrer';
+  card.append(details, link); $('#legacy').append(card);
 }
-
-function writeIntake(items) {
-  localStorage.setItem(INTAKE_KEY, JSON.stringify(items));
-  renderIntake();
-}
-
-function addIntakeField(parent, label, value, onChange) {
-  const field = document.createElement("label");
-  field.textContent = label;
-  const control = document.createElement("select");
-  for (const option of value.options) {
-    const element = document.createElement("option");
-    element.value = option[0];
-    element.textContent = option[1];
-    control.append(element);
-  }
-  control.value = value.selected;
-  control.addEventListener("change", () => onChange(control.value));
-  field.append(control);
-  parent.append(field);
-}
-
-function renderIntake() {
-  const items = readIntake();
-  intakeList.replaceChildren();
-  document.querySelector("#intakeCount").textContent = `${items.length} companies`;
-  document.querySelector("#intakeEmpty").hidden = items.length > 0;
-  const ranked = [...items].sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
-
-  for (const item of ranked) {
-    const article = document.createElement("article");
-    article.className = "intake-row";
-    const title = document.createElement("div");
-    const name = document.createElement("h4");
-    name.textContent = item.company;
-    const meta = document.createElement("p");
-    const fit = Number(item.score);
-    meta.textContent = `${item.source} | ${item.date} | ${fit >= 3 ? "Research candidate" : fit > 0 ? "Triage only" : "Needs score"}`;
-    title.append(name, meta);
-    article.append(title);
-
-    addIntakeField(article, "Preliminary fit", {
-      selected: item.score || "", options: [["", "Unscored"], ["1", "1 - Poor"], ["2", "2 - Weak"], ["3", "3 - Possible"], ["4", "4 - Good"], ["5", "5 - Strong"]]
-    }, (score) => {
-      item.score = score;
-      writeIntake(items);
-    });
-    intakeList.append(article);
-  }
-}
-
-document.querySelector("#intakeForm").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const input = document.querySelector("#companyInput");
-  const names = input.value.split(/\r?\n/).map((name) => name.trim()).filter(Boolean);
-  const items = readIntake();
-  const existing = new Set(items.map((item) => item.company.toLocaleLowerCase()));
-  let added = 0;
-  for (const company of names) {
-    if (existing.has(company.toLocaleLowerCase())) continue;
-    items.push({ company, source: document.querySelector("#sourceInput").value, date: new Date().toISOString().slice(0, 10), score: "" });
-    existing.add(company.toLocaleLowerCase());
-    added += 1;
-  }
-  writeIntake(items);
-  intakeFeedback.textContent = `${added} added; ${names.length - added} already present.`;
-  input.value = "";
-});
-
-document.querySelector("#copyResearch").addEventListener("click", async () => {
-  const queued = readIntake().filter((item) => Number(item.score) >= 3)
-    .sort((a, b) => Number(b.score) - Number(a.score));
-  if (!queued.length) {
-    intakeFeedback.textContent = "Score at least one company 3 or higher first.";
-    return;
-  }
-  const list = queued.map((item) => `- ${item.company}: preliminary fit ${item.score}/5; source ${item.source}`).join("\n");
-  const request = `Run the Jeff Outreach Engine research queue for these companies in score order:\n${list}\n\nCheck Athena and HubSpot conflicts before outreach recommendations. Deep-research only scores 3-5, verify facts and likely contacts, and return a compact decision-first report with sources, QA status, and blockers. Do not send messages or change HubSpot records without Jeff's explicit approval.`;
-  try {
-    await navigator.clipboard.writeText(request);
-    intakeFeedback.textContent = `Research request for ${queued.length} companies copied. Paste it into Jeff's Codex task.`;
-  } catch {
-    intakeFeedback.textContent = "Clipboard access is unavailable in this browser. Open this dashboard through the local server and try again.";
-  }
-});
-
-renderIntake();
+$('#addOpportunity').onclick = () => { $('#intakeForm').reset(); $('#intakeSource').value = 'Manual entry'; $('#intakeError').textContent = ''; $('#intakeDialog').showModal(); };
+$('#closeIntake').onclick = () => $('#intakeDialog').close();
+$('#intakeForm').onsubmit = async event => {
+  event.preventDefault(); if (busy) return; busy = true;
+  const command = {company:$('#companyName').value, website:$('#companyWebsite').value, source:$('#intakeSource').value, score:Number($('#intakeScore').value), reason:$('#intakeReason').value, requestId:crypto.randomUUID()};
+  try { const next = Workflow.intake(rows, command, 'Jeff'); await saveOperation('intake', command, next); $('#intakeDialog').close(); filter = 'All'; $('#search').value = command.company.trim(); render(); message('Company added.'); }
+  catch (error) { $('#intakeError').textContent = error.message; }
+  finally { busy = false; }
+};
+$('#saveTriage').onclick = async () => {
+  if (busy || !selected) return; busy = true;
+  const command = {id:selected.id, revision:selected.revision, score:Number($('#triageScore').value), reason:$('#triageReason').value, requestId:crypto.randomUUID()};
+  try { const next = Workflow.triage(rows, command, 'Jeff'); await saveOperation('triage', command, next); const id=selected.id; render(); openEditor(id); message('Preliminary score saved.'); }
+  catch (error) { $('#formError').textContent = error.message; }
+  finally { busy = false; }
+};
+(async () => { try { const response = await fetch('./seed.json'); if (!response.ok) throw Error(); seed = await response.json(); await refresh(); } catch { message('Could not load the company snapshot. Reload the dashboard.'); } })();
