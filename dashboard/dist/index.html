@@ -21,6 +21,32 @@
     </header>
 
     <main>
+      <section class="intake" aria-labelledby="intakeTitle">
+        <div class="section-header">
+          <div><h2 id="intakeTitle">Tuesday Intake</h2><p>Add companies from this week's ZoomInfo list. Nothing is researched or sent automatically.</p></div>
+          <span class="local-note">Saved on this device only</span>
+        </div>
+        <form id="intakeForm" class="intake-form">
+          <label for="companyInput">Company names <span>one per line</span></label>
+          <textarea id="companyInput" rows="3" required placeholder="Paste company names"></textarea>
+          <div class="intake-controls">
+            <label for="sourceInput">Source
+              <select id="sourceInput"><option>ZoomInfo Tuesday email</option><option>Manual</option><option>HubSpot export</option></select>
+            </label>
+            <button type="submit">Add to intake</button>
+          </div>
+        </form>
+        <p id="intakeFeedback" role="status" aria-live="polite"></p>
+        <div class="intake-head"><h3>Score before research</h3><div><span id="intakeCount"></span><button id="copyResearch" type="button">Copy research request</button></div></div>
+        <div id="intakeList" class="intake-list"></div>
+        <p id="intakeEmpty" class="empty">No companies in the local intake yet.</p>
+      </section>
+
+      <section class="crm-strip" aria-label="HubSpot status">
+        <div><strong>HubSpot: connection unverified</strong><p>Dashboard changes stay local. Check ownership and conflicts in HubSpot before outreach or any CRM edit.</p></div>
+        <a href="https://app.hubspot.com/" target="_blank" rel="noopener noreferrer">Open HubSpot</a>
+      </section>
+
       <section class="control-strip" aria-label="Dashboard filters">
         <button class="filter active" data-filter="all">All</button>
         <button class="filter" data-filter="ready">Ready</button>

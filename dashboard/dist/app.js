@@ -1,5 +1,6 @@
 const REPORT_ROOT = "https://github.com/CoachAGP/jeff-outreach-engine/blob/main/docs/discovery/";
 const STORAGE_KEY = "jeff-outreach-dashboard-decisions-v1";
+const INTAKE_KEY = "jeff-outreach-dashboard-intake-v1";
 
 const opportunities = [
   {
@@ -200,3 +201,114 @@ if (document.modelContext?.registerTool) {
 }
 
 render();
+
+const intakeList = document.querySelector("#intakeList");
+const intakeFeedback = document.querySelector("#intakeFeedback");
+
+function readIntake() {
+  try {
+    const value = JSON.parse(localStorage.getItem(INTAKE_KEY) || "[]");
+    return Array.isArray(value) ? value.filter((item) => item && typeof item.company === "string") : [];
+  } catch { return []; }
+}
+
+function writeIntake(items) {
+  localStorage.setItem(INTAKE_KEY, JSON.stringify(items));
+  renderIntake();
+}
+
+function addIntakeField(parent, label, value, onChange) {
+  const field = document.createElement("label");
+  field.textContent = label;
+  const control = document.createElement("select");
+  for (const option of value.options) {
+    const element = document.createElement("option");
+    element.value = option[0];
+    element.textContent = option[1];
+    control.append(element);
+  }
+  control.value = value.selected;
+  control.addEventListener("change", () => onChange(control.value));
+  field.append(control);
+  parent.append(field);
+}
+
+function renderIntake() {
+  const items = readIntake();
+  intakeList.replaceChildren();
+  document.querySelector("#intakeCount").textContent = `${items.length} companies`;
+  document.querySelector("#intakeEmpty").hidden = items.length > 0;
+  const ranked = [...items].sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
+
+  for (const item of ranked) {
+    const article = document.createElement("article");
+    article.className = "intake-row";
+    const title = document.createElement("div");
+    const name = document.createElement("h4");
+    name.textContent = item.company;
+    const meta = document.createElement("p");
+    meta.textContent = `${item.source} | ${item.date} | ${item.status}`;
+    title.append(name, meta);
+    article.append(title);
+
+    addIntakeField(article, "Preliminary fit", {
+      selected: item.score || "", options: [["", "Unscored"], ["1", "1 - Poor"], ["2", "2 - Weak"], ["3", "3 - Possible"], ["4", "4 - Good"], ["5", "5 - Strong"]]
+    }, (score) => {
+      item.score = score;
+      item.status = "Needs review";
+      writeIntake(items);
+    });
+    addIntakeField(article, "Athena check", {
+      selected: item.athena || "pending", options: [["pending", "Not checked"], ["clear", "Clear"], ["conflict", "Conflict"], ["unknown", "Unclear"]]
+    }, (athena) => { item.athena = athena; writeIntake(items); });
+
+    const action = document.createElement("button");
+    action.textContent = item.status === "Queued for research" ? "Queued" : "Queue research";
+    action.disabled = Number(item.score) < 3 || item.athena === "conflict" || item.status === "Queued for research";
+    action.title = item.athena === "conflict" ? "Resolve conflict before research" : "Only scores 3-5 qualify";
+    action.addEventListener("click", () => {
+      item.status = "Queued for research";
+      writeIntake(items);
+      intakeFeedback.textContent = `${item.company} queued locally. Ask Codex to run the research request; this button does not spend credits.`;
+    });
+    article.append(action);
+    intakeList.append(article);
+  }
+}
+
+document.querySelector("#intakeForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const input = document.querySelector("#companyInput");
+  const names = input.value.split(/\r?\n/).map((name) => name.trim()).filter(Boolean);
+  const items = readIntake();
+  const existing = new Set(items.map((item) => item.company.toLocaleLowerCase()));
+  let added = 0;
+  for (const company of names) {
+    if (existing.has(company.toLocaleLowerCase())) continue;
+    items.push({ company, source: document.querySelector("#sourceInput").value, date: new Date().toISOString().slice(0, 10), score: "", athena: "pending", status: "Needs review" });
+    existing.add(company.toLocaleLowerCase());
+    added += 1;
+  }
+  writeIntake(items);
+  intakeFeedback.textContent = `${added} added; ${names.length - added} already present.`;
+  input.value = "";
+});
+
+document.querySelector("#copyResearch").addEventListener("click", async () => {
+  const queued = readIntake().filter((item) => item.status === "Queued for research")
+    .sort((a, b) => Number(b.score) - Number(a.score));
+  if (!queued.length) {
+    intakeFeedback.textContent = "Score and queue at least one company first.";
+    return;
+  }
+  const list = queued.map((item) => `- ${item.company}: preliminary fit ${item.score}/5; source ${item.source}; Athena ${item.athena}`).join("\n");
+  const request = `Run the Jeff Outreach Engine research queue for these companies in score order:\n${list}\n\nCheck Athena and HubSpot conflicts before outreach recommendations. Deep-research only scores 3-5, verify facts and likely contacts, and return a compact decision-first report with sources, QA status, and blockers. Do not send messages or change HubSpot records without Jeff's explicit approval.`;
+  try {
+    await navigator.clipboard.writeText(request);
+    intakeFeedback.textContent = `Research request for ${queued.length} companies copied. Paste it into Jeff's Codex task.`;
+  } catch {
+    intakeFeedback.textContent = "Clipboard access is unavailable in this browser. Open this dashboard through the local server and try again.";
+  }
+});
+
+renderIntake();
