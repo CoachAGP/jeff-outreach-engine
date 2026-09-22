@@ -17,6 +17,12 @@
 body { margin: 0; background: var(--soft); color: var(--ink); }
 button, a { -webkit-tap-highlight-color: transparent; }
 .topbar { display: flex; justify-content: space-between; gap: 24px; align-items: end; padding: 28px 32px 20px; background: #fff; border-bottom: 1px solid var(--line); }
+.topbar { align-items: center; flex-wrap: wrap; padding: 10px 24px; gap: 12px 24px; }
+.brand { display: flex; align-items: center; gap: 18px; flex: 1 1 710px; min-width: 0; }
+.brand-art { display: block; width: clamp(300px, 36vw, 540px); height: 126px; object-fit: cover; flex: 0 1 auto; min-width: 0; }
+.brand h1 { font-size: 30px; white-space: nowrap; }
+.summary { grid-template-columns: repeat(2, minmax(112px, 1fr)); }
+@media (max-width: 820px) { .brand { flex-wrap: wrap; gap: 0; } .brand-art { width: min(100%, 540px); } .brand h1 { font-size: 26px; } }
 .eyebrow, .priority, .status { margin: 0 0 6px; color: var(--accent-dark); font-size: 13px; font-weight: 750; text-transform: uppercase; letter-spacing: 0; }
 h1, h2, h3, p { margin-top: 0; }
 h1 { margin-bottom: 0; font-size: 38px; letter-spacing: 0; }
